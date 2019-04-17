@@ -37,7 +37,7 @@ namespace Sep
       // Getter Methods
       // @return Returns the character of a field.
       //
-      char getCharacter() const;
+      virtual char getCharacter() const;
 
       //------------------------------------------------------------------------
       // Getter Methods

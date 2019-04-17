@@ -11,6 +11,7 @@
 #define SEP19_GROUP21486_WORM_H
 
 #include "Field.h"
+#include "Weapon.h"
 
 #include <string>
 #include <vector>
@@ -31,23 +32,23 @@ namespace Sep
       std::vector<Weapon> weapons;
 
     public:
-    Worm(int id, std::string name);
+      Worm(int id, std::string name);
 
-    virtual ~Worm();
+      virtual ~Worm();
 
-    const std::string &getName() const;
+      const std::string &getName() const;
 
-    void setName(const std::string &name);
+      void setName(const std::string &name);
 
-    int getId() const;
+      int getId() const;
 
-    int getHp() const;
+      int getHp() const;
 
-    const std::vector<Weapon> &getWeapons() const;
+      const std::vector<Weapon> &getWeapons() const;
 
-    void damage(int points);
+      void damage(int points);
 
-    char getCharacter() const override;
+      char getCharacter() const override;
   };
 }
 
