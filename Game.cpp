@@ -8,6 +8,8 @@
 //
 
 #include "Game.h"
+#include "Worm.h"
+#include "Random.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -156,24 +158,39 @@ bool Game::createMapFields(string keyword, int row)
 }
 
 //------------------------------------------------------------------------------
-int Game::addWorm(int row, int col)
+int Game::createWorms()
 {
-  if ((!(row < board_height_ && col < board_width_)) || row < 0 || col < 0)
+  std::vector<Worm> wormNumber;
+  int col;
+  int row = 0;
+  Random random;
+  for(int index = 1; index < 7; index++)
   {
-    return printErrorMessage(INVALID_TARGET);
+    wormNumber.emplace_back(Worm(index, random.getWormName()));
   }
-  if ((map_.at(CURRENT_FIELD).getType()) != Field::AIR)
+  for(int index = 1; index < 7; index++)
   {
-    return printErrorMessage(INVALID_TARGET);
-  }
-  while ((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR))
-  {
-    row++; // row gets increased to handle gravity
-  }
-  if (map_.at(BELOW_CURRENT_FIELD).getType() == Field::EARTH
-      || map_.at(BELOW_CURRENT_FIELD).getType() == Field::WORM)
-  {
-    map_.at(CURRENT_FIELD).setType(Field::WORM);
+    col = random.getRandomInt(0, board_width_ - 1);
+    while ((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
+    && map_.at(CURRENT_FIELD).getType() == Field::AIR)) // Chest is missing
+    {
+      row++; // row gets increased to handle gravity
+    }
+    if(map_.at(BELOW_CURRENT_FIELD).getType() != Field::WATER)
+    {
+      wormNumber.at(index - 1).setPosition(row, col);
+
+      //sets Type to WORM - need to be changed for the 2 different WormTypes *,~
+      map_.at(CURRENT_FIELD).setType(Field::WORM);
+
+
+      cout << "spawning " << wormNumber.at(index - 1).getName() << "(" << index << ")" << " at " << "(0," << col << ")" << endl;
+    }
+    else
+    {
+      cout << wormNumber.at(index - 1).getName() << "(" << index << ")" << " drowned." << endl;
+    }
+    row = 0;
   }
   return EVERYTHING_OK;
 }
@@ -206,8 +223,14 @@ void Game::printMap()
       }
       else
       {
-        cout << map_.at(index_col + (index_row - ONE)
-            * board_width_).getCharacter();
+       // if(map_.at(index_col + (index_row - ONE) * board_width_). == Field::WORM)
+       //{
+      //    cout <<
+       // }
+       // else
+        {
+          cout << map_.at(index_col + (index_row - ONE) * board_width_).getCharacter();
+        }
         count_to_ten = 0;
       }
     }

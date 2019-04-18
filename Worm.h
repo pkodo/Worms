@@ -28,6 +28,8 @@ namespace Sep
     private:
       int id;
       int hp;
+      int row_;
+      int col_;
       std::string name;
       std::vector<Weapon> weapons;
 
@@ -47,6 +49,8 @@ namespace Sep
       const std::vector<Weapon> &getWeapons() const;
 
       void damage(int points);
+
+      void setPosition(int row, int col);
 
       char getCharacter() const override;
   };

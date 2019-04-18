@@ -66,7 +66,7 @@ namespace Sep
       // @param col defines in which column the worm should occur.
       // @return Returns error or everything okay.
       //
-      int addWorm(int row, int col);
+      int createWorms();
 
       //------------------------------------------------------------------------
       // Print Gameboard Method

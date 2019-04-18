@@ -47,6 +47,13 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
+  void Worm::setPosition(int row, int col)
+  {
+      row_ = row;
+      col_ = col;
+  }
+
+  //----------------------------------------------------------------------------
   const std::vector<Weapon> &Worm::getWeapons() const
   {
     return weapons;
