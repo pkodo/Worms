@@ -26,8 +26,8 @@ namespace Sep
   class Worm : public Field
   {
     private:
-      int id;
-      int hp;
+      int id_;
+      int hp_;
       int row_;
       int col_;
       std::string name;
@@ -46,11 +46,17 @@ namespace Sep
 
       int getHp() const;
 
+      int getRow() const;
+
+      int getCol() const;
+
       const std::vector<Weapon> &getWeapons() const;
 
       void damage(int points);
 
       void setPosition(int row, int col);
+
+      void setHp(int hp);
 
       char getCharacter() const override;
   };

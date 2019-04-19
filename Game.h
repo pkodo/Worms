@@ -9,8 +9,11 @@
 #ifndef SEP_GAME_H
 #define SEP_GAME_H
 #include "Field.h"
+#include "Worm.h"
 #include <map>
+#include <vector>
 using std::string;
+
 
 namespace Sep
 {
@@ -66,13 +69,9 @@ namespace Sep
       // @param col defines in which column the worm should occur.
       // @return Returns error or everything okay.
       //
-      int createWorms();
 
-      //------------------------------------------------------------------------
-      // Print Gameboard Method
-      // Prints the playground on the screen.
-      //
-      void printMap();
+
+
 
       //------------------------------------------------------------------------
       // Move Method
@@ -83,6 +82,8 @@ namespace Sep
       // which direction
       //
       void move(int row, int col, int steps);
+
+      int gameLoop();
 
     private:
 
@@ -100,6 +101,9 @@ namespace Sep
       // Datastructure for objects on the gameboard
       //
       std::map<int, Field> map_;
+
+      std::vector<Worm> wormNumber;
+
 
       enum ErrorType {EVERYTHING_OK, INVALID_CONFIGFILE = -1,
           INVALID_TARGET = -2, WRONG_MOVE = -3};
@@ -151,6 +155,14 @@ namespace Sep
       // @param detect_worm_tower saves the original value of the row.
       //
       void testWormTower(int &row, int &col, int &detect_worm_tower);
+
+      void createWorms();
+
+      //------------------------------------------------------------------------
+      // Print Gameboard Method
+      // Prints the playground on the screen.
+      //
+      void printMap();
   };
 }
 #endif //SEP_GAME_H

@@ -158,9 +158,8 @@ bool Game::createMapFields(string keyword, int row)
 }
 
 //------------------------------------------------------------------------------
-int Game::createWorms()
+void Game::createWorms()
 {
-  std::vector<Worm> wormNumber;
   int col;
   int row = 0;
   Random random;
@@ -176,23 +175,21 @@ int Game::createWorms()
     {
       row++; // row gets increased to handle gravity
     }
-    if(map_.at(BELOW_CURRENT_FIELD).getType() != Field::WATER)
+    wormNumber.at(index - 1).setPosition(row, col);
+    cout << "spawning " << wormNumber.at(index - 1).getName() << " (" << wormNumber.at(index - 1).getId() << ")" << " at " << "(0," << col << ")" << endl;
+
+    if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::WATER)
     {
-      wormNumber.at(index - 1).setPosition(row, col);
-
-      //sets Type to WORM - need to be changed for the 2 different WormTypes *,~
-      map_.at(CURRENT_FIELD).setType(Field::WORM);
-
-
-      cout << "spawning " << wormNumber.at(index - 1).getName() << "(" << index << ")" << " at " << "(0," << col << ")" << endl;
+      cout << wormNumber.at(index - 1).getName() << " (" << wormNumber.at(index - 1).getId() << ")" << " drowned." << endl;
+      wormNumber.at(index - 1).setHp(0);
     }
     else
     {
-      cout << wormNumber.at(index - 1).getName() << "(" << index << ")" << " drowned." << endl;
+      map_.at(CURRENT_FIELD).setType(Field::WORM);
+      wormNumber.at(index - 1).setHp(100);
     }
     row = 0;
   }
-  return EVERYTHING_OK;
 }
 
 //------------------------------------------------------------------------------
@@ -223,15 +220,22 @@ void Game::printMap()
       }
       else
       {
-       // if(map_.at(index_col + (index_row - ONE) * board_width_). == Field::WORM)
-       //{
-      //    cout <<
-       // }
-       // else
-        {
-          cout << map_.at(index_col + (index_row - ONE) * board_width_).getCharacter();
-        }
-        count_to_ten = 0;
+          if(map_.at(index_col + (index_row - ONE) * board_width_).getType() != Field::WORM)
+          {
+             cout << map_.at(index_col + (index_row - ONE) * board_width_).getCharacter();
+          }
+          else
+          {
+            for(int count = 0; count < 6; count++)
+            {
+              if((index_col + (index_row - ONE) * board_width_) ==
+              (wormNumber.at(count).getCol() + wormNumber.at(count).getRow() * board_width_))
+              {
+                cout << wormNumber.at(count).getCharacter();
+              }
+            }
+          }
+      count_to_ten = 0;
       }
     }
     if (index_row == 0 || index_row == (board_height_ + ONE))
@@ -258,6 +262,49 @@ bool Game::checkDirection(int &steps)
     steps = MAX_STEPS;
   }
   return left_steps;
+}
+
+int Game::gameLoop()
+{
+  int current_worm = 0;
+  int player = 1;
+  string text;
+
+  createWorms();
+  printMap();
+  if(wormNumber.at(current_worm).getHp())
+  {
+      cout << "Player " << player << " Worm " << wormNumber.at(current_worm).getName() <<
+           " (" << wormNumber.at(current_worm).getId() << ") at " << "(" << wormNumber.at(current_worm).getRow()
+           << ", " << wormNumber.at(current_worm).getCol() << ") ready" << endl;
+  }
+
+  /*while(true)
+  {
+    if(wormNumber.at(current_worm).getHp())
+    {
+      cout << "Player " << player << " Worm " << wormNumber.at(current_worm).getName() <<
+           " (" << wormNumber.at(current_worm).getId() << ") at " << "(" << wormNumber.at(current_worm).getRow()
+           << ", " << wormNumber.at(current_worm).getCol() << ") ready" << endl;
+    }
+    current_worm++;
+    if(player % 2)
+    {
+      player = 2;
+      current_worm += 3;
+    }
+    else
+    {
+      current_worm -=3;
+    }
+    cout << "sep> ";
+    cin >> text;
+    if(text == "quit")
+    {
+      break;
+    }
+  }*/
+
 }
 
 //------------------------------------------------------------------------------
