@@ -3,3 +3,8 @@
 //
 
 #include "Chest.h"
+
+namespace Sep
+{
+
+}

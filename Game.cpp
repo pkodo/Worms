@@ -10,12 +10,14 @@
 #include "Game.h"
 #include "Worm.h"
 #include "Random.h"
+#include "Move.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <map>
 #include <iomanip>
+#include <vector>
 
 #define CURRENT_FIELD ((row * board_width_) + col)
 #define BELOW_CURRENT_FIELD ((row + 1) * board_width_ + col)
@@ -33,13 +35,18 @@ using std::string;
 using std::map;
 using std::pair;
 using std::setw;
+using std::vector;
 using Sep::Game;
 
 const string Game::MAGIC_VALUE = "#SWORMS";
 const string Game::CHECK_FOR_SIZE = "SIZE:";
 const string Game::CHECK_FOR_MAP = "MAP:";
 
+const string Game::COMMAND_PROMPT = "sep> ";
 const string Game::COMMAND_MOVE = "move";
+const string Game::COMMAND_QUIT = "quit";
+
+
 
 //------------------------------------------------------------------------------
 Game::Game()
@@ -65,7 +72,13 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
       cout << "[WARNING] can't move further" << endl;
       break;
     case EVERYTHING_OK:
-      break;;
+      break;
+    case UNKNOWN_COMMAND:
+      cout << "[ERROR] unknown command!" << endl;
+      break;
+    case WROMG_PARAMETER_COUNT:
+      cout << "[ERROR] wrong parameter count!" << endl;
+      break;
   }
   return type;
 }
@@ -101,7 +114,7 @@ int Game::loadConfig(string cfg_file)
         if ((CHECK_FOR_SIZE != keyword || (board_width_ < MIN_LENGTH
             || board_width_ > MAX_LENGTH) || (board_height_ < MIN_LENGTH
             || board_height_ > MAX_LENGTH))) //Returns error if the size of the
-            // board  is to small or too big or the keyword SIZE was not found
+            // board  is too small or too big or the keyword SIZE was not found
         {
           return printErrorMessage(INVALID_CONFIGFILE);
         }
@@ -281,6 +294,8 @@ int Game::gameLoop()
            << ", " << wormNumber.at(current_worm).getCol() << ") ready" << endl;
   }
 
+  userInput();
+
   /*while(true)
   {
     if(wormNumber.at(current_worm).getHp())
@@ -389,4 +404,49 @@ void Game::move(int row, int col, int steps)
   {
     printErrorMessage(INVALID_TARGET);
   }
+}
+
+//------------------------------------------------------------------------------
+void Game::userInput()
+{
+  string input_line;
+  string param;
+  vector<string> command_params;
+
+  cout << COMMAND_PROMPT;
+  getline(cin, input_line);
+  stringstream input_stream(input_line);
+
+  while(input_stream >> param)
+  {
+    command_params.push_back(param);
+    //cout << param << endl;
+  }
+
+  //cout << command_params.size();
+
+  if(command_params.at(0) == COMMAND_QUIT)
+  {
+    if(command_params.size() != 1)
+    {
+      printErrorMessage(WROMG_PARAMETER_COUNT);
+      return;
+    }
+    return;
+  }
+  else if(command_params.at(0) == COMMAND_MOVE)
+  {
+    if(command_params.size() != 3)
+    {
+      printErrorMessage(WROMG_PARAMETER_COUNT);
+      return;
+    }
+    Move move(COMMAND_MOVE);
+    move.execute(*this, command_params);
+  }
+  else
+  {
+    printErrorMessage(UNKNOWN_COMMAND);
+  }
+
 }

@@ -35,7 +35,10 @@ namespace Sep
       static const string CHECK_FOR_SIZE;
       static const string CHECK_FOR_MAP;
 
+      static const string COMMAND_PROMPT;
       static const string COMMAND_MOVE;
+      static const string COMMAND_QUIT;
+
 
       //------------------------------------------------------------------------
       // Constructor
@@ -108,7 +111,8 @@ namespace Sep
 
 
       enum ErrorType {EVERYTHING_OK, INVALID_CONFIGFILE = -1,
-          INVALID_TARGET = -2, WRONG_MOVE = -3};
+          INVALID_TARGET = -2, WRONG_MOVE = -3, UNKNOWN_COMMAND = -4,
+          WROMG_PARAMETER_COUNT = -5};
       enum ConfigKeywords {SIZE, MAP, MAPFIELDS};
 
       //------------------------------------------------------------------------
@@ -165,6 +169,12 @@ namespace Sep
       // Prints the playground on the screen.
       //
       void printMap();
+
+      //------------------------------------------------------------------------
+      // User Input Method
+      // Reads commands from stdin and calls command pattern.
+      //
+      void userInput();
   };
 }
 #endif //SEP_GAME_H

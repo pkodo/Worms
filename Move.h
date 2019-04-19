@@ -11,6 +11,12 @@ namespace Sep
 {
   class Move : public Command
   {
+    public:
+      Move(const std::string &name);
+
+      int execute(Game &game, std::vector<std::string> &params) override;
+
+      virtual ~Move();
 
   };
 }
