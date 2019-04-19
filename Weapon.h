@@ -29,9 +29,9 @@ namespace Sep
       int getDamage() const;
 
     private:
-      std::string name;
-      int ammo;
-      int damage;
+      std::string name_;
+      int ammo_;
+      int damage_;
   };
 }
 

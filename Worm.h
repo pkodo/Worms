@@ -30,8 +30,8 @@ namespace Sep
       int hp_;
       int row_;
       int col_;
-      std::string name;
-      std::vector<Weapon> weapons;
+      std::string name_;
+      std::vector<Weapon> weapons_;
 
     public:
       Worm(int id, std::string name);

@@ -7,7 +7,7 @@
 namespace Sep
 {
   //----------------------------------------------------------------------------
-  Weapon::Weapon(std::string name) : name(std::move(name))
+  Weapon::Weapon(std::string name) : name_(std::move(name))
   {
   }
 
@@ -19,24 +19,24 @@ namespace Sep
   //----------------------------------------------------------------------------
   int Weapon::getAmmo() const
   {
-    return ammo;
+    return ammo_;
   }
 
   //----------------------------------------------------------------------------
   void Weapon::setAmmo(int ammo)
   {
-    Weapon::ammo = ammo;
+    Weapon::ammo_ = ammo;
   }
 
   //----------------------------------------------------------------------------
   const std::string &Weapon::getName() const
   {
-    return name;
+    return name_;
   }
 
   //----------------------------------------------------------------------------
   int Weapon::getDamage() const
   {
-    return damage;
+    return damage_;
   }
 }

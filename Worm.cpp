@@ -18,20 +18,20 @@ namespace Sep
 
   //----------------------------------------------------------------------------
   Worm::Worm(int id_, std::string name) : Field(WORM), id_(id_),
-    name(std::move(name))
+    name_(std::move(name))
   {
   }
 
   //----------------------------------------------------------------------------
   const std::string &Worm::getName() const
   {
-    return name;
+    return name_;
   }
 
   //----------------------------------------------------------------------------
   void Worm::setName(const std::string &name)
   {
-    Worm::name = name;
+    Worm::name_ = name;
   }
 
   //----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace Sep
   //----------------------------------------------------------------------------
   const std::vector<Weapon> &Worm::getWeapons() const
   {
-    return weapons;
+    return weapons_;
   }
 
   //----------------------------------------------------------------------------
