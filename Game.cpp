@@ -39,6 +39,8 @@ const string Game::MAGIC_VALUE = "#SWORMS";
 const string Game::CHECK_FOR_SIZE = "SIZE:";
 const string Game::CHECK_FOR_MAP = "MAP:";
 
+const string Game::COMMAND_MOVE = "move";
+
 //------------------------------------------------------------------------------
 Game::Game()
 {

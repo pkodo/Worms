@@ -93,5 +93,9 @@ namespace Sep
     {
       return '*';
     }
+    else
+    {
+      return ' ';
+    }
   }
 }

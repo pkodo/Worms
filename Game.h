@@ -35,6 +35,8 @@ namespace Sep
       static const string CHECK_FOR_SIZE;
       static const string CHECK_FOR_MAP;
 
+      static const string COMMAND_MOVE;
+
       //------------------------------------------------------------------------
       // Constructor
       //
