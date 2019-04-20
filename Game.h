@@ -10,6 +10,7 @@
 #define SEP_GAME_H
 #include "Field.h"
 #include "Worm.h"
+#include "Random.h"
 #include <map>
 #include <vector>
 using std::string;
@@ -112,7 +113,7 @@ namespace Sep
 
       enum ErrorType {EVERYTHING_OK, INVALID_CONFIGFILE = -1,
           INVALID_TARGET = -2, WRONG_MOVE = -3, UNKNOWN_COMMAND = -4,
-          WROMG_PARAMETER_COUNT = -5};
+          WRONG_PARAMETER_COUNT = -5};
       enum ConfigKeywords {SIZE, MAP, MAPFIELDS};
 
       //------------------------------------------------------------------------
@@ -162,7 +163,7 @@ namespace Sep
       //
       void testWormTower(int &row, int &col, int &detect_worm_tower);
 
-      void createWorms();
+      void createWorms(Random *random);
       int setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& turn_two);
 
       //------------------------------------------------------------------------
@@ -175,7 +176,7 @@ namespace Sep
       // User Input Method
       // Reads commands from stdin and calls command pattern.
       //
-      void userInput();
+      bool userInput();
   };
 }
 #endif //SEP_GAME_H

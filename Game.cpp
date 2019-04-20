@@ -76,7 +76,7 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
     case UNKNOWN_COMMAND:
       cout << "[ERROR] unknown command!" << endl;
       break;
-    case WROMG_PARAMETER_COUNT:
+    case WRONG_PARAMETER_COUNT:
       cout << "[ERROR] wrong parameter count!" << endl;
       break;
   }
@@ -173,18 +173,18 @@ bool Game::createMapFields(string keyword, int row)
 }
 
 //------------------------------------------------------------------------------
-void Game::createWorms()
+void Game::createWorms(Random *random)
 {
   int col;
   int row = 0;
-  Random random;
+
   for(int index = 1; index < 7; index++)
   {
-    wormNumber.emplace_back(Worm(index, random.getWormName()));
+    wormNumber.emplace_back(Worm(index, random->getWormName()));
   }
   for(int index = 1; index < 7; index++)
   {
-    col = random.getRandomInt(0, board_width_ - 1);
+    col = random->getRandomInt(0, board_width_ - 1);
     while ((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
     && map_.at(CURRENT_FIELD).getType() == Field::AIR)) // Chest is missing
     {
@@ -288,7 +288,8 @@ int Game::gameLoop()
     int turn_two = 3;
     string text;
 
-    createWorms();
+    Random random;
+    createWorms(&random);
     printMap();
 
     while(true)
@@ -297,12 +298,7 @@ int Game::gameLoop()
         {
             return 0;
         }
-        cout << "sep> ";
-        cin >> text;
-        if(text == "quit")
-        {
-            break;
-        }
+        while(!userInput());
     }
 }
 
@@ -433,7 +429,7 @@ void Game::move(int row, int col, int steps)
 }
 
 //------------------------------------------------------------------------------
-void Game::userInput()
+bool Game::userInput()
 {
   string input_line;
   string param;
@@ -455,17 +451,17 @@ void Game::userInput()
   {
     if(command_params.size() != 1)
     {
-      printErrorMessage(WROMG_PARAMETER_COUNT);
-      return;
+      printErrorMessage(WRONG_PARAMETER_COUNT);
+      return false;
     }
-    return;
+    return true;
   }
   else if(command_params.at(0) == COMMAND_MOVE)
   {
     if(command_params.size() != 3)
     {
-      printErrorMessage(WROMG_PARAMETER_COUNT);
-      return;
+      printErrorMessage(WRONG_PARAMETER_COUNT);
+      return false;
     }
     Move move(COMMAND_MOVE);
     move.execute(*this, command_params);
