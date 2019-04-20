@@ -9,6 +9,7 @@
 
 #include "Game.h"
 #include "Worm.h"
+#include "Chest.h"
 #include "Random.h"
 #include "Move.h"
 #include <iostream>
@@ -55,6 +56,7 @@ Game::Game()
   Game::board_height_ = 0;
   Game::map_.insert(pair<int, Field>(board_height_* board_width_,
       Field(Field::AIR)));
+  Game::wormNumber;
 }
 
 //------------------------------------------------------------------------------
@@ -186,7 +188,7 @@ void Game::createWorms(Random *random)
   {
     col = random->getRandomInt(0, board_width_ - 1);
     while ((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
-    && map_.at(CURRENT_FIELD).getType() == Field::AIR)) // Chest is missing
+    && map_.at(CURRENT_FIELD).getType() == Field::AIR))
     {
       row++; // row gets increased to handle gravity
     }
@@ -206,6 +208,27 @@ void Game::createWorms(Random *random)
     row = 0;
   }
 }
+
+
+
+void Game::createChest(Random *random)
+{
+    int weapon_number = random->getRandomInt(0,4); // need to be implemented
+    int col = random->getRandomInt(0, board_width_ - 1);
+    int row = 0;
+    while ((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
+            && map_.at(CURRENT_FIELD).getType() == Field::AIR))
+    {
+        row++; // row gets increased to handle gravity
+    }
+    if(map_.at(BELOW_CURRENT_FIELD).getType() != Field::WATER)
+    {
+        map_.at(CURRENT_FIELD).setType(Field::CHEST); // adds Chest to the map
+    }
+}
+
+
+
 
 //------------------------------------------------------------------------------
 void Game::printMap()
@@ -264,20 +287,7 @@ void Game::printMap()
   }
 }
 
-//------------------------------------------------------------------------------
-bool Game::checkDirection(int &steps)
-{
-  bool left_steps = false;
-  if (steps < 0)
-  {
-    left_steps = true;
-  }
-  if ((steps = std::abs(steps)) > MAX_STEPS)
-  {
-    steps = MAX_STEPS;
-  }
-  return left_steps;
-}
+
 
 int Game::gameLoop()
 {
@@ -286,7 +296,6 @@ int Game::gameLoop()
 
     int turn_one = 0;
     int turn_two = 3;
-    string text;
 
     Random random;
     createWorms(&random);
@@ -296,11 +305,18 @@ int Game::gameLoop()
     {
         if(setPlayerAndWorm(current_worm, player, turn_one, turn_two))
         {
-            return 0;
+            return 0; //wormNumber.at(current_worm) makes next move
         }
-        while(!userInput());
+       // while(!userInput());
+        createChest(&random); // adds chest on the end of every turn
+        cin.get();
+        printMap();
+
+
     }
 }
+
+
 
 
 int Game::setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& turn_two)
@@ -346,6 +362,7 @@ int Game::setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& t
     return 1; // If one Player has no more accessible worms
 }
 
+/*
 //------------------------------------------------------------------------------
 void Game::testWormTower(int &row, int &col, int &detect_worm_tower)
 {
@@ -362,6 +379,21 @@ void Game::testWormTower(int &row, int &col, int &detect_worm_tower)
   {
     map_.at(CURRENT_FIELD).setType(Field::AIR);
   }
+}
+
+//------------------------------------------------------------------------------
+bool Game::checkDirection(int &steps)
+{
+  bool left_steps = false;
+  if (steps < 0)
+  {
+    left_steps = true;
+  }
+  if ((steps = std::abs(steps)) > MAX_STEPS)
+  {
+    steps = MAX_STEPS;
+  }
+  return left_steps;
 }
 
 //------------------------------------------------------------------------------
@@ -427,6 +459,7 @@ void Game::move(int row, int col, int steps)
     printErrorMessage(INVALID_TARGET);
   }
 }
+*/
 
 //------------------------------------------------------------------------------
 bool Game::userInput()
@@ -463,8 +496,8 @@ bool Game::userInput()
       printErrorMessage(WRONG_PARAMETER_COUNT);
       return false;
     }
-    Move move(COMMAND_MOVE);
-    move.execute(*this, command_params);
+    //Move move(COMMAND_MOVE);
+    //move.execute(*this, command_params);
   }
   else
   {

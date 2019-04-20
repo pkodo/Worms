@@ -19,7 +19,7 @@ namespace Sep
   {
     public:
 
-      enum FieldType {AIR, EARTH, WATER, WORM};
+      enum FieldType {AIR, EARTH, WATER, WORM, CHEST};
 
       //------------------------------------------------------------------------
       // Constructor

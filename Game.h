@@ -164,7 +164,10 @@ namespace Sep
       void testWormTower(int &row, int &col, int &detect_worm_tower);
 
       void createWorms(Random *random);
+
       int setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& turn_two);
+
+      void createChest(Random *random);
 
       //------------------------------------------------------------------------
       // Print Gameboard Method

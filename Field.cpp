@@ -33,6 +33,9 @@ char Field::getCharacter() const
     case WORM:
       field_character = '~';
       break;
+    case CHEST:
+      field_character = '#';
+      break;
   }
   return field_character;
 }

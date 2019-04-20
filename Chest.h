@@ -11,7 +11,18 @@ namespace Sep
 {
   class Chest : public Field
   {
+  private:
+      FieldType chest_type_ = Field::CHEST;
+      int weapon_number_;
 
+  public:
+      Chest(FieldType type, int weapon_number_);
+
+      virtual ~Chest();
+
+      int getIdChest();
+
+      FieldType getType();
   };
 }
 
