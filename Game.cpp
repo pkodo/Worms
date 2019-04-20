@@ -281,47 +281,73 @@ bool Game::checkDirection(int &steps)
 
 int Game::gameLoop()
 {
-  int current_worm = 0;
-  int player = 1;
-  string text;
+    int current_worm = 0;
+    int player = 1;
 
-  createWorms();
-  printMap();
-  if(wormNumber.at(current_worm).getHp())
-  {
-      cout << "Player " << player << " Worm " << wormNumber.at(current_worm).getName() <<
-           " (" << wormNumber.at(current_worm).getId() << ") at " << "(" << wormNumber.at(current_worm).getRow()
-           << ", " << wormNumber.at(current_worm).getCol() << ") ready" << endl;
-  }
+    int turn_one = 0;
+    int turn_two = 3;
+    string text;
 
-  userInput();
+    createWorms();
+    printMap();
 
-  /*while(true)
-  {
-    if(wormNumber.at(current_worm).getHp())
+    while(true)
     {
-      cout << "Player " << player << " Worm " << wormNumber.at(current_worm).getName() <<
-           " (" << wormNumber.at(current_worm).getId() << ") at " << "(" << wormNumber.at(current_worm).getRow()
-           << ", " << wormNumber.at(current_worm).getCol() << ") ready" << endl;
+        if(setPlayerAndWorm(current_worm, player, turn_one, turn_two))
+        {
+            return 0;
+        }
+        cout << "sep> ";
+        cin >> text;
+        if(text == "quit")
+        {
+            break;
+        }
     }
-    current_worm++;
-    if(player % 2)
-    {
-      player = 2;
-      current_worm += 3;
-    }
-    else
-    {
-      current_worm -=3;
-    }
-    cout << "sep> ";
-    cin >> text;
-    if(text == "quit")
-    {
-      break;
-    }
-  }*/
+}
 
+
+int Game::setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& turn_two)
+{
+    int check = 0;
+    while(check++ < 3)
+    {
+        current_worm = 0;
+        if(player % 2) // Player one
+        {
+            current_worm += turn_one++;
+            if(turn_one > 2)
+            {
+                turn_one = 0;
+            }
+        }
+        else // Player two
+        {
+            current_worm += turn_two++;
+            if(turn_two > 5)
+            {
+                turn_two = 3;
+            }
+        }
+
+        if(wormNumber.at(current_worm).getHp() != 0)
+        {
+            cout << "Player " << player;
+            if(player % 2) // Player one
+            {
+                player = 2;
+            }
+            else
+            {
+                player = 1;
+            }
+            cout << " Worm " << wormNumber.at(current_worm).getName() <<
+                 " (" << wormNumber.at(current_worm).getId() << ") at " << "(" << wormNumber.at(current_worm).getRow()
+                 << ", " << wormNumber.at(current_worm).getCol() << ") ready" << endl;
+            return EVERYTHING_OK;
+        }
+    }
+    return 1; // If one Player has no more accessible worms
 }
 
 //------------------------------------------------------------------------------
@@ -448,5 +474,4 @@ void Game::userInput()
   {
     printErrorMessage(UNKNOWN_COMMAND);
   }
-
 }
