@@ -32,7 +32,7 @@ namespace Sep
           steps *= -1;
         }
 
-        cout << "move " << steps << " steps" << endl;
+        //cout << "move " << steps << " steps" << endl;
         game.setNextMove(steps);
       }
       else

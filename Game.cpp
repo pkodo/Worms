@@ -306,12 +306,10 @@ int Game::gameLoop()
         }
         while(!userInput());
         move(wormNumber.at(current_worm).getRow(), wormNumber.at
-        (current_worm).getRow(), next_move_);
+        (current_worm).getCol(), next_move_);
         createChest(&random); // adds chest on the end of every turn
         //cin.get();
         printMap();
-
-
     }
 }
 
