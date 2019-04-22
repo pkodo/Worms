@@ -6,11 +6,13 @@
 #include "Move.h"
 #include "Game.h"
 
+using std::cout;
+using std::endl;
 
 namespace Sep
 {
   int steps = -1;
-  int Move::execute(Sep::Game &game, std::vector<std::string> &params)
+  int Move::execute(Game &game, std::vector<std::string> &params)
   {
     if(params.at(1) == "left" || params.at(1) == "right")
     {
@@ -22,21 +24,45 @@ namespace Sep
       {
 
       }
+
       if(steps >= 0 && steps <= 3)
       {
-        game.move(1, 1, steps);
+        if(params.at(1) == "left")
+        {
+          steps *= -1;
+        }
+
+        // TODO
+        //game.move(1, 1, steps);
+        cout << "move " << steps << " steps" << endl;
       }
       else
       {
-
+        return printError(INVALID_STEPCOUNT);
       }
 
     }
     else
     {
-      //Error
+      return printError(INVALID_DIRECTION);
     }
-    return 0;
+    return EVERYTHING_OK;
+  }
+
+  int Move::printError(ErrorType type)
+  {
+    switch (type)
+    {
+      case INVALID_STEPCOUNT:
+        cout << "[ERROR] invalid step count" << endl;
+        break;
+      case INVALID_DIRECTION:
+        cout << "[ERROR] invalid direction" << endl;
+        break;
+      case EVERYTHING_OK:
+        break;
+    }
+    return type;
   }
 
   Move::Move(const std::string &name) : Command(name)

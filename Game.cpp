@@ -115,7 +115,7 @@ int Game::loadConfig(string cfg_file)
         check = MAP;
         if ((CHECK_FOR_SIZE != keyword || (board_width_ < MIN_LENGTH
             || board_width_ > MAX_LENGTH) || (board_height_ < MIN_LENGTH
-            || board_height_ > MAX_LENGTH))) //Returns error if the size of the
+            || board_height_ > MAX_LENGTH))) //Returns printError if the size of the
             // board  is too small or too big or the keyword SIZE was not found
         {
           return printErrorMessage(INVALID_CONFIGFILE);
@@ -213,7 +213,7 @@ void Game::createWorms(Random *random)
 
 void Game::createChest(Random *random)
 {
-    int weapon_number = random->getRandomInt(0,4); // need to be implemented
+    int weapon_number = random->getRandomInt(0,4); // needs to be implemented
     int col = random->getRandomInt(0, board_width_ - 1);
     int row = 0;
     while ((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
@@ -307,9 +307,9 @@ int Game::gameLoop()
         {
             return 0; //wormNumber.at(current_worm) makes next move
         }
-       // while(!userInput());
+        while(!userInput());
         createChest(&random); // adds chest on the end of every turn
-        cin.get();
+        //cin.get();
         printMap();
 
 
@@ -475,19 +475,21 @@ bool Game::userInput()
   while(input_stream >> param)
   {
     command_params.push_back(param);
-    //cout << param << endl;
   }
 
-  //cout << command_params.size();
-
-  if(command_params.at(0) == COMMAND_QUIT)
+  if(command_params.empty())
+  {
+    printErrorMessage(UNKNOWN_COMMAND);
+    return false;
+  }
+  else if(command_params.at(0) == COMMAND_QUIT)
   {
     if(command_params.size() != 1)
     {
       printErrorMessage(WRONG_PARAMETER_COUNT);
       return false;
     }
-    return true;
+    exit(EVERYTHING_OK);
   }
   else if(command_params.at(0) == COMMAND_MOVE)
   {
@@ -496,11 +498,13 @@ bool Game::userInput()
       printErrorMessage(WRONG_PARAMETER_COUNT);
       return false;
     }
-    //Move move(COMMAND_MOVE);
-    //move.execute(*this, command_params);
+
+    Move move(COMMAND_MOVE);
+    return move.execute(*this, command_params) == 0;
   }
   else
   {
     printErrorMessage(UNKNOWN_COMMAND);
+    return false;
   }
 }
