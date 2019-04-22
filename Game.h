@@ -87,7 +87,7 @@ namespace Sep
       // @param steps determines how many steps the worm should take and in
       // which direction
       //
-      void move(int row, int col, int steps);
+      void move(int row, int col, int steps, int current_worm);
 
       int gameLoop();
 
@@ -156,7 +156,7 @@ namespace Sep
       // direction
       // @return true if the move is valid and executed.
       //
-      bool makeMove(int &row, int &col, bool left_steps);
+      bool makeMove(int &row, int &col, bool left_steps, int current_worm);
 
       //------------------------------------------------------------------------
       // Worm Tower Method
@@ -165,7 +165,7 @@ namespace Sep
       // @param col defines the position of the worm.
       // @param detect_worm_tower saves the original value of the row.
       //
-      void testWormTower(int &row, int &col, int &detect_worm_tower);
+      void testWormTower(int &row, int &col, int &detect_worm_tower, int current_worm);
 
       void createWorms(Random *random);
 

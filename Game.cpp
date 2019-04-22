@@ -305,10 +305,8 @@ int Game::gameLoop()
             return 0; //wormNumber.at(current_worm) makes next move
         }
         while(!userInput());
-        move(wormNumber.at(current_worm).getRow(), wormNumber.at
-        (current_worm).getCol(), next_move_);
-        createChest(&random); // adds chest on the end of every turn
-        //cin.get();
+        move(wormNumber.at(current_worm).getRow(), wormNumber.at(current_worm).getCol(), next_move_, current_worm);
+        //createChest(&random); // adds chest on the end of every turn
         printMap();
     }
 }
@@ -361,15 +359,25 @@ int Game::setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& t
 
 
 //------------------------------------------------------------------------------
-void Game::testWormTower(int &row, int &col, int &detect_worm_tower)
+void Game::testWormTower(int &row, int &col, int &detect_worm_tower, int current_worm)
 {
   if (map_.at(ABOVE_CURRENT_FIELD).getType() == Field::WORM)
   {
-    while (map_.at(ABOVE_CURRENT_FIELD).getType() == Field::WORM)
+    while (map_.at(ABOVE_CURRENT_FIELD).getType() == Field::WORM )
     {
-      row--;// If a "worm tower" was found
+        for (int index = 0; index < 6; index++)
+        {
+            if((wormNumber.at(index).getRow() * wormNumber.at(index).getCol())
+            == ((wormNumber.at(current_worm).getRow() - 1 ) * wormNumber.at(current_worm).getCol()))
+            {
+                wormNumber.at(index).setPosition(row, col);
+                current_worm = index;
+            }
+        }
+        row--;// If a "worm tower" was found
     }
     map_.at(CURRENT_FIELD).setType(Field::AIR);
+
     row = detect_worm_tower;
   }
   else
@@ -386,21 +394,17 @@ bool Game::checkDirection(int &steps)
   {
     left_steps = true;
   }
-  if ((steps = std::abs(steps)) > MAX_STEPS)
-  {
-    steps = MAX_STEPS;
-  }
   return left_steps;
 }
 
 //------------------------------------------------------------------------------
-bool Game::makeMove(int &row, int &col, bool left_steps)
+bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
 {
   int detect_worm_tower = row;
-  int step_direction = (col + ONE);
+  int step_direction = (col + 1);
   if (left_steps)
   {
-    step_direction = (col - ONE); // left direction
+    step_direction = (col - 1); // left direction
   }
   if (step_direction >= board_width_ || step_direction < 0)
   {
@@ -411,15 +415,16 @@ bool Game::makeMove(int &row, int &col, bool left_steps)
       map_.at(TARGET_FIELD).getType() == Field::EARTH)
       && map_.at(ABOVE_TARGET_FIELD).getType() == Field::AIR)) // Climb command
   {
-    testWormTower(row, col, detect_worm_tower);
+    testWormTower(row, col, detect_worm_tower, current_worm);
     map_.at(ABOVE_TARGET_FIELD).setType(Field::WORM);
+    wormNumber.at(current_worm).setPosition((row - 1), step_direction);
     row--;
     col = step_direction;
     return true;
   }
   if (map_.at(TARGET_FIELD).getType() == Field::AIR) // Step command
   {
-    testWormTower(row, col, detect_worm_tower);
+    testWormTower(row, col, detect_worm_tower, current_worm);
     while ((map_.at(BELOW_TARGET_FIELD).getType() == Field::AIR))
     {
       row++;
@@ -428,6 +433,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps)
         || map_.at(BELOW_TARGET_FIELD).getType() == Field::WORM)
     {
       map_.at(TARGET_FIELD).setType(Field::WORM);
+      wormNumber.at(current_worm).setPosition(row, step_direction);
       col = step_direction;
     }
     return true;
@@ -436,15 +442,15 @@ bool Game::makeMove(int &row, int &col, bool left_steps)
 }
 
 //------------------------------------------------------------------------------
-void Game::move(int row, int col, int steps)
+void Game::move(int row, int col, int steps, int current_worm)
 {
   if ((row < board_height_ && col < board_width_)
       && map_.at(CURRENT_FIELD).getType() == Field::WORM)
   {
     bool left_steps = checkDirection(steps);
-    for (int index = 0; index < steps; index++)
+    for (int index = 0; index < std::abs(steps); index++)
     {
-      if (!makeMove(row, col, left_steps))
+      if (!makeMove(row, col, left_steps, current_worm))
       {
         printErrorMessage(WRONG_MOVE);
         break;
