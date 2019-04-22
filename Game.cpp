@@ -305,6 +305,8 @@ int Game::gameLoop()
             return 0; //wormNumber.at(current_worm) makes next move
         }
         while(!userInput());
+        move(wormNumber.at(current_worm).getRow(), wormNumber.at
+        (current_worm).getRow(), next_move_);
         createChest(&random); // adds chest on the end of every turn
         //cin.get();
         printMap();
@@ -359,7 +361,7 @@ int Game::setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& t
     return 1; // If one Player has no more accessible worms
 }
 
-/*
+
 //------------------------------------------------------------------------------
 void Game::testWormTower(int &row, int &col, int &detect_worm_tower)
 {
@@ -456,7 +458,7 @@ void Game::move(int row, int col, int steps)
     printErrorMessage(INVALID_TARGET);
   }
 }
-*/
+
 
 //------------------------------------------------------------------------------
 bool Game::userInput()
@@ -504,4 +506,9 @@ bool Game::userInput()
     printErrorMessage(UNKNOWN_COMMAND);
     return false;
   }
+}
+
+void Game::setNextMove(int nextMove)
+{
+  next_move_ = nextMove;
 }

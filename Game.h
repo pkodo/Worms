@@ -91,6 +91,8 @@ namespace Sep
 
       int gameLoop();
 
+      void setNextMove(int nextMove);
+
     private:
 
       //------------------------------------------------------------------------
@@ -102,6 +104,8 @@ namespace Sep
       // Variable for determining the longitude of the gameboard
       //
       int board_height_;
+
+      int next_move_;
 
       //------------------------------------------------------------------------
       // Datastructure for objects on the gameboard
