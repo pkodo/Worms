@@ -31,6 +31,7 @@ namespace Sep
       static const int MAX_STEPS = 3;
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
+      static const int FIRST_PARAM = 0;
 
       static const string MAGIC_VALUE;
       static const string CHECK_FOR_SIZE;
@@ -112,6 +113,9 @@ namespace Sep
       //
       int board_height_;
 
+      //------------------------------------------------------------------------
+      // Variable for determining the next move
+      //
       int next_move_;
 
       //------------------------------------------------------------------------

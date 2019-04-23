@@ -59,7 +59,7 @@ namespace Sep
                      game.getWormNumber().at(index).getCol() << ") *" << endl;
             }
         }
-
+        return 0;
     }
 
     State::~State()

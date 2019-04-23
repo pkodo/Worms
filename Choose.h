@@ -11,6 +11,12 @@ namespace Sep
 {
   class Choose : public Command
   {
+    public:
+    Choose(const std::string &name);
+
+    int execute(Game &game, std::vector<std::string> &params) override;
+
+    virtual ~Choose();
 
   };
 }

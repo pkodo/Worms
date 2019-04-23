@@ -6,5 +6,17 @@
 
 namespace Sep
 {
+  int Action::execute(Game &game, std::vector<std::string> &params)
+  {
+    return 0;
+  }
 
+  Action::Action(const std::string &name) : Command(name)
+  {
+  }
+
+  Action::~Action()
+  {
+
+  }
 }
