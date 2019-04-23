@@ -11,6 +11,12 @@ namespace Sep
 {
   class Map : public Command
   {
+  public:
+      Map(const std::string &name);
+
+      int execute(Game &game, std::vector<std::string> &params) override;
+
+      virtual ~Map();
 
   };
 }

@@ -264,19 +264,19 @@ void Game::printMap()
 {
   int count_to_ten = 0;
   cout << "Current Map:" << endl;
-  for (int index_row = 0; index_row <= (board_height_ + ONE); index_row++)
+  for (int index_row = 0; index_row <= (board_height_ + 1); index_row++)
   {
-    if (index_row == 0 || index_row == (board_height_ + ONE))
+    if (index_row == 0 || index_row == (board_height_ + 1))
     {
       cout << "  ";
     }
     else
     {
-      cout << setw(MAX_DIGITS) << (index_row - ONE);
+      cout << setw(MAX_DIGITS) << (index_row - 1);
     }
     for (int index_col = 0; index_col < board_width_; index_col++)
     {
-      if (index_row == 0 || index_row == (board_height_ + ONE))
+      if (index_row == 0 || index_row == (board_height_ + 1))
       {
         if (count_to_ten == MIN_LENGTH)
         {
@@ -287,15 +287,15 @@ void Game::printMap()
       }
       else
       {
-          if(map_.at(index_col + (index_row - ONE) * board_width_).getType() != Field::WORM)
+          if(map_.at(index_col + (index_row - 1) * board_width_).getType() != Field::WORM)
           {
-             cout << map_.at(index_col + (index_row - ONE) * board_width_).getCharacter();
+             cout << map_.at(index_col + (index_row - 1) * board_width_).getCharacter();
           }
           else
           {
             for(int count = 0; count < 6; count++)
             {
-              if((index_col + (index_row - ONE) * board_width_) ==
+              if((index_col + (index_row - 1) * board_width_) ==
               (wormNumber.at(count).getCol() + wormNumber.at(count).getRow() * board_width_))
               {
                 cout << wormNumber.at(count).getCharacter();
@@ -305,13 +305,13 @@ void Game::printMap()
       count_to_ten = 0;
       }
     }
-    if (index_row == 0 || index_row == (board_height_ + ONE))
+    if (index_row == 0 || index_row == (board_height_ + 1))
     {
       cout << endl;
     }
     else
     {
-      cout << setw(MAX_DIGITS) << (index_row - ONE) << endl;
+      cout << setw(MAX_DIGITS) << (index_row - 1) << endl;
     }
   }
 }
@@ -338,8 +338,7 @@ int Game::gameLoop()
         }
         while(!userInput(current_worm));
         move(wormNumber.at(current_worm).getRow(), wormNumber.at(current_worm).getCol(), next_move_, current_worm);
-        //createChest(&random); // adds chest on the end of every turn
-        printMap();
+        createChest(&random); // adds chest on the end of every turn
     }
 }
 
@@ -557,6 +556,19 @@ bool Game::userInput(int current_worm)
       }
       State state(COMMAND_STATE, current_worm);
       return state.execute(*this, command_params) == 0;
+  }
+  else if(command_params.at(0) == COMMAND_MAP)
+  {
+      if(command_params.size() != 1)
+      {
+          printErrorMessage(WRONG_PARAMETER_COUNT);
+          return false;
+      }
+
+      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      printMap(); // called a function instead of creating an object
+      //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+      return 0;
   }
   else if(command_params.at(0) == COMMAND_MOVE)
   {
