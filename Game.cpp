@@ -82,6 +82,30 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
   return type;
 }
 
+void Game::printDeathCases(DeathCases type, int current_worm)
+{
+    switch (type)
+    {
+        case DROWNED:
+            cout << wormNumber.at(current_worm).getName() << " (" <<
+                wormNumber.at(current_worm).getId() << ")" << " drowned." << endl;
+            break;
+        case FELL:
+            cout << wormNumber.at(current_worm).getName() << " (" <<
+                wormNumber.at(current_worm).getId() << ")" << " fell into his death." << endl;
+            break;
+        case OUTOFMAP:
+            cout << wormNumber.at(current_worm).getName() << " (" <<
+                wormNumber.at(current_worm).getId() << ")" << " fell out of the map." << endl;
+            break;
+        case DIED:
+            cout << wormNumber.at(current_worm).getName() << " (" <<
+                wormNumber.at(current_worm).getId() << ")" << " died." << endl;
+            break;
+    }
+}
+
+
 //------------------------------------------------------------------------------
 int Game::loadConfig(string cfg_file)
 {
@@ -194,7 +218,7 @@ void Game::createWorms(Random *random)
 
     if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::WATER)
     {
-      cout << wormNumber.at(index - 1).getName() << " (" << wormNumber.at(index - 1).getId() << ")" << " drowned." << endl;
+      printDeathCases(DROWNED, (index - 1));
       wormNumber.at(index - 1).setHp(0);
     }
     else
@@ -435,8 +459,19 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
       map_.at(TARGET_FIELD).setType(Field::WORM);
       wormNumber.at(current_worm).setPosition(row, step_direction);
       col = step_direction;
+      return true;
     }
-    return true;
+    else if(map_.at(BELOW_TARGET_FIELD).getType() == Field::CHEST)
+    {
+        map_.at(BELOW_TARGET_FIELD).setType(Field::WORM);
+        wormNumber.at(current_worm).setPosition((row + 1), step_direction);
+        return true;
+    }
+    else if(map_.at(BELOW_TARGET_FIELD).getType() == Field::WATER)
+    {
+        map_.at(BELOW_TARGET_FIELD).setType(Field::WORM);
+        wormNumber.at(current_worm).setHp(0);
+    }
   }
   return false;
 }
@@ -444,24 +479,25 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
 //------------------------------------------------------------------------------
 void Game::move(int row, int col, int steps, int current_worm)
 {
-  if ((row < board_height_ && col < board_width_)
-      && map_.at(CURRENT_FIELD).getType() == Field::WORM)
-  {
     bool left_steps = checkDirection(steps);
     for (int index = 0; index < std::abs(steps); index++)
     {
-      if (!makeMove(row, col, left_steps, current_worm))
-      {
-        printErrorMessage(WRONG_MOVE);
-        break;
-      }
+        if (!makeMove(row, col, left_steps, current_worm))
+        {
+            if (wormNumber.at(current_worm).getHp() > 0)
+            {
+                printErrorMessage(WRONG_MOVE);
+                break;
+            }
+            else
+            {
+                printDeathCases(DROWNED, current_worm);
+                break;
+            }
+        }
     }
-  }
-  else
-  {
-    printErrorMessage(INVALID_TARGET);
-  }
 }
+
 
 
 //------------------------------------------------------------------------------

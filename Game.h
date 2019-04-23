@@ -115,10 +115,30 @@ namespace Sep
       std::vector<Worm> wormNumber;
 
 
-      enum ErrorType {EVERYTHING_OK, INVALID_CONFIGFILE = -1,
-          INVALID_TARGET = -2, WRONG_MOVE = -3, UNKNOWN_COMMAND = -4,
-          WRONG_PARAMETER_COUNT = -5};
-      enum ConfigKeywords {SIZE, MAP, MAPFIELDS};
+      enum ErrorType
+      {
+          EVERYTHING_OK,
+          INVALID_CONFIGFILE = -1,
+          INVALID_TARGET = -2,
+          WRONG_MOVE = -3,
+          UNKNOWN_COMMAND = -4,
+          WRONG_PARAMETER_COUNT = -5
+      };
+
+      enum DeathCases
+      {
+          DROWNED,
+          FELL,
+          OUTOFMAP,
+          DIED
+      };
+
+      enum ConfigKeywords
+      {
+          SIZE,
+          MAP,
+          MAPFIELDS
+      };
 
       //------------------------------------------------------------------------
       // Print Error Messages Method
@@ -127,6 +147,8 @@ namespace Sep
       // @return Returns error type.
       //
       ErrorType printErrorMessage(ErrorType type);
+
+      void printDeathCases(DeathCases type, int current_worm);
 
       //------------------------------------------------------------------------
       // Create Fields Method
