@@ -11,9 +11,10 @@ using std::endl;
 
 namespace Sep
 {
-  int steps = -1;
+
   int Move::execute(Game &game, std::vector<std::string> &params)
   {
+    int steps = -1;
     if(params.at(1) == "left" || params.at(1) == "right")
     {
       try

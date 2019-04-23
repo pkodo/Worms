@@ -39,6 +39,11 @@ namespace Sep
       static const string COMMAND_PROMPT;
       static const string COMMAND_MOVE;
       static const string COMMAND_QUIT;
+      static const string COMMAND_ACTION;
+      static const string COMMAND_HELP;
+      static const string COMMAND_STATE;
+      static const string COMMAND_MAP;
+      static const string COMMAND_CHOOSE;
 
 
       //------------------------------------------------------------------------

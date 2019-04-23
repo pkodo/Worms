@@ -19,8 +19,12 @@ namespace Sep
       virtual ~Move();
 
     private:
-      enum ErrorType {EVERYTHING_OK = 0, INVALID_STEPCOUNT = -1,
-      INVALID_DIRECTION = -2};
+      enum ErrorType
+      {
+          EVERYTHING_OK = 0,
+          INVALID_STEPCOUNT = -1,
+          INVALID_DIRECTION = -2
+      };
 
     int printError(ErrorType type);
   };

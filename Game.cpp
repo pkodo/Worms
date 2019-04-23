@@ -12,6 +12,7 @@
 #include "Chest.h"
 #include "Random.h"
 #include "Move.h"
+#include "Help.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -45,7 +46,12 @@ const string Game::CHECK_FOR_MAP = "MAP:";
 
 const string Game::COMMAND_PROMPT = "sep> ";
 const string Game::COMMAND_MOVE = "move";
+const string Game::COMMAND_ACTION = "action";
 const string Game::COMMAND_QUIT = "quit";
+const string Game::COMMAND_HELP = "help";
+const string Game::COMMAND_STATE = "state";
+const string Game::COMMAND_MAP = "map";
+const string Game::COMMAND_CHOOSE = "choose";
 
 
 
@@ -530,6 +536,16 @@ bool Game::userInput()
       return false;
     }
     exit(EVERYTHING_OK);
+  }
+  else if(command_params.at(0) == COMMAND_HELP)
+  {
+      if(command_params.size() != 1)
+      {
+          printErrorMessage(WRONG_PARAMETER_COUNT);
+          return false;
+      }
+      Help help(COMMAND_HELP);
+      return help.execute(*this, command_params) == 0;
   }
   else if(command_params.at(0) == COMMAND_MOVE)
   {
