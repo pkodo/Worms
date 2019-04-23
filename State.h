@@ -11,6 +11,16 @@ namespace Sep
 {
   class State : public Command
   {
+  public:
+      State(const std::string &name, int current_worm);
+
+      int execute(Game &game, std::vector<std::string> &params) override;
+
+      virtual ~State();
+
+  private:
+      int current_worm_;
+
 
   };
 }

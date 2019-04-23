@@ -98,6 +98,8 @@ namespace Sep
 
       void setNextMove(int nextMove);
 
+      std::vector<Sep::Worm> getWormNumber();
+
     private:
 
       //------------------------------------------------------------------------
@@ -210,7 +212,7 @@ namespace Sep
       // User Input Method
       // Reads commands from stdin and calls command pattern.
       //
-      bool userInput();
+      bool userInput( int current_worm);
   };
 }
 #endif //SEP_GAME_H

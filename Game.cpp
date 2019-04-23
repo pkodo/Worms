@@ -13,6 +13,7 @@
 #include "Random.h"
 #include "Move.h"
 #include "Help.h"
+#include "State.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -335,7 +336,7 @@ int Game::gameLoop()
         {
             return 0; //wormNumber.at(current_worm) makes next move
         }
-        while(!userInput());
+        while(!userInput(current_worm));
         move(wormNumber.at(current_worm).getRow(), wormNumber.at(current_worm).getCol(), next_move_, current_worm);
         //createChest(&random); // adds chest on the end of every turn
         printMap();
@@ -508,7 +509,7 @@ void Game::move(int row, int col, int steps, int current_worm)
 
 
 //------------------------------------------------------------------------------
-bool Game::userInput()
+bool Game::userInput(int current_worm)
 {
   string input_line;
   string param;
@@ -547,6 +548,16 @@ bool Game::userInput()
       Help help(COMMAND_HELP);
       return help.execute(*this, command_params) == 0;
   }
+  else if(command_params.at(0) == COMMAND_STATE)
+  {
+      if(command_params.size() != 1)
+      {
+          printErrorMessage(WRONG_PARAMETER_COUNT);
+          return false;
+      }
+      State state(COMMAND_STATE, current_worm);
+      return state.execute(*this, command_params) == 0;
+  }
   else if(command_params.at(0) == COMMAND_MOVE)
   {
     if(command_params.size() != 3)
@@ -568,4 +579,9 @@ bool Game::userInput()
 void Game::setNextMove(int nextMove)
 {
   next_move_ = nextMove;
+}
+
+vector<Sep::Worm> Game::getWormNumber()
+{
+    return wormNumber;
 }
