@@ -12,4 +12,4 @@ add_executable(SEP19_Group21486
         Game.h
         Random.cpp
         Random.h
-        main.cpp Command.cpp Command.h Worm.cpp Worm.h Weapon.cpp Weapon.h Move.cpp Move.h Chest.cpp Chest.h)
+        main.cpp Command.cpp Command.h Worm.cpp Worm.h Weapon.cpp Weapon.h Move.cpp Move.h Chest.cpp Chest.h State.cpp State.h Map.cpp Map.h Action.cpp Action.h Choose.cpp Choose.h Help.cpp Help.h)

@@ -50,7 +50,8 @@ const string Game::COMMAND_QUIT = "quit";
 
 
 //------------------------------------------------------------------------------
-Game::Game() : board_width_(0), board_height_(0), map_(), wormNumber()
+Game::Game() : board_width_(0), board_height_(0), map_(), wormNumber(),
+next_move_(0)
 {
   Game::map_.insert(pair<int, Field>(board_height_* board_width_,
       Field(Field::AIR)));
