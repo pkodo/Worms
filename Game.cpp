@@ -18,6 +18,7 @@
 #include "Action.h"
 #include "Choose.h"
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -80,13 +81,16 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
     case WRONG_MOVE:
       cout << "[WARNING] can't move further" << endl;
       break;
-    case EVERYTHING_OK:
-      break;
     case UNKNOWN_COMMAND:
       cout << "[ERROR] unknown command!" << endl;
       break;
     case WRONG_PARAMETER_COUNT:
       cout << "[ERROR] wrong parameter count!" << endl;
+      break;
+    case COMMAND_NOT_ALLOWED:
+      cout << "[ERROR] command currently not allowed!" << endl;
+          break;
+    case EVERYTHING_OK:
       break;
   }
   return type;
@@ -328,6 +332,8 @@ int Game::gameLoop()
 {
   int current_worm = 0;
   int player = 1;
+  int move_command;
+
 
   int turn_one = 0;
   int turn_two = 3;
@@ -342,7 +348,8 @@ int Game::gameLoop()
     {
       return 0; //wormNumber.at(current_worm) makes next move
     }
-    while(!userInput(current_worm))
+    move_command = 0;
+    while(!userInput(current_worm, move_command))
     {
     }
     createChest(&random); // adds chest on the end of every turn
@@ -515,7 +522,13 @@ void Game::move(int row, int col, int steps, int current_worm)
 }
 
 //------------------------------------------------------------------------------
-bool Game::userInput(int current_worm)
+vector<Worm> Game::getWormNumber()
+{
+  return wormNumber;
+}
+
+//------------------------------------------------------------------------------
+bool Game::userInput(int current_worm, int &move_command)
 {
   string input_line;
   string param;
@@ -523,78 +536,99 @@ bool Game::userInput(int current_worm)
 
   cout << COMMAND_PROMPT;
   getline(cin, input_line);
+  std::transform(input_line.begin(), input_line.end(), input_line.begin(), ::tolower);
+  if(cin.eof())
+  {
+      exit(EVERYTHING_OK);
+  }
   stringstream input_stream(input_line);
-
   while(input_stream >> param)
   {
     command_params.push_back(param);
   }
-
   if(command_params.empty())
   {
-    printErrorMessage(UNKNOWN_COMMAND);
+      return false;
+  }
+  if(command_params.size() > 3)
+  {
+      printErrorMessage(UNKNOWN_COMMAND);
+      return false;
+  }
+  if(checkOneParameterCommand(command_params, current_worm, move_command))
+  {
     return false;
   }
-  else if(command_params.at(0) == COMMAND_QUIT)
+  return true;
+}
+
+//------------------------------------------------------------------------------
+bool Game::checkOneParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command)
+{
+  if(command_params.size() == 1 && (command_params.at(0) != COMMAND_MOVE &&
+          command_params.at(0) != COMMAND_CHOOSE && command_params.at(0) != COMMAND_ACTION))
   {
-    if(command_params.size() != 1)
+    if(command_params.at(0) == COMMAND_QUIT)
     {
+      exit(EVERYTHING_OK);
+    }
+    else if(command_params.at(0) == COMMAND_HELP)
+    {
+      Help help(COMMAND_HELP);
+      return help.execute(*this, command_params) == 0;
+    }
+    else if(command_params.at(0) == COMMAND_STATE)
+    {
+      State state(COMMAND_STATE, current_worm);
+      return state.execute(*this, command_params) == 0;
+    }
+    else if(command_params.at(0) == COMMAND_MAP)
+    {
+      Map map(COMMAND_MAP);
+      return map.execute(*this, command_params) == 0;
+    }
+    else
+    {
+      printErrorMessage(UNKNOWN_COMMAND);
+      return true;
+    }
+  }
+  else if(command_params.size() != 1 && (command_params.at(0) == COMMAND_QUIT
+            || command_params.at(0) == COMMAND_HELP || command_params.at(0) == COMMAND_STATE
+            || command_params.at(0) == COMMAND_MAP))
+  {
       printErrorMessage(WRONG_PARAMETER_COUNT);
+      return true;
+  }
+  else
+  {
+    if(checkMoreParameterCommand(command_params, current_worm, move_command))
+    {
       return false;
     }
-    exit(EVERYTHING_OK);
+    return true;
   }
-  else if(command_params.at(0) == COMMAND_HELP)
+}
+
+
+bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command)
+{
+  if(command_params.at(0) == COMMAND_MOVE)
   {
-    if(command_params.size() != 1)
+    if(move_command != 0)
     {
-      printErrorMessage(WRONG_PARAMETER_COUNT);
+      printErrorMessage(COMMAND_NOT_ALLOWED);
       return false;
     }
-    Help help(COMMAND_HELP);
-    return help.execute(*this, command_params) == 0;
-  }
-  else if(command_params.at(0) == COMMAND_STATE)
-  {
-    if(command_params.size() != 1)
-    {
-      printErrorMessage(WRONG_PARAMETER_COUNT);
-      return false;
-    }
-    State state(COMMAND_STATE, current_worm);
-    return state.execute(*this, command_params) == 0;
-  }
-  else if(command_params.at(0) == COMMAND_MAP)
-  {
-    if(command_params.size() != 1)
-    {
-      printErrorMessage(WRONG_PARAMETER_COUNT);
-      return false;
-    }
-    Map map(COMMAND_MAP);
-    return map.execute(*this, command_params) == 0;
-  }
-  else if(command_params.at(0) == COMMAND_MOVE)
-  {
     if(command_params.size() != 3)
     {
       printErrorMessage(WRONG_PARAMETER_COUNT);
       return false;
     }
-
+    move_command++;
     Move move(COMMAND_MOVE, current_worm);
-    return move.execute(*this, command_params) == 0;
-  }
-  else if(command_params.at(0) == COMMAND_ACTION)
-  {
-    if(command_params.size() > 3)
-    {
-      printErrorMessage(WRONG_PARAMETER_COUNT);
-      return false;
-    }
-
-    Action action(COMMAND_MOVE, current_worm);
-    return action.execute(*this, command_params) == 0;
+    move.execute(*this, command_params);
+    return false;
   }
   else if(command_params.at(0) == COMMAND_CHOOSE)
   {
@@ -603,9 +637,19 @@ bool Game::userInput(int current_worm)
       printErrorMessage(WRONG_PARAMETER_COUNT);
       return false;
     }
-
     Choose choose(COMMAND_MOVE, current_worm);
     return choose.execute(*this, command_params) == 0;
+  }
+  else if(command_params.at(0) == COMMAND_ACTION)
+  {
+    if(command_params.size() > 3)
+    {
+      printErrorMessage(WRONG_PARAMETER_COUNT);
+      return false;
+    }
+    Action action(COMMAND_MOVE, current_worm);
+    action.execute(*this, command_params);
+    return true;
   }
   else
   {
@@ -614,8 +658,3 @@ bool Game::userInput(int current_worm)
   }
 }
 
-//------------------------------------------------------------------------------
-vector<Worm> Game::getWormNumber()
-{
-  return wormNumber;
-}

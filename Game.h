@@ -13,7 +13,6 @@
 #include "Random.h"
 #include <map>
 #include <vector>
-using std::string;
 
 
 namespace Sep
@@ -32,18 +31,18 @@ namespace Sep
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
 
-      static const string MAGIC_VALUE;
-      static const string CHECK_FOR_SIZE;
-      static const string CHECK_FOR_MAP;
+      static const std::string MAGIC_VALUE;
+      static const std::string CHECK_FOR_SIZE;
+      static const std::string CHECK_FOR_MAP;
 
-      static const string COMMAND_PROMPT;
-      static const string COMMAND_MOVE;
-      static const string COMMAND_QUIT;
-      static const string COMMAND_ACTION;
-      static const string COMMAND_HELP;
-      static const string COMMAND_STATE;
-      static const string COMMAND_MAP;
-      static const string COMMAND_CHOOSE;
+      static const std::string COMMAND_PROMPT;
+      static const std::string COMMAND_MOVE;
+      static const std::string COMMAND_QUIT;
+      static const std::string COMMAND_ACTION;
+      static const std::string COMMAND_HELP;
+      static const std::string COMMAND_STATE;
+      static const std::string COMMAND_MAP;
+      static const std::string COMMAND_CHOOSE;
 
 
       //------------------------------------------------------------------------
@@ -132,7 +131,8 @@ namespace Sep
           INVALID_TARGET = -2,
           WRONG_MOVE = -3,
           UNKNOWN_COMMAND = -4,
-          WRONG_PARAMETER_COUNT = -5
+          WRONG_PARAMETER_COUNT = -5,
+          COMMAND_NOT_ALLOWED = -6
       };
 
       enum DeathCases
@@ -168,7 +168,7 @@ namespace Sep
       // @param row counts in which row the fields should be..
       // @return true or false.
       //
-      bool createMapFields(string keyword, int row);
+      bool createMapFields(std::string keyword, int row);
 
       //------------------------------------------------------------------------
       // Check direction Method
@@ -205,13 +205,15 @@ namespace Sep
 
       void createChest(Random *random);
 
+      bool checkOneParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
 
+      bool checkMoreParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
 
       //------------------------------------------------------------------------
       // User Input Method
       // Reads commands from stdin and calls command pattern.
       //
-      bool userInput( int current_worm);
+      bool userInput( int current_worm, int &move_command);
   };
 }
 #endif //SEP_GAME_H
