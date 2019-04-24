@@ -9,7 +9,8 @@ namespace Sep
 {
   int Action::execute(Game &game, std::vector<std::string> &params)
   {
-    game.getWormNumber().at(current_worm_).getWeapons().at(0); // TODO
+    game.getWormNumber().at(current_worm_).getWeapons().at(0).action();
+    // TODO
     return 0;
   }
 

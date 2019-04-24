@@ -16,7 +16,7 @@ namespace Sep
 
   }
 
-  void Gun::action()
+  void Gun::action() const
   {
     Weapon::action();
   }

@@ -2,6 +2,7 @@
 // Created by stefan on 17.04.19.
 //
 
+#include <iostream>
 #include "Weapon.h"
 
 namespace Sep
@@ -51,10 +52,9 @@ namespace Sep
     return damage_;
   }
 
-  void Weapon::action()
+  void Weapon::action() const
   {
-
+    std::cout << "fire!" << std::endl; // TODO
   }
-
 
 }

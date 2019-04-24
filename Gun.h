@@ -16,7 +16,8 @@ namespace Sep
 
       virtual ~Gun();
 
-      void action() override;
+      void action() const override;
+
   };
 }
 
