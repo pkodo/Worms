@@ -12,11 +12,14 @@ namespace Sep
   class Choose : public Command
   {
     public:
-    Choose(const std::string &name);
+      Choose(const std::string &name, int current_worm);
 
-    int execute(Game &game, std::vector<std::string> &params) override;
+      int execute(Game &game, std::vector<std::string> &params) override;
 
-    virtual ~Choose();
+      virtual ~Choose();
+
+    private:
+      int current_worm_;
 
   };
 }

@@ -11,11 +11,12 @@ namespace Sep
     return 0;
   }
 
-  Choose::Choose(const std::string &name) : Command(name)
+  Choose::~Choose()
   {
+
   }
 
-  Choose::~Choose()
+  Choose::Choose(const std::string &name, int current_worm) : Command(name)
   {
 
   }

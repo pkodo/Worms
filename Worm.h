@@ -59,6 +59,8 @@ namespace Sep
       void setHp(int hp);
 
       char getCharacter() const override;
+
+    void setWeapons(const std::vector<Weapon> &weapons);
   };
 }
 

@@ -12,11 +12,15 @@ namespace Sep
   class Action : public Command
   {
     public:
-    Action(const std::string &name);
 
-    int execute(Game &game, std::vector<std::string> &params) override;
+      Action(const std::string &name, int current_worm);
 
-    virtual ~Action();
+      int execute(Game &game, std::vector<std::string> &params) override;
+
+      virtual ~Action();
+
+    private:
+      int current_worm_;
 
   };
 }

@@ -15,6 +15,8 @@
 #include "Help.h"
 #include "State.h"
 #include "Map.h"
+#include "Action.h"
+#include "Choose.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -582,6 +584,28 @@ bool Game::userInput(int current_worm)
 
     Move move(COMMAND_MOVE, current_worm);
     return move.execute(*this, command_params) == 0;
+  }
+  else if(command_params.at(0) == COMMAND_ACTION)
+  {
+    if(command_params.size() > 3)
+    {
+      printErrorMessage(WRONG_PARAMETER_COUNT);
+      return false;
+    }
+
+    Action action(COMMAND_MOVE, current_worm);
+    return action.execute(*this, command_params) == 0;
+  }
+  else if(command_params.at(0) == COMMAND_CHOOSE)
+  {
+    if(command_params.size() != 2)
+    {
+      printErrorMessage(WRONG_PARAMETER_COUNT);
+      return false;
+    }
+
+    Choose choose(COMMAND_MOVE, current_worm);
+    return choose.execute(*this, command_params) == 0;
   }
   else
   {

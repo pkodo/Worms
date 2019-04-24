@@ -32,7 +32,7 @@ namespace Sep
 
       int getDamage() const;
 
-    virtual void action();
+      virtual void action();
 
     private:
       std::string name_;

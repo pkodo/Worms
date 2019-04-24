@@ -102,4 +102,9 @@ namespace Sep
       return ' ';
     }
   }
+
+  void Worm::setWeapons(const std::vector<Weapon> &weapons)
+  {
+    weapons_ = weapons;
+  }
 }

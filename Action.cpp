@@ -3,15 +3,19 @@
 //
 
 #include "Action.h"
+#include "Game.h"
 
 namespace Sep
 {
   int Action::execute(Game &game, std::vector<std::string> &params)
   {
+    game.getWormNumber().at(current_worm_).getWeapons().at(0); // TODO
     return 0;
   }
 
-  Action::Action(const std::string &name) : Command(name)
+  Action::Action(const std::string &name, int current_worm) : Command(name),
+                                                              current_worm_(
+                                                                current_worm)
   {
   }
 
