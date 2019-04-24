@@ -24,6 +24,7 @@ namespace Sep
   {
     Gun gun;
     weapons_.push_back(gun);
+    current_weapon_ = &gun;
   }
 
   //----------------------------------------------------------------------------
@@ -106,5 +107,17 @@ namespace Sep
   void Worm::setWeapons(const std::vector<Weapon> &weapons)
   {
     weapons_ = weapons;
+  }
+
+  //----------------------------------------------------------------------------
+  Weapon *Worm::getCurrentWeapon() const
+  {
+    return current_weapon_;
+  }
+
+  //----------------------------------------------------------------------------
+  void Worm::setCurrentWeapon(Weapon *currentWeapon)
+  {
+    current_weapon_ = currentWeapon;
   }
 }

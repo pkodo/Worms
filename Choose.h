@@ -6,6 +6,9 @@
 #define SEP19_GROUP21486_CHOOSE_H
 
 #include "Command.h"
+#include <string>
+
+using std::string;
 
 namespace Sep
 {
@@ -20,6 +23,13 @@ namespace Sep
 
     private:
       int current_worm_;
+
+      const string GUN = "gun";
+      const string BAZOOKA = "bazooka";
+      const string TELEPORT = "teleport";
+      const string BLOWTORCH = "blowtorch";
+      const string MELEE = "melee";
+      const string AIRSTRIKE = "airstrike";
 
   };
 }
