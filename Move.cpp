@@ -11,7 +11,7 @@ using std::endl;
 
 namespace Sep
 {
-  //----------------------------------------------------------------------------
+
   int Move::execute(Game &game, std::vector<std::string> &params)
   {
     int steps = -1;
@@ -32,7 +32,10 @@ namespace Sep
         {
           steps *= -1;
         }
-        game.setNextMove(steps);
+
+        game.move(game.getWormNumber().at(current_worm_).getRow(),
+                game.getWormNumber().at(current_worm_).getCol(), steps, current_worm_);
+       // game.setNextMove(steps);
       }
       else
       {
@@ -47,7 +50,6 @@ namespace Sep
     return EVERYTHING_OK;
   }
 
-  //----------------------------------------------------------------------------
   int Move::printError(ErrorType type)
   {
     switch (type)
@@ -64,12 +66,10 @@ namespace Sep
     return type;
   }
 
-  //----------------------------------------------------------------------------
-  Move::Move(const std::string &name) : Command(name)
+  Move::Move(const std::string &name, int current_worm) : Command(name), current_worm_(current_worm)
   {
   }
 
-  //----------------------------------------------------------------------------
   Move::~Move()
   {
 

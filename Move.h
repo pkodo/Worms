@@ -12,7 +12,7 @@ namespace Sep
   class Move : public Command
   {
     public:
-      Move(const std::string &name);
+      Move(const std::string &name, int current_worm);
 
       int execute(Game &game, std::vector<std::string> &params) override;
 
@@ -25,7 +25,7 @@ namespace Sep
           INVALID_STEPCOUNT = -1,
           INVALID_DIRECTION = -2
       };
-
+    int current_worm_;
     int printError(ErrorType type);
   };
 }

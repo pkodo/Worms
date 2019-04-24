@@ -31,7 +31,6 @@ namespace Sep
       static const int MAX_STEPS = 3;
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
-      static const int FIRST_PARAM = 0;
 
       static const string MAGIC_VALUE;
       static const string CHECK_FOR_SIZE;
@@ -95,11 +94,16 @@ namespace Sep
       //
       void move(int row, int col, int steps, int current_worm);
 
+      //------------------------------------------------------------------------
+      // Print Gameboard Method
+      // Prints the playground on the screen.
+      //
+      void printMap();
+
       int gameLoop();
 
-      void setNextMove(int nextMove);
-
       std::vector<Sep::Worm> getWormNumber();
+
 
     private:
 
@@ -112,11 +116,6 @@ namespace Sep
       // Variable for determining the longitude of the gameboard
       //
       int board_height_;
-
-      //------------------------------------------------------------------------
-      // Variable for determining the next move
-      //
-      int next_move_;
 
       //------------------------------------------------------------------------
       // Datastructure for objects on the gameboard
@@ -206,11 +205,7 @@ namespace Sep
 
       void createChest(Random *random);
 
-      //------------------------------------------------------------------------
-      // Print Gameboard Method
-      // Prints the playground on the screen.
-      //
-      void printMap();
+
 
       //------------------------------------------------------------------------
       // User Input Method

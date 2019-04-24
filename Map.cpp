@@ -3,6 +3,7 @@
 //
 
 #include "Map.h"
+#include "Game.h"
 
 namespace Sep
 {
@@ -12,8 +13,8 @@ namespace Sep
 
     int Map::execute(Game &game, std::vector<std::string> &params)
     {
-
-      return 0;
+        game.printMap();
+        return 0;
     }
 
     Map::~Map()
