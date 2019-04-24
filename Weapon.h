@@ -18,6 +18,10 @@ namespace Sep
     public:
       Weapon(std::string name);
 
+      Weapon(const std::string &name, int ammo, int damage);
+
+      Weapon();
+
       virtual ~Weapon();
 
       int getAmmo() const;
@@ -27,6 +31,8 @@ namespace Sep
       const std::string &getName() const;
 
       int getDamage() const;
+
+    virtual void action();
 
     private:
       std::string name_;

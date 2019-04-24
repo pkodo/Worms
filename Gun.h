@@ -12,9 +12,11 @@ namespace Sep
   class Gun : public Weapon
   {
     public:
-    Gun(const std::string &name);
+      Gun();
 
-    virtual ~Gun();
+      virtual ~Gun();
+
+      void action() override;
   };
 }
 

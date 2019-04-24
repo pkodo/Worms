@@ -8,6 +8,8 @@
 //
 
 #include "Worm.h"
+#include "Gun.h"
+
 namespace Sep
 {
   //----------------------------------------------------------------------------
@@ -20,6 +22,8 @@ namespace Sep
   Worm::Worm(int id_, std::string name) : Field(WORM), id_(id_),
     name_(std::move(name))
   {
+    Gun gun;
+    weapons_.push_back(gun);
   }
 
   //----------------------------------------------------------------------------

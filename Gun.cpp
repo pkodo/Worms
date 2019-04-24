@@ -7,12 +7,17 @@
 namespace Sep
 {
 
-  Gun::Gun(const std::string &name) : Weapon(name)
+  Gun::Gun() : Weapon("gun", -1, 25) // -1 = inf
   {
   }
 
   Gun::~Gun()
   {
 
+  }
+
+  void Gun::action()
+  {
+    Weapon::action();
   }
 }

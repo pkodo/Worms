@@ -34,8 +34,8 @@ namespace Sep
         }
 
         game.move(game.getWormNumber().at(current_worm_).getRow(),
-                game.getWormNumber().at(current_worm_).getCol(), steps, current_worm_);
-       // game.setNextMove(steps);
+                  game.getWormNumber().at(current_worm_).getCol(),
+                  steps, current_worm_);
       }
       else
       {
@@ -52,7 +52,7 @@ namespace Sep
 
   int Move::printError(ErrorType type)
   {
-    switch (type)
+    switch(type)
     {
       case INVALID_STEPCOUNT:
         cout << "[ERROR] invalid step count" << endl;
@@ -66,7 +66,9 @@ namespace Sep
     return type;
   }
 
-  Move::Move(const std::string &name, int current_worm) : Command(name), current_worm_(current_worm)
+  Move::Move(const std::string &name, int current_worm) : Command(name),
+                                                          current_worm_(
+                                                            current_worm)
   {
   }
 
