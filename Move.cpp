@@ -15,7 +15,7 @@ namespace Sep
   int Move::execute(Game &game, std::vector<std::string> &params)
   {
     int steps = -1;
-    if(params.at(1) == "left" || params.at(1) == "right")
+    if(params.at(1) == "l" || params.at(1) == "r")
     {
       try
       {
@@ -28,47 +28,30 @@ namespace Sep
 
       if(steps >= 0 && steps <= 3)
       {
-        if(params.at(1) == "left")
+        if(params.at(1) == "l")
         {
           steps *= -1;
         }
-
         game.move(game.getWormNumber().at(current_worm_).getRow(),
                   game.getWormNumber().at(current_worm_).getCol(),
                   steps, current_worm_);
       }
       else
       {
-        return printError(INVALID_STEPCOUNT);
+        return INVALID_PARAMETER;
       }
 
     }
     else
     {
-      return printError(INVALID_DIRECTION);
+      return INVALID_PARAMETER;
     }
     return EVERYTHING_OK;
   }
 
-  int Move::printError(ErrorType type)
-  {
-    switch(type)
-    {
-      case INVALID_STEPCOUNT:
-        cout << "[ERROR] invalid step count" << endl;
-        break;
-      case INVALID_DIRECTION:
-        cout << "[ERROR] invalid direction" << endl;
-        break;
-      case EVERYTHING_OK:
-        break;
-    }
-    return type;
-  }
 
   Move::Move(const std::string &name, int current_worm) : Command(name),
-                                                          current_worm_(
-                                                            current_worm)
+                                            current_worm_(current_worm)
   {
   }
 

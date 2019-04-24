@@ -132,7 +132,8 @@ namespace Sep
           WRONG_MOVE = -3,
           UNKNOWN_COMMAND = -4,
           WRONG_PARAMETER_COUNT = -5,
-          COMMAND_NOT_ALLOWED = -6
+          INVALID_PARAMETER = -6,
+          COMMAND_NOT_ALLOWED = -7
       };
 
       enum DeathCases

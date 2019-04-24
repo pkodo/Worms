@@ -87,6 +87,9 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
     case WRONG_PARAMETER_COUNT:
       cout << "[ERROR] wrong parameter count!" << endl;
       break;
+    case INVALID_PARAMETER:
+        cout << "[ERROR] invalid parameter!" << endl;
+        break;
     case COMMAND_NOT_ALLOWED:
       cout << "[ERROR] command currently not allowed!" << endl;
           break;
@@ -615,19 +618,27 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
 {
   if(command_params.at(0) == COMMAND_MOVE)
   {
-    if(move_command != 0)
-    {
-      printErrorMessage(COMMAND_NOT_ALLOWED);
-      return false;
-    }
     if(command_params.size() != 3)
     {
       printErrorMessage(WRONG_PARAMETER_COUNT);
       return false;
     }
+    if(move_command != 0)
+    {
+        printErrorMessage(COMMAND_NOT_ALLOWED);
+        return false;
+    }
     move_command++;
     Move move(COMMAND_MOVE, current_worm);
-    move.execute(*this, command_params);
+    if(move.execute(*this, command_params))
+    {
+        move_command = 0;
+        printErrorMessage(INVALID_PARAMETER);
+    }
+    if(wormNumber.at(current_worm).getHp() <= 0)
+    {
+        return true; // If worm is dead, next Worm starts making commands
+    }
     return false;
   }
   else if(command_params.at(0) == COMMAND_CHOOSE)
