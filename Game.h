@@ -210,6 +210,8 @@ namespace Sep
 
       bool checkMoreParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
 
+      bool gravity(int current_worm, int &row, int col);
+
       //------------------------------------------------------------------------
       // User Input Method
       // Reads commands from stdin and calls command pattern.

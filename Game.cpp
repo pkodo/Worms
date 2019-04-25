@@ -475,28 +475,10 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
   if(map_.at(TARGET_FIELD).getType() == Field::AIR) // Step command
   {
     testWormTower(row, col, detect_worm_tower, current_worm);
-    while((map_.at(BELOW_TARGET_FIELD).getType() == Field::AIR))
+    if(gravity(current_worm, row, step_direction))
     {
-      row++;
-    }
-    if(map_.at(BELOW_TARGET_FIELD).getType() == Field::EARTH
-       || map_.at(BELOW_TARGET_FIELD).getType() == Field::WORM)
-    {
-      map_.at(TARGET_FIELD).setType(Field::WORM);
-      wormNumber.at(current_worm).setPosition(row, step_direction);
-      col = step_direction;
-      return true;
-    }
-    else if(map_.at(BELOW_TARGET_FIELD).getType() == Field::CHEST)
-    {
-      map_.at(BELOW_TARGET_FIELD).setType(Field::WORM);
-      wormNumber.at(current_worm).setPosition((row + 1), step_direction);
-      return true;
-    }
-    else if(map_.at(BELOW_TARGET_FIELD).getType() == Field::WATER)
-    {
-      map_.at(BELOW_TARGET_FIELD).setType(Field::WORM);
-      wormNumber.at(current_worm).setHp(0);
+       col = step_direction;
+       return true;
     }
   }
   return false;
@@ -539,7 +521,7 @@ bool Game::userInput(int current_worm, int &move_command)
 
   cout << COMMAND_PROMPT;
   getline(cin, input_line);
-  std::transform(input_line.begin(), input_line.end(), input_line.begin(), ::tolower);
+  std::transform(input_line.begin(), input_line.end(), input_line.begin(), ::tolower); // case insensitiv
   if(cin.eof())
   {
       exit(EVERYTHING_OK);
@@ -669,3 +651,43 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
   }
 }
 
+bool Game::gravity(int current_worm, int &row, int col)
+{
+    int count = 0;
+    if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR)
+    {
+        while(map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR) //((row + 1) * board_width_ + col)
+        {
+            row++;
+            count++;
+        }
+        if(count > 1 && map_.at(BELOW_CURRENT_FIELD).getType() != Field::WATER)
+        {
+            wormNumber.at(current_worm).damage((count - 1) * 10);
+            cout << wormNumber.at(current_worm).getName() << " (" << wormNumber.at(current_worm).getId() << ")"
+                 << " took " << (count - 1) * 10 << "hp fall damage" << endl;
+        }
+        if(wormNumber.at(current_worm).getHp() <= 0)
+        {
+            printDeathCases(FELL, current_worm);
+        }
+    }
+    if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::EARTH
+       || map_.at(BELOW_CURRENT_FIELD).getType() == Field::WORM)
+    {
+        map_.at(CURRENT_FIELD).setType(Field::WORM);
+        wormNumber.at(current_worm).setPosition(row, col);
+    }
+    else if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::CHEST)
+    {
+        map_.at(BELOW_CURRENT_FIELD).setType(Field::WORM);
+        wormNumber.at(current_worm).setPosition((row + 1), col);
+        return false;
+    }
+    else if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::WATER)
+    {
+        wormNumber.at(current_worm).setHp(0);
+        return false;
+    }
+    return true;
+}
