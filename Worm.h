@@ -63,7 +63,7 @@ namespace Sep
 
     void setWeapons();
 
-    Weapon getCurrentWeapon() const;
+    int getCurrentWeapon() const;
 
     void setCurrentWeapon(int currentWeapon);
   };

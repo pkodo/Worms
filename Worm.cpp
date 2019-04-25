@@ -117,9 +117,9 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  Weapon Worm::getCurrentWeapon() const
+  int Worm::getCurrentWeapon() const
   {
-    return weapons_.at(current_weapon_);
+    return current_weapon_;
   }
 
   //----------------------------------------------------------------------------

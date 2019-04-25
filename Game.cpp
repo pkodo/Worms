@@ -250,7 +250,8 @@ void Game::createWorms(Random *random)
       wormNumber.at(index - 1).setHp(100);
     }
     row = 0;
-    wormNumber.at(index).setWeapons();
+    wormNumber.at(index - 1).setWeapons();
+    wormNumber.at(index - 1).setCurrentWeapon(0);
   }
 }
 
