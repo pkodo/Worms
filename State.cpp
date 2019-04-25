@@ -30,11 +30,37 @@ namespace Sep
         cout << "current worm: " << game.getWormNumber().at(current_worm_).getName() << " ("
             << game.getWormNumber().at(current_worm_).getId() << ") \n" << endl;
 
-        cout << "weapons of current worm:\n" << "gun (ammunition: inf)\n" <<
-            "bazooka (ammunition: fehlt)\n" << "teleport (ammunition: fehlt)\n"
-            << "blowtorch (ammunition: fehlt)\n" << "melee (ammunition: fehlt)\n"
-            << "airstrike (ammunition: fehlt)\n" << endl;
+        for(index = 0; index < 6 ; index++)
+        {
+            if(index == 0)
+            {
+                cout << "weapons of current worm:\n" << game.getWormNumber().at(current_worm_).getCurrentWeapon() << "\n  gun (ammunition: inf)";
+                if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == index)
+                {
+                    cout << " *" << endl;
+                }
+                else
+                {
+                    cout << endl;
+                }
+            }
+            else if(game.getWormNumber().at(current_worm_).getWeapons().at(index).getAmmo() > 0)
+            {
+                cout << "  " << game.getWormNumber().at(current_worm_).getWeapons().at(index).getName()
+                  << " (ammunition: " << game.getWormNumber().at(current_worm_).getWeapons().at(index).getAmmo()
+                  << ")";
+                if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == index)
+                {
+                    cout << " *" << endl;
+                }
+                else
+                {
+                    cout << endl;
+                }
+            }
 
+        }
+        cout << endl;
         cout << "worms of player 1" << endl;
         for(index = 0; index < 3; index++)
         {
