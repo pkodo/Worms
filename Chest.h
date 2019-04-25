@@ -14,13 +14,19 @@ namespace Sep
   private:
       FieldType chest_type_ = Field::CHEST;
       int weapon_number_;
+      int row_;
+      int col_;
 
   public:
-      Chest(FieldType type, int weapon_number_);
+      Chest(FieldType type, int weapon_number, int row, int col);
 
       virtual ~Chest();
 
       int getIdChest();
+
+      int getRow();
+
+      int getCol();
 
       FieldType getType();
   };

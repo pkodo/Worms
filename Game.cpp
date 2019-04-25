@@ -113,7 +113,7 @@ void Game::printDeathCases(DeathCases type, int current_worm)
            wormNumber.at(current_worm).getId() << ")" << " fell into his death."
            << endl;
       break;
-    case OUTOFMAP:
+    case OUT_OF_MAP:
       cout << wormNumber.at(current_worm).getName() << " (" <<
            wormNumber.at(current_worm).getId() << ")" << " fell out of the map."
            << endl;
@@ -194,7 +194,7 @@ bool Game::createMapFields(string keyword, int row)
   for(int index = 0; index < board_width_; index++)
   {
     if(keyword.at(index) == 'A'
-       && row < ((board_height_ - ONE) * board_width_)) // Saves each field
+       && row < ((board_height_ - 1) * board_width_)) // Saves each field
       // type to a position in the map
     {
       map_.insert(pair<int, Field>(index + row, Field(Field::AIR)));
@@ -204,7 +204,7 @@ bool Game::createMapFields(string keyword, int row)
       map_.insert(pair<int, Field>(index + row, Field(Field::EARTH)));
     }
     else if(keyword.at(index) == 'W' && row != 0
-            && row >= ((board_height_ - ONE) * board_width_))
+            && row >= ((board_height_ - 1) * board_width_))
     {
       map_.insert(pair<int, Field>(index + row, Field(Field::WATER)));
     }
@@ -256,7 +256,7 @@ void Game::createWorms(Random *random)
 //------------------------------------------------------------------------------
 void Game::createChest(Random *random)
 {
-  int weapon_number = random->getRandomInt(0, 4); // needs to be implemented
+  int weapon_number = random->getRandomInt(0,NUMBER_OF_WEAPONS - 1);
   int col = random->getRandomInt(0, board_width_ - 1);
   int row = 0;
   while((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
@@ -267,6 +267,7 @@ void Game::createChest(Random *random)
   if(map_.at(BELOW_CURRENT_FIELD).getType() != Field::WATER)
   {
     map_.at(CURRENT_FIELD).setType(Field::CHEST); // adds Chest to the map
+  //  Chest chest(Field::CHEST, weapon_number, row, col); creates Object (gets deleted if function ends)
   }
 }
 
@@ -457,6 +458,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
   }
   if(step_direction >= board_width_ || step_direction < 0)
   {
+    wormNumber.at(current_worm).setHp(0);
     return false;
   }
   if((map_.at(ABOVE_CURRENT_FIELD).getType() != Field::EARTH)
@@ -495,6 +497,11 @@ void Game::move(int row, int col, int steps, int current_worm)
       if(wormNumber.at(current_worm).getHp() > 0)
       {
         printErrorMessage(WRONG_MOVE);
+        break;
+      }
+      else if(((col + steps) > board_width_) || (col + steps) < 0)
+      {
+        printDeathCases(OUT_OF_MAP, current_worm);
         break;
       }
       else

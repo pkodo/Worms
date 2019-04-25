@@ -25,9 +25,10 @@ namespace Sep
   {
     public:
 
-      static const int ONE = 1;
+
       static const int MAX_DIGITS = 2;
       static const int MAX_STEPS = 3;
+      static const int NUMBER_OF_WEAPONS = 5;
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
 
@@ -140,7 +141,7 @@ namespace Sep
       {
           DROWNED,
           FELL,
-          OUTOFMAP,
+          OUT_OF_MAP,
           DIED
       };
 
