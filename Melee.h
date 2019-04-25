@@ -12,7 +12,7 @@ namespace Sep
   class Melee : public Weapon
   {
     public:
-    Melee(const std::string &name);
+    Melee();
 
     virtual ~Melee();
 

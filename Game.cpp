@@ -250,6 +250,7 @@ void Game::createWorms(Random *random)
       wormNumber.at(index - 1).setHp(100);
     }
     row = 0;
+    wormNumber.at(index).setWeapons();
   }
 }
 
@@ -638,7 +639,11 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
       return false;
     }
     Choose choose(COMMAND_MOVE, current_worm);
-    return choose.execute(*this, command_params) == 0;
+    if(choose.execute(*this, command_params))
+    {
+      printErrorMessage(INVALID_PARAMETER);
+    }
+    return false;
   }
   else if(command_params.at(0) == COMMAND_ACTION)
   {

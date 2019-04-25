@@ -12,7 +12,7 @@ namespace Sep
   class Bazooka : public Weapon
   {
     public:
-    Bazooka(const std::string &name);
+    Bazooka();
 
     virtual ~Bazooka();
 

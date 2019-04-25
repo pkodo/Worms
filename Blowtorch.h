@@ -12,7 +12,7 @@ namespace Sep
   class Blowtorch : public Weapon
   {
     public:
-    Blowtorch(const std::string &name);
+    Blowtorch();
 
     virtual ~Blowtorch();
   };

@@ -32,7 +32,7 @@ namespace Sep
       int col_;
       std::string name_;
       std::vector<Weapon> weapons_;
-      Weapon* current_weapon_;
+      int current_weapon_;
 
     public:
       Worm(int id, std::string name);
@@ -61,11 +61,11 @@ namespace Sep
 
       char getCharacter() const override;
 
-    void setWeapons(const std::vector<Weapon> &weapons);
+    void setWeapons();
 
-    Weapon *getCurrentWeapon() const;
+    Weapon getCurrentWeapon() const;
 
-    void setCurrentWeapon(Weapon *currentWeapon);
+    void setCurrentWeapon(int currentWeapon);
   };
 }
 

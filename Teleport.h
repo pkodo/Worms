@@ -13,7 +13,7 @@ namespace Sep
   class Teleport : public Weapon
   {
     public:
-    Teleport(const std::string &name);
+    Teleport();
 
     virtual ~Teleport();
 

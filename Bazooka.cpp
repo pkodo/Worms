@@ -6,7 +6,7 @@
 
 namespace Sep
 {
-  Bazooka::Bazooka(const std::string &name) : Weapon(name)
+  Bazooka::Bazooka() : Weapon("bazooka", 1, 40)
   {
   }
 

@@ -9,6 +9,11 @@
 
 #include "Worm.h"
 #include "Gun.h"
+#include "Airstrike.h"
+#include "Melee.h"
+#include "Blowtorch.h"
+#include "Teleport.h"
+#include "Bazooka.h"
 
 namespace Sep
 {
@@ -22,9 +27,6 @@ namespace Sep
   Worm::Worm(int id_, std::string name) : Field(WORM), id_(id_),
     name_(std::move(name))
   {
-    Gun gun;
-    weapons_.push_back(gun);
-    current_weapon_ = &gun;
   }
 
   //----------------------------------------------------------------------------
@@ -104,19 +106,24 @@ namespace Sep
     }
   }
 
-  void Worm::setWeapons(const std::vector<Weapon> &weapons)
+  void Worm::setWeapons()
   {
-    weapons_ = weapons;
+    weapons_.emplace_back(Gun());
+    weapons_.emplace_back(Bazooka());
+    weapons_.emplace_back(Teleport());
+    weapons_.emplace_back(Blowtorch());
+    weapons_.emplace_back(Melee());
+    weapons_.emplace_back(Airstrike());
   }
 
   //----------------------------------------------------------------------------
-  Weapon *Worm::getCurrentWeapon() const
+  Weapon Worm::getCurrentWeapon() const
   {
-    return current_weapon_;
+    return weapons_.at(current_weapon_);
   }
 
   //----------------------------------------------------------------------------
-  void Worm::setCurrentWeapon(Weapon *currentWeapon)
+  void Worm::setCurrentWeapon(int currentWeapon)
   {
     current_weapon_ = currentWeapon;
   }

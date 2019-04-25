@@ -6,7 +6,7 @@
 
 namespace Sep
 {
-  Airstrike::Airstrike(const std::string &name) : Weapon(name)
+  Airstrike::Airstrike() : Weapon("airstrike", 1, 20)
   {
   }
 

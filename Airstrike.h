@@ -12,7 +12,8 @@ namespace Sep
   class Airstrike : public Weapon
   {
     public:
-    Airstrike(const std::string &name);
+
+    Airstrike();
 
     virtual ~Airstrike();
   };

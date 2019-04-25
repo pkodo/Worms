@@ -6,7 +6,7 @@
 
 namespace Sep
 {
-  Teleport::Teleport(const std::string &name) : Weapon(name)
+  Teleport::Teleport() : Weapon("teleport", 1, 0)
   {
   }
 

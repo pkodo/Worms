@@ -6,7 +6,7 @@
 
 namespace Sep
 {
-  Melee::Melee(const std::string &name) : Weapon(name)
+  Melee::Melee() : Weapon("melee", 1, 50)
   {
   }
 

@@ -6,7 +6,7 @@
 
 namespace Sep
 {
-  Blowtorch::Blowtorch(const std::string &name) : Weapon(name)
+  Blowtorch::Blowtorch() : Weapon("blowtorch", 1, 35)
   {
   }
 
