@@ -529,6 +529,18 @@ vector<Worm> Game::getWormNumber()
 }
 
 //------------------------------------------------------------------------------
+int Game::getBoardWidth()
+{
+  return board_width_;
+}
+
+//------------------------------------------------------------------------------
+int Game::getBoardHeight()
+{
+  return board_height_;
+}
+
+//------------------------------------------------------------------------------
 bool Game::userInput(int current_worm, int &move_command)
 {
   string input_line;

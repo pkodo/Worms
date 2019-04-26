@@ -111,6 +111,10 @@ namespace Sep
 
       bool chooseWeapon(int current_worm, std::vector<std::string> &params);
 
+      int getBoardWidth();
+
+      int getBoardHeight();
+
       std::vector<Sep::Worm> getWormNumber();
 
 
