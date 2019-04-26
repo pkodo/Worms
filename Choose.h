@@ -22,19 +22,8 @@ namespace Sep
       virtual ~Choose();
 
     private:
-      enum ErrorType
-      {
-          EVERYTHING_OK,
-          INVALID_CONFIGFILE,
-      };
-      int current_worm_;
 
-      const string GUN = "gun";
-      const string BAZOOKA = "bazooka";
-      const string TELEPORT = "teleport";
-      const string BLOWTORCH = "blowtorch";
-      const string MELEE = "melee";
-      const string AIRSTRIKE = "airstrike";
+      int current_worm_;
 
   };
 }

@@ -34,7 +34,7 @@ namespace Sep
         {
             if(index == 0)
             {
-                cout << "weapons of current worm:\n" << game.getWormNumber().at(current_worm_).getCurrentWeapon() << "\n  gun (ammunition: inf)";
+                cout << "weapons of current worm:\n" <<  "  gun (ammunition: inf)";
                 if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == index)
                 {
                     cout << " *" << endl;

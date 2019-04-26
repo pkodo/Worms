@@ -45,6 +45,13 @@ namespace Sep
       static const std::string COMMAND_MAP;
       static const std::string COMMAND_CHOOSE;
 
+      static const std::string GUN;
+      static const std::string BAZOOKA;
+      static const std::string TELEPORT;
+      static const std::string BLOWTORCH;
+      static const std::string MELEE;
+      static const std::string AIRSTRIKE;
+
 
       //------------------------------------------------------------------------
       // Constructor
@@ -101,6 +108,8 @@ namespace Sep
       void printMap();
 
       int gameLoop();
+
+      bool chooseWeapon(int current_worm, std::vector<std::string> &params);
 
       std::vector<Sep::Worm> getWormNumber();
 

@@ -59,6 +59,13 @@ const string Game::COMMAND_STATE = "state";
 const string Game::COMMAND_MAP = "map";
 const string Game::COMMAND_CHOOSE = "choose";
 
+const string Game::GUN = "gun";
+const string Game::BAZOOKA = "bazooka";
+const string Game::TELEPORT = "teleport";
+const string Game::BLOWTORCH = "blowtorch";
+const string Game::MELEE = "melee";
+const string Game::AIRSTRIKE = "airstrike";
+
 
 //------------------------------------------------------------------------------
 Game::Game() : board_width_(0), board_height_(0), map_(), wormNumber()
@@ -703,4 +710,49 @@ bool Game::gravity(int current_worm, int &row, int col)
         return false;
     }
     return true;
+}
+
+bool Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
+{
+  if(params.at(1) == GUN)
+  {
+    wormNumber.at(current_worm).setCurrentWeapon(0);
+    std::cout << "Chose weapon gun Ammunition: " <<
+       wormNumber.at(current_worm).getWeapons().at(0).getAmmo() << std::endl;
+  }
+  else if(params.at(1) == BAZOOKA)
+  {
+    wormNumber.at(current_worm).setCurrentWeapon(1);
+    std::cout << "Chose weapon bazooka Ammunition: " <<
+      wormNumber.at(current_worm).getWeapons().at(1).getAmmo() << std::endl;
+  }
+  else if(params.at(1) == TELEPORT)
+  {
+    wormNumber.at(current_worm).setCurrentWeapon(2);
+    std::cout << "Chose weapon teleport Ammunition: " <<
+      wormNumber.at(current_worm).getWeapons().at(2).getAmmo() << std::endl;
+  }
+  else if(params.at(1) == BLOWTORCH)
+  {
+    wormNumber.at(current_worm).setCurrentWeapon(3);
+    std::cout << "Chose weapon blowtorch Ammunition: " <<
+      wormNumber.at(current_worm).getWeapons().at(3).getAmmo() << std::endl;
+  }
+  else if(params.at(1) == MELEE)
+  {
+    wormNumber.at(current_worm).setCurrentWeapon(4);
+    std::cout << "Chose weapon melee Ammunition: " <<
+      wormNumber.at(current_worm).getWeapons().at(4).getAmmo() << std::endl;
+  }
+  else if(params.at(1) == AIRSTRIKE)
+  {
+    wormNumber.at(current_worm).setCurrentWeapon(5);
+    std::cout << "Chose weapon airstrike Ammunition: " <<
+      wormNumber.at(current_worm).getWeapons().at(5).getAmmo() << std::endl;
+  }
+  else
+  {
+    return INVALID_CONFIGFILE;
+  }
+  return EVERYTHING_OK;
 }
