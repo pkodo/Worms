@@ -275,7 +275,7 @@ void Game::createWorms(Random *random)
 //------------------------------------------------------------------------------
 void Game::createChest(Random *random)
 {
-  int weapon_number = random->getRandomInt(0,NUMBER_OF_WEAPONS - 1);
+  //int weapon_number = random->getRandomInt(0,NUMBER_OF_WEAPONS - 1);
   int col = random->getRandomInt(0, board_width_ - 1);
   int row = 0;
   while((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
@@ -737,7 +737,7 @@ bool Game::gravity(int current_worm, int &row, int col)
     return true;
 }
 
-bool Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
+int Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
 {
   if(params.at(1) == GUN)
   {
@@ -826,6 +826,7 @@ int Game::findWorm(int row, int col)
       return index;
     }
   }
+  return INVALID_TARGET;
 }
 
 void Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee

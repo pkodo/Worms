@@ -34,10 +34,7 @@ namespace Sep
         return 0;
       }
     }
-    else
-    {
-      return 1;
-    }
+    return 1;
   }
 
   //----------------------------------------------------------------------------
@@ -55,7 +52,6 @@ namespace Sep
   //----------------------------------------------------------------------------
   bool Action::checkTwoParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon)
   {
-
     if((current_weapon == 0 //GUN
       || current_weapon == 1 // BAZOOKA
       || current_weapon == 3)) // BLOWTORCH
@@ -105,12 +101,8 @@ namespace Sep
       {
         return true;
       }
-      else
-      {
-        return false;
-      }
     }
-
+    return false;
   }
 
   bool Action::checkAirstrikeCommand(Game &game, std::vector<std::string> &params, int current_weapon)
@@ -166,8 +158,8 @@ namespace Sep
         return false;
       }
       game.actionRowColCommand(current_worm_, current_weapon, row, col);
-      return true;
     }
+    return true;
   }
 
   //----------------------------------------------------------------------------

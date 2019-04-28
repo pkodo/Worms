@@ -109,7 +109,7 @@ namespace Sep
 
       int gameLoop();
 
-      bool chooseWeapon(int current_worm, std::vector<std::string> &params);
+      int chooseWeapon(int current_worm, std::vector<std::string> &params);
 
       int getBoardWidth();
 
