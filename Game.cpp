@@ -894,7 +894,12 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
 
   if(direction == 0)
   {
-    if(current_weapon == 0) // gun
+    if(col == 0)
+    {
+      cout << "Shot missed..." << endl;
+      return;
+    }
+    else if(current_weapon == 0) // gun
     {
       do
       {
