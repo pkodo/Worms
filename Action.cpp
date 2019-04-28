@@ -114,7 +114,7 @@ namespace Sep
       {
         col = stoi(params.at(1));
       }
-      catch(std::invalid_argument)
+      catch(std::invalid_argument &invalidArgument)
       {
 
       }
@@ -143,14 +143,14 @@ namespace Sep
       {
         row = stoi(params.at(1));
       }
-      catch(std::invalid_argument)
+      catch(std::invalid_argument &invalidArgument)
       {
       }
       try
       {
         col = stoi(params.at(2));
       }
-      catch(std::invalid_argument)
+      catch(std::invalid_argument &invalidArgument1)
       {
       }
       if((col < 0 || col > game.getBoardWidth()) || (row < 0 || row > game.getBoardHeight()))

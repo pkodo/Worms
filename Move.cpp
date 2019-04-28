@@ -21,7 +21,7 @@ namespace Sep
       {
         steps = stoi(params.at(2));
       }
-      catch(std::invalid_argument)
+      catch(std::invalid_argument &invalidArgument)
       {
 
       }
