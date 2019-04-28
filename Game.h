@@ -115,6 +115,14 @@ namespace Sep
 
       int getBoardHeight();
 
+      void actionCommand(int current_worm,  int current_weapon, int damage);
+
+      void actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction);
+
+      void actionColCommand(int current_worm, int current_weapon, int damage, int col);
+
+      bool actionRowColCommand(int current_worm, int current_weapon, int row, int col);
+
       std::vector<Sep::Worm> getWormNumber();
 
 
@@ -147,7 +155,8 @@ namespace Sep
           UNKNOWN_COMMAND = -4,
           WRONG_PARAMETER_COUNT = -5,
           INVALID_PARAMETER = -6,
-          COMMAND_NOT_ALLOWED = -7
+          COMMAND_NOT_ALLOWED = -7,
+          NO_AMMUNITION = -8
       };
 
       enum DeathCases
@@ -223,6 +232,8 @@ namespace Sep
       bool checkOneParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
 
       bool checkMoreParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
+
+      int findWorm(int row, int col);
 
       bool gravity(int current_worm, int &row, int col);
 

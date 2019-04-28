@@ -26,7 +26,7 @@ namespace Sep
 
       int getAmmo() const;
 
-      void setAmmo(int ammo);
+      void decreaseAmmo();
 
       const std::string &getName() const;
 

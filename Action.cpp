@@ -11,17 +11,28 @@ namespace Sep
   //----------------------------------------------------------------------------
   int Action::execute(Game &game, std::vector<std::string> &params)
   {
+    int current_weapon = game.getWormNumber().at(current_worm_).getCurrentWeapon();
     if(params.size() == 1)
     {
-      checkOneParameterCommand(game, params);
+      if(checkOneParameterCommand(game, params, current_weapon))
+      {
+        return 0;
+      }
     }
-    else if(params.size() == 2)
+    if(params.size() == 2)
     {
-      checkTwoParameterCommand(game, params);
+      if(checkTwoParameterCommand(game, params, current_weapon)
+         || checkAirstrikeCommand(game, params, current_weapon))
+      {
+        return 0;
+      }
     }
-    else if(params.size() == 3)
+    if(params.size() == 3)
     {
-      checkThreeParameterCommand(game, params);
+      if(checkThreeParameterCommand(game, params, current_weapon))
+      {
+        return 0;
+      }
     }
     else
     {
@@ -30,71 +41,86 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  int Action::checkOneParameterCommand(Game &game, std::vector<std::string> &params)
+  bool Action::checkOneParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon)
   {
-    if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == 4) // MELEE
+    if(current_weapon == 4) // MELEE
     {
-      game.getWormNumber().at(current_worm_).getWeapons().at(4).action();
-      return 0;
+      game.actionCommand(current_worm_, current_weapon,
+              game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage());
+      return true;
     }
-    return 1;
+    return false;
   }
 
   //----------------------------------------------------------------------------
-  int Action::checkTwoParameterCommand(Game &game, std::vector<std::string> &params)
+  bool Action::checkTwoParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon)
   {
-    int col = 0;
 
-    if((game.getWormNumber().at(current_worm_).getCurrentWeapon() == 0 //GUN
-      || game.getWormNumber().at(current_worm_).getCurrentWeapon() == 1 // BAZOOKA
-      || game.getWormNumber().at(current_worm_).getCurrentWeapon() == 3)) // BLOWTORCH
+    if((current_weapon == 0 //GUN
+      || current_weapon == 1 // BAZOOKA
+      || current_weapon == 3)) // BLOWTORCH
     {
-      if(params.at(1) == "l") //0
+      if(params.at(1) == "l") // 0
       {
-        //Aufruf
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 0);
+        return true;
       }
       else if(params.at(1) == "r") //1
       {
-        //Aufruf
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 1);
       }
       else if(params.at(1) == "d") //2
       {
-        //Aufruf
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 2);
       }
       else if(params.at(1) == "u") //3
       {
-
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 3);
       }
       else if(params.at(1) == "ld") //4
       {
-
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 4);
       }
       else if(params.at(1) == "rd") //5
       {
-
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 5);
       }
       else if(params.at(1) == "lu") //6
       {
-
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 6);
       }
       else if(params.at(1) == "ru") //7
       {
-
+        game.actionDirectionCommand(current_worm_, current_weapon,
+                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 7);
       }
-      else if( params.at(1) == "idle")
+      else if(params.at(1) == "idle")
       {
-        return 1;
+        return true;
       }
       else
       {
-        return 1;
+        return false;
       }
     }
-    else if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == 5)// AIRSTRIKE
+
+  }
+
+  bool Action::checkAirstrikeCommand(Game &game, std::vector<std::string> &params, int current_weapon)
+  {
+    int col = 0;
+    if(current_weapon == 5)// AIRSTRIKE
     {
       try
       {
-        col = stoi(params.at(2));
+        col = stoi(params.at(1));
       }
       catch(std::invalid_argument)
       {
@@ -102,23 +128,28 @@ namespace Sep
       }
       if(col < 0 || col > game.getBoardWidth())
       {
-        return 1;
+        return false;
       }
-      //Aufruf ;
-      return 0;
+      game.actionColCommand(current_worm_, current_weapon,
+              game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), col);
+      return true;
+    }
+    else
+    {
+      return false;
     }
   }
 
   //----------------------------------------------------------------------------
-  int Action::checkThreeParameterCommand(Game &game, std::vector<std::string> &params)
+  bool Action::checkThreeParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon)
   {
     int row = 0;
     int col = 0;
-    if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == 3)
+    if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == 2) // teleport
     {
       try
       {
-        row = stoi(params.at(2));
+        row = stoi(params.at(1));
       }
       catch(std::invalid_argument)
       {
@@ -132,9 +163,10 @@ namespace Sep
       }
       if((col < 0 || col > game.getBoardWidth()) || (row < 0 || row > game.getBoardHeight()))
       {
-        return 1;
+        return false;
       }
-      //Aufruf ;
+      game.actionRowColCommand(current_worm_, current_weapon, row, col);
+      return true;
     }
   }
 

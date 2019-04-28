@@ -78,7 +78,7 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  const std::vector<Weapon> &Worm::getWeapons() const
+  std::vector<Weapon> &Worm::getWeapons()
   {
     return weapons_;
   }

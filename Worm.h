@@ -51,7 +51,7 @@ namespace Sep
 
       int getCol() const;
 
-      const std::vector<Weapon> &getWeapons() const;
+      std::vector<Weapon> &getWeapons();
 
       void damage(int points);
 

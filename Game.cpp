@@ -29,6 +29,13 @@
 #define CURRENT_FIELD ((row * board_width_) + col)
 #define BELOW_CURRENT_FIELD ((row + 1) * board_width_ + col)
 #define ABOVE_CURRENT_FIELD (((row - 1) * board_width_) + col)
+#define CURRENT_FIELD_LEFT (((row * board_width_) + col -1))
+#define CURRENT_FIELD_RIGHT (((row * board_width_) + col -1))
+#define CURRENT_FIELD_LEFT_TOP (((row * board_width_) + col -1))
+#define CURRENT_FIELD_RIGHT_TOP (((row * board_width_) + col -1))
+#define CURRENT_FIELD_LEFT_BOTTOM (((row * board_width_) + col -1))
+#define CURRENT_FIELD_RIGHT_BOTTOM (((row * board_width_) + col -1))
+
 #define TARGET_FIELD ((row * board_width_) + step_direction)
 #define BELOW_TARGET_FIELD ((row + 1) * board_width_ + step_direction)
 #define ABOVE_TARGET_FIELD (((row - 1) * board_width_) + step_direction)
@@ -83,7 +90,7 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
       cout << "[ERROR] invalid config file" << endl;
       break;
     case INVALID_TARGET:
-      cout << "[ERROR] invalid target" << endl;
+      cout << "[ERROR] invalid target!" << endl;
       break;
     case WRONG_MOVE:
       cout << "[WARNING] can't move further" << endl;
@@ -99,6 +106,9 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
         break;
     case COMMAND_NOT_ALLOWED:
       cout << "[ERROR] command currently not allowed!" << endl;
+          break;
+    case NO_AMMUNITION:
+      cout << "[ERROR] no ammunition" << endl;
           break;
     case EVERYTHING_OK:
       break;
@@ -346,7 +356,6 @@ int Game::gameLoop()
   int current_worm = 0;
   int player = 1;
   int move_command;
-
 
   int turn_one = 0;
   int turn_two = 3;
@@ -673,8 +682,12 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
       return false;
     }
     Action action(COMMAND_MOVE, current_worm);
-    action.execute(*this, command_params);
-    return true;
+    if(action.execute(*this, command_params))
+    {
+      printErrorMessage(COMMAND_NOT_ALLOWED);
+      return false;
+    }
+    return true; // Next turn
   }
   else
   {
@@ -729,42 +742,204 @@ bool Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
   if(params.at(1) == GUN)
   {
     wormNumber.at(current_worm).setCurrentWeapon(0);
-    std::cout << "Chose weapon gun Ammunition: " <<
-       wormNumber.at(current_worm).getWeapons().at(0).getAmmo() << std::endl;
+    std::cout << "Chose weapon gun Ammunition: inf" << std::endl;
   }
-  else if(params.at(1) == BAZOOKA)
+  else if(params.at(1) == BAZOOKA && wormNumber.at(current_worm).getWeapons().at(0).getAmmo())
   {
-    wormNumber.at(current_worm).setCurrentWeapon(1);
-    std::cout << "Chose weapon bazooka Ammunition: " <<
-      wormNumber.at(current_worm).getWeapons().at(1).getAmmo() << std::endl;
+    if(wormNumber.at(current_worm).getWeapons().at(1).getAmmo() > 0)
+    {
+      wormNumber.at(current_worm).setCurrentWeapon(1);
+      std::cout << "Chose weapon bazooka Ammunition: " <<
+                wormNumber.at(current_worm).getWeapons().at(1).getAmmo() << std::endl;
+    }
+    else
+    {
+      printErrorMessage(NO_AMMUNITION);
+    }
   }
   else if(params.at(1) == TELEPORT)
   {
-    wormNumber.at(current_worm).setCurrentWeapon(2);
-    std::cout << "Chose weapon teleport Ammunition: " <<
-      wormNumber.at(current_worm).getWeapons().at(2).getAmmo() << std::endl;
+    if(wormNumber.at(current_worm).getWeapons().at(2).getAmmo() > 0)
+    {
+      wormNumber.at(current_worm).setCurrentWeapon(2);
+      std::cout << "Chose weapon teleport Ammunition: " <<
+        wormNumber.at(current_worm).getWeapons().at(2).getAmmo() << std::endl;
+    }
+    else
+    {
+      printErrorMessage(NO_AMMUNITION);
+    }
   }
   else if(params.at(1) == BLOWTORCH)
   {
-    wormNumber.at(current_worm).setCurrentWeapon(3);
-    std::cout << "Chose weapon blowtorch Ammunition: " <<
-      wormNumber.at(current_worm).getWeapons().at(3).getAmmo() << std::endl;
+    if(wormNumber.at(current_worm).getWeapons().at(3).getAmmo() > 0)
+    {
+      wormNumber.at(current_worm).setCurrentWeapon(3);
+      std::cout << "Chose weapon blowtorch Ammunition: " <<
+                wormNumber.at(current_worm).getWeapons().at(3).getAmmo() << std::endl;
+    }
+    else
+    {
+      printErrorMessage(NO_AMMUNITION);
+    }
   }
   else if(params.at(1) == MELEE)
   {
-    wormNumber.at(current_worm).setCurrentWeapon(4);
-    std::cout << "Chose weapon melee Ammunition: " <<
-      wormNumber.at(current_worm).getWeapons().at(4).getAmmo() << std::endl;
+    if(wormNumber.at(current_worm).getWeapons().at(4).getAmmo() > 0)
+    {
+      wormNumber.at(current_worm).setCurrentWeapon(4);
+      std::cout << "Chose weapon melee Ammunition: " <<
+                wormNumber.at(current_worm).getWeapons().at(4).getAmmo() << std::endl;
+    }
+    else
+    {
+      printErrorMessage(NO_AMMUNITION);
+    }
   }
   else if(params.at(1) == AIRSTRIKE)
   {
-    wormNumber.at(current_worm).setCurrentWeapon(5);
-    std::cout << "Chose weapon airstrike Ammunition: " <<
-      wormNumber.at(current_worm).getWeapons().at(5).getAmmo() << std::endl;
+    if(wormNumber.at(current_worm).getWeapons().at(5).getAmmo() > 0)
+    {
+      wormNumber.at(current_worm).setCurrentWeapon(5);
+      std::cout << "Chose weapon airstrike Ammunition: " <<
+                wormNumber.at(current_worm).getWeapons().at(5).getAmmo() << std::endl;
+    }
+    else
+    {
+      printErrorMessage(NO_AMMUNITION);
+    }
   }
   else
   {
-    return INVALID_CONFIGFILE;
+    return INVALID_PARAMETER;
   }
   return EVERYTHING_OK;
+}
+
+int Game::findWorm(int row, int col)
+{
+  for(int index = 0; index < 6; index++)
+  {
+    if((wormNumber.at(index).getRow() * wormNumber.at(index).getCol())
+       == (row * col))
+    {
+      return index;
+    }
+  }
+}
+
+void Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
+{
+  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
+  {
+    return;
+  }
+  int row = wormNumber.at(current_worm).getRow();
+  int col = wormNumber.at(current_worm).getCol();
+  wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+  for(int index = -1; index < 2; index++)
+  {
+    if(map_.at(ABOVE_CURRENT_FIELD + index).getType() == Field::WORM
+        && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
+    {
+      wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
+      cout << "Attack hit Worm at: (" << (row - 1) << ", " << (col + index) << ")" << endl;
+      if(wormNumber.at(findWorm((row - 1), (col + index))).getHp() <= 0)
+      {
+        printDeathCases(DIED, findWorm((row - 1), (col + index)));
+      }
+    }
+  }
+  if(map_.at(CURRENT_FIELD + 1).getType() == Field::WORM
+      && wormNumber.at(findWorm(row, col + 1)).getHp() > 0)
+  {
+    wormNumber.at(findWorm(row, (col + 1))).damage(damage);
+    cout << "Attack hit Worm at: (" << row << ", " << (col + 1) << ")" << endl;
+    if(wormNumber.at(findWorm(row, col + 1)).getHp() <= 0)
+    {
+      printDeathCases(DIED, findWorm((row),col + 1));
+    }
+  }
+  for(int index = 1; index > -2; index--)
+  {
+    if(map_.at(BELOW_CURRENT_FIELD + index).getType() == Field::WORM
+        && wormNumber.at(findWorm((row + 1), (col + index))).getHp() > 0)
+    {
+      wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
+      cout << "Attack hit Worm at: (" << (row + 1) << ", " << (col + index) << ")" << endl;
+      if(wormNumber.at(findWorm((row + 1), (col + index))).getHp() <= 0)
+      {
+        printDeathCases(DIED, findWorm((row + 1), (col + index)));
+      }
+    }
+  }
+  if(map_.at(CURRENT_FIELD - 1).getType() == Field::WORM
+      && wormNumber.at(findWorm(row, col - 1)).getHp() > 0)
+  {
+    wormNumber.at(findWorm(row, (col - 1))).damage(damage);
+    cout << "Attack hit Worm at position: (" << row << ", " << (col - 1) << ")" << endl;
+    if(wormNumber.at(findWorm(row, col - 1)).getHp() <= 0)
+    {
+      printDeathCases(DIED, findWorm((row),col - 1));
+    }
+  }
+}
+
+void Game::actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction)
+{
+    if(current_weapon == 0)
+    {
+
+    }
+}
+
+void Game::actionColCommand(int current_worm, int current_weapon, int damage, int col)
+{
+  int row = 0;
+  wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+  while(map_.at(CURRENT_FIELD).getType() == Field::AIR && row < (board_height_ - 1))
+  {
+    row++;
+  }
+  if(map_.at(CURRENT_FIELD).getType() == Field::CHEST)
+  {
+    map_.at(CURRENT_FIELD).setType(Field::AIR);
+    cout << "Shot hit Chest at position: (" << row << ", " << col << ")" << endl;
+  }
+  else if(map_.at(CURRENT_FIELD).getType() == Field::EARTH)
+  {
+      map_.at(CURRENT_FIELD).setType(Field::AIR);
+      cout << "Shot hit Earth at position: (" << row << ", " << col << ")" << endl;
+  }
+  else if(map_.at(CURRENT_FIELD).getType() == Field::WATER || row == (board_height_ - 1))
+  {
+    cout << "Shot missed..." << endl;
+  }
+  else if(map_.at(CURRENT_FIELD).getType() == Field::WORM && wormNumber.at(findWorm(row, col - 1)).getHp() > 0)
+  {
+    wormNumber.at(findWorm(row, col)).damage(damage);
+    cout << "Shot hit Worm at position: (" << row << ", " << col << ")" << endl;
+    if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+    {
+      printDeathCases(DIED, findWorm((row),col));
+    }
+  }
+}
+
+bool Game::actionRowColCommand(int current_worm, int current_weapon, int row, int col)
+{
+  wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+  if(map_.at(CURRENT_FIELD).getType() == Field::AIR
+      || map_.at(CURRENT_FIELD).getType() == Field::CHEST)
+  {
+    map_.at((wormNumber.at(current_worm).getRow() * board_width_)
+            + wormNumber.at(current_worm).getCol()).setType(Field::AIR);
+    gravity(current_worm, row, col);
+    return true; // add worm drowned
+  }
+  else
+  {
+    printErrorMessage(INVALID_TARGET);
+    return false;
+  }
 }
