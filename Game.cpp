@@ -929,6 +929,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage) // Me
 {
   if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
   {
+    printErrorMessage(NO_AMMUNITION);
     return;
   }
   int row = wormNumber.at(current_worm).getRow();
@@ -1041,6 +1042,11 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
 
 void Game::actionColCommand(int current_worm, int current_weapon, int damage, int col)
 {
+  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
+  {
+    printErrorMessage(NO_AMMUNITION);
+    return;
+  }
   int row = 0;
   wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
   while(map_.at(CURRENT_FIELD).getType() == Field::AIR && row < (board_height_ - 1))
@@ -1061,7 +1067,7 @@ void Game::actionColCommand(int current_worm, int current_weapon, int damage, in
   {
     cout << "Shot missed..." << endl;
   }
-  else if(map_.at(CURRENT_FIELD).getType() == Field::WORM && wormNumber.at(findWorm(row, col - 1)).getHp() > 0)
+  else if(map_.at(CURRENT_FIELD).getType() == Field::WORM && wormNumber.at(findWorm(row, col)).getHp() > 0)
   {
     wormNumber.at(findWorm(row, col)).damage(damage);
     cout << "Shot hit Worm at position: (" << row << ", " << col << ")" << endl;

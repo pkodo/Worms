@@ -97,13 +97,13 @@ namespace Sep
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 7);
       }
-      else if(params.at(1) == "idle")
-      {
-        return true;
-      }
+    }
+    if(params.at(1) == "idle")
+    {
+      return true;
     }
     return false;
-  }
+}
 
   bool Action::checkAirstrikeCommand(Game &game, std::vector<std::string> &params, int current_weapon)
   {
@@ -153,7 +153,8 @@ namespace Sep
       catch(std::invalid_argument &invalidArgument1)
       {
       }
-      if((col < 0 || col > game.getBoardWidth()) || (row < 0 || row > game.getBoardHeight()))
+      if(((col < 0 || col > game.getBoardWidth()) || (row < 0 || row > game.getBoardHeight())) ||
+          game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getAmmo() <= 0)
       {
         return false;
       }
