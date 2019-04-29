@@ -10,6 +10,7 @@
 #define SEP_GAME_H
 #include "Field.h"
 #include "Worm.h"
+#include "Chest.h"
 #include "Random.h"
 #include <map>
 #include <vector>
@@ -145,6 +146,8 @@ namespace Sep
 
       std::vector<Worm> wormNumber;
 
+      std::vector<Chest*> chest_Number_;
+
 
       enum ErrorType
       {
@@ -228,6 +231,8 @@ namespace Sep
       int setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& turn_two);
 
       void createChest(Random *random);
+
+      void findChest(int row, int col, int current_worm);
 
       bool checkOneParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
 

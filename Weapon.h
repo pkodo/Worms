@@ -28,6 +28,8 @@ namespace Sep
 
       void decreaseAmmo();
 
+      void increaseAmmo();
+
       const std::string &getName() const;
 
       int getDamage() const;

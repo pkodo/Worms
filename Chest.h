@@ -18,6 +18,7 @@ namespace Sep
       int col_;
 
   public:
+
       Chest(FieldType type, int weapon_number, int row, int col);
 
       virtual ~Chest();
