@@ -1120,14 +1120,6 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
       }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && col >= 0);
 
       makeDamage(row, col, damage);
-
-      if(current_weapon == 1) // bazooka
-      {
-        makeDamage(row - 1, col, damage);
-        makeDamage(row, col - 1, damage);
-        makeDamage(row, col + 1, damage);
-        makeDamage(row + 1, col, damage);
-      }
     }
     else if(current_weapon == 3) // blowtorch
     {
@@ -1154,14 +1146,6 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
       }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && col <= board_width_);
 
       makeDamage(row, col, damage);
-
-      if(current_weapon == 1) // bazooka
-      {
-        makeDamage(row - 1, col, damage);
-        makeDamage(row, col - 1, damage);
-        makeDamage(row, col + 1, damage);
-        makeDamage(row + 1, col, damage);
-      }
     }
     else if(current_weapon == 3) // blowtorch
     {
@@ -1188,14 +1172,6 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
       board_height_);
 
       makeDamage(row, col, damage);
-
-      if(current_weapon == 1) // bazooka
-      {
-        makeDamage(row - 1, col, damage);
-        makeDamage(row, col - 1, damage);
-        makeDamage(row, col + 1, damage);
-        makeDamage(row + 1, col, damage);
-      }
     }
     else if(current_weapon == 3) // blowtorch
     {
@@ -1223,14 +1199,6 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
       }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && row >= 0);
 
       makeDamage(row, col, damage);
-
-      if(current_weapon == 1) // bazooka
-      {
-        makeDamage(row - 1, col, damage);
-        makeDamage(row, col - 1, damage);
-        makeDamage(row, col + 1, damage);
-        makeDamage(row + 1, col, damage);
-      }
     }
     else if(current_weapon == 3) // blowtorch
     {
@@ -1239,6 +1207,15 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
         makeDamage(row - range, col, damage);
       }
     }
+  }
+
+
+  if(current_weapon == 1) // bazooka
+  {
+    makeDamage(row - 1, col, damage);
+    makeDamage(row, col - 1, damage);
+    makeDamage(row, col + 1, damage);
+    makeDamage(row + 1, col, damage);
   }
 }
 

@@ -7,7 +7,7 @@
 namespace Sep
 {
 
-  Gun::Gun() : Weapon("gun", -1, 25) // -1 = inf
+  Gun::Gun() : Weapon("gun", INT32_MAX, 25) // inf
   {
   }
 
