@@ -67,6 +67,8 @@ const string Game::BLOWTORCH = "blowtorch";
 const string Game::MELEE = "melee";
 const string Game::AIRSTRIKE = "airstrike";
 
+const string Game::SHOT_MISSED = "Shot missed...";
+
 
 //------------------------------------------------------------------------------
 Game::Game() : board_width_(0), board_height_(0), map_(), wormNumber(), chest_Number_()
@@ -296,7 +298,7 @@ void Game::createChest(Random *random)
 
 void Game::findChest(int row, int col, int current_worm)
 {
-    for(int index = 0; index < chest_Number_.size(); index++)
+    for(unsigned int index = 0; index < chest_Number_.size(); index++)
     {
         if(((chest_Number_.at(index)->getRow() * board_width_) + chest_Number_.at(index)->getCol())
            == (row * board_width_) + col)
@@ -581,7 +583,7 @@ void Game::move(int row, int col, int steps, int current_worm)
 
 void Game::chestGravity()
 {
-    for(int index = 0; index < chest_Number_.size(); index++)
+    for(unsigned int index = 0; index < chest_Number_.size(); index++)
     {
         int row = chest_Number_.at(index)->getRow();
         int col = chest_Number_.at(index)->getCol();
@@ -983,6 +985,35 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage) // Me
   }
 }
 
+void Game::makeDamage(int row, int col, int damage)
+{
+  if(map_.at(CURRENT_FIELD).getType() == Field::CHEST)
+  {
+    map_.at(CURRENT_FIELD).setType(Field::AIR);
+    cout << "Shot hit Chest at position: (" << row << ", " << col << ")" << endl;
+  }
+  else if(map_.at(CURRENT_FIELD).getType() == Field::EARTH)
+  {
+    map_.at(CURRENT_FIELD).setType(Field::AIR);
+    cout << "Shot hit Earth at position: (" << row << ", " << col << ")" << endl;
+  }
+  else if(map_.at(CURRENT_FIELD).getType() == Field::WATER || map_.at
+    (CURRENT_FIELD).getType() == Field::AIR)
+  {
+    cout << SHOT_MISSED << endl;
+  }
+  else if(map_.at(CURRENT_FIELD).getType() == Field::WORM && wormNumber.at(findWorm(row, col)).getHp() > 0)
+  {
+    wormNumber.at(findWorm(row, col)).damage(damage);
+    cout << "Shot hit Worm at position: (" << row << ", " << col << ")" << endl;
+    if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+    {
+      printDeathCases(DIED, findWorm((row),col));
+    }
+  }
+}
+
+
 void Game::actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction)
 {
   int row = wormNumber.at(current_worm).getRow();
@@ -993,7 +1024,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
   {
     if(col == 0)
     {
-      cout << "Shot missed..." << endl;
+      cout << SHOT_MISSED << endl;
       return;
     }
     else if(current_weapon == 0) // gun
@@ -1003,30 +1034,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
         col--;
       }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && col >= 0);
 
-      if(map_.at(CURRENT_FIELD).getType() == Field::CHEST)
-      {
-        map_.at(CURRENT_FIELD).setType(Field::AIR);
-        cout << "Shot hit Chest at position: (" << row << ", " << col << ")" << endl;
-      }
-      else if(map_.at(CURRENT_FIELD).getType() == Field::EARTH)
-      {
-        map_.at(CURRENT_FIELD).setType(Field::AIR);
-        cout << "Shot hit Earth at position: (" << row << ", " << col << ")" << endl;
-      }
-      else if(map_.at(CURRENT_FIELD).getType() == Field::WATER || map_.at
-      (CURRENT_FIELD).getType() == Field::AIR)
-      {
-        cout << "Shot missed..." << endl;
-      }
-      else if(map_.at(CURRENT_FIELD).getType() == Field::WORM && wormNumber.at(findWorm(row, col)).getHp() > 0)
-      {
-        wormNumber.at(findWorm(row, col)).damage(damage);
-        cout << "Shot hit Worm at position: (" << row << ", " << col << ")" << endl;
-        if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
-        {
-          printDeathCases(DIED, findWorm((row),col));
-        }
-      }
+      makeDamage(row, col, damage);
     }
     else if(current_weapon == 1) // bazooka
     {

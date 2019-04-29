@@ -53,6 +53,8 @@ namespace Sep
       static const std::string MELEE;
       static const std::string AIRSTRIKE;
 
+      static const std::string SHOT_MISSED;
+
 
       //------------------------------------------------------------------------
       // Constructor
@@ -249,6 +251,8 @@ namespace Sep
       // Reads commands from stdin and calls command pattern.
       //
       bool userInput( int current_worm, int &move_command);
+
+      void makeDamage(int row, int col, int damage);
   };
 }
 #endif //SEP_GAME_H
