@@ -162,7 +162,8 @@ namespace Sep
           INVALID_PARAMETER = -6,
           COMMAND_NOT_ALLOWED = -7,
           NO_AMMUNITION = -8,
-          END_GAME = -9
+          MEMORY_ERROR = -9,
+          END_GAME = -10
       };
 
       enum DeathCases
@@ -233,7 +234,7 @@ namespace Sep
 
       int setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& turn_two);
 
-      void createChest(Random *random);
+      bool createChest(Random *random);
 
       void findChest(int row, int col, int current_worm);
 

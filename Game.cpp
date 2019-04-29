@@ -268,7 +268,7 @@ void Game::createWorms(Random *random)
 }
 
 //------------------------------------------------------------------------------
-void Game::createChest(Random *random)
+bool Game::createChest(Random *random)
 {
   int weapon_number = random->getRandomInt(0, NUMBER_OF_WEAPONS - 1);
   int col = random->getRandomInt(0, board_width_ - 1);
@@ -283,8 +283,15 @@ void Game::createChest(Random *random)
         map_.at(BELOW_CURRENT_FIELD).getType() == Field::CHEST)
         && map_.at(CURRENT_FIELD).getType() != Field::WORM)
   {
-    Chest* chest = new Chest(Field::CHEST, weapon_number, row, col);
-    chest_Number_.emplace_back(chest); // Vector to save Chest Positions
+    try
+    {
+        Chest* chest = new Chest(Field::CHEST, weapon_number, row, col);
+        chest_Number_.emplace_back(chest);  // Vector to save Chest Positions
+    }
+    catch (std::bad_alloc&)
+    {
+        return true;
+    }
     map_.at(CURRENT_FIELD).setType(Field::CHEST);
   }
   else if(map_.at(CURRENT_FIELD).getType() == Field::WORM)
@@ -293,6 +300,7 @@ void Game::createChest(Random *random)
       cout << wormNumber.at(findWorm(row, col)).getName() << " (" << wormNumber.at(findWorm(row, col)).getId()
       << ") picked up 1 of " << wormNumber.at(findWorm(row, col)).getWeapons().at(weapon_number + 1).getName() << endl;
   }
+  return false;
 }
 
 void Game::findChest(int row, int col, int current_worm)
@@ -407,9 +415,12 @@ int Game::gameLoop()
     }
     if(checkWinner())
     {
-       return END_GAME;
+       return EVERYTHING_OK;
     }
-    createChest(&random); // adds chest on the end of every turn
+    if(createChest(&random))// adds chest on the end of every turn
+    {
+       return MEMORY_ERROR;
+    }
   }
 }
 //------------------------------------------------------------------------------
@@ -1158,9 +1169,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
       {
         makeDamage(row, col + range, damage);
       }
-
     }
-
   }
   else if(direction == 2) // down
   {
