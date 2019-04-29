@@ -987,28 +987,35 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage) // Me
 
 void Game::makeDamage(int row, int col, int damage)
 {
-  if(map_.at(CURRENT_FIELD).getType() == Field::CHEST)
+  if(row >= 0 && col >= 0 && row <= board_height_ && col <= board_width_)
   {
-    map_.at(CURRENT_FIELD).setType(Field::AIR);
-    cout << "Shot hit Chest at position: (" << row << ", " << col << ")" << endl;
-  }
-  else if(map_.at(CURRENT_FIELD).getType() == Field::EARTH)
-  {
-    map_.at(CURRENT_FIELD).setType(Field::AIR);
-    cout << "Shot hit Earth at position: (" << row << ", " << col << ")" << endl;
-  }
-  else if(map_.at(CURRENT_FIELD).getType() == Field::WATER || map_.at
-    (CURRENT_FIELD).getType() == Field::AIR)
-  {
-    cout << SHOT_MISSED << endl;
-  }
-  else if(map_.at(CURRENT_FIELD).getType() == Field::WORM && wormNumber.at(findWorm(row, col)).getHp() > 0)
-  {
-    wormNumber.at(findWorm(row, col)).damage(damage);
-    cout << "Shot hit Worm at position: (" << row << ", " << col << ")" << endl;
-    if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+    if(map_.at(CURRENT_FIELD).getType() == Field::CHEST)
     {
-      printDeathCases(DIED, findWorm((row),col));
+      map_.at(CURRENT_FIELD).setType(Field::AIR);
+      cout << "Shot hit Chest at position: (" << row << ", " << col << ")"
+           << endl;
+    }
+    else if(map_.at(CURRENT_FIELD).getType() == Field::EARTH)
+    {
+      map_.at(CURRENT_FIELD).setType(Field::AIR);
+      cout << "Shot hit Earth at position: (" << row << ", " << col << ")"
+           << endl;
+    }
+    else if(map_.at(CURRENT_FIELD).getType() == Field::WATER || map_.at
+      (CURRENT_FIELD).getType() == Field::AIR)
+    {
+      cout << SHOT_MISSED << endl;
+    }
+    else if(map_.at(CURRENT_FIELD).getType() == Field::WORM &&
+            wormNumber.at(findWorm(row, col)).getHp() > 0)
+    {
+      wormNumber.at(findWorm(row, col)).damage(damage);
+      cout << "Shot hit Worm at position: (" << row << ", " << col << ")"
+           << endl;
+      if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+      {
+        printDeathCases(DIED, findWorm((row), col));
+      }
     }
   }
 }
@@ -1016,18 +1023,25 @@ void Game::makeDamage(int row, int col, int damage)
 
 void Game::actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction)
 {
+  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
+  {
+    printErrorMessage(NO_AMMUNITION);
+    return;
+  }
+
   int row = wormNumber.at(current_worm).getRow();
   int col = wormNumber.at(current_worm).getCol();
+
   wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
 
-  if(direction == 0)
+  if(direction == 0) // left
   {
     if(col == 0)
     {
       cout << SHOT_MISSED << endl;
       return;
     }
-    else if(current_weapon == 0) // gun
+    else if(current_weapon == 0 || current_weapon == 1) // gun
     {
       do
       {
@@ -1035,15 +1049,129 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
       }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && col >= 0);
 
       makeDamage(row, col, damage);
-    }
-    else if(current_weapon == 1) // bazooka
-    {
 
+      if(current_weapon == 1) // bazooka
+      {
+        makeDamage(row - 1, col, damage);
+        makeDamage(row, col - 1, damage);
+        makeDamage(row, col + 1, damage);
+        makeDamage(row + 1, col, damage);
+      }
     }
     else if(current_weapon == 3) // blowtorch
     {
+      for(int range = 1; range <= 5; range++)
+      {
+        makeDamage(row, col - range, damage);
+      }
 
     }
+  }
+  else if(direction == 1) // right
+  {
+    if(col == board_width_)
+    {
+      cout << SHOT_MISSED << endl;
+      return;
+    }
+
+    else if(current_weapon == 0 || current_weapon == 1) // gun
+    {
+      do
+      {
+        col++;
+      }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && col <= board_width_);
+
+      makeDamage(row, col, damage);
+
+      if(current_weapon == 1) // bazooka
+      {
+        makeDamage(row - 1, col, damage);
+        makeDamage(row, col - 1, damage);
+        makeDamage(row, col + 1, damage);
+        makeDamage(row + 1, col, damage);
+      }
+    }
+    else if(current_weapon == 3) // blowtorch
+    {
+      for(int range = 1; range <= 5; range++)
+      {
+        makeDamage(row, col + range, damage);
+      }
+
+    }
+
+  }
+  else if(direction == 2) // down
+  {
+    if(row == board_height_)
+    {
+      cout << SHOT_MISSED << endl;
+      return;
+    }
+
+    else if(current_weapon == 0 || current_weapon == 1) // gun
+    {
+      do
+      {
+        row++;
+      }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && row <=
+      board_height_);
+
+      makeDamage(row, col, damage);
+
+      if(current_weapon == 1) // bazooka
+      {
+        makeDamage(row - 1, col, damage);
+        makeDamage(row, col - 1, damage);
+        makeDamage(row, col + 1, damage);
+        makeDamage(row + 1, col, damage);
+      }
+    }
+    else if(current_weapon == 3) // blowtorch
+    {
+      for(int range = 1; range <= 5; range++)
+      {
+        makeDamage(row + range, col, damage);
+      }
+
+    }
+
+  }
+  else if(direction == 3) // up
+  {
+    if(row == 0)
+    {
+      cout << SHOT_MISSED << endl;
+      return;
+    }
+
+    else if(current_weapon == 0 || current_weapon == 1) // gun
+    {
+      do
+      {
+        row--;
+      }while(map_.at(CURRENT_FIELD).getType() == Field::AIR && row >= 0);
+
+      makeDamage(row, col, damage);
+
+      if(current_weapon == 1) // bazooka
+      {
+        makeDamage(row - 1, col, damage);
+        makeDamage(row, col - 1, damage);
+        makeDamage(row, col + 1, damage);
+        makeDamage(row + 1, col, damage);
+      }
+    }
+    else if(current_weapon == 3) // blowtorch
+    {
+      for(int range = 1; range <= 5; range++)
+      {
+        makeDamage(row - range, col, damage);
+      }
+
+    }
+
   }
 
 }
@@ -1073,7 +1201,7 @@ void Game::actionColCommand(int current_worm, int current_weapon, int damage, in
   }
   else if(map_.at(CURRENT_FIELD).getType() == Field::WATER || row == (board_height_ - 1))
   {
-    cout << "Shot missed..." << endl;
+    cout << SHOT_MISSED << endl;
   }
   else if(map_.at(CURRENT_FIELD).getType() == Field::WORM && wormNumber.at(findWorm(row, col)).getHp() > 0)
   {
