@@ -69,7 +69,6 @@ const string Game::AIRSTRIKE = "airstrike";
 
 const string Game::SHOT_MISSED = "Shot missed...";
 
-
 //------------------------------------------------------------------------------
 Game::Game() : board_width_(0), board_height_(0), map_(), wormNumber(), chest_Number_()
 {
@@ -332,7 +331,7 @@ void Game::printMap()
     {
       cout << setw(MAX_DIGITS) << (index_row - 1);
     }
-    for(int index_col = 0; index_col < board_width_; index_col++)
+    for(unsigned int index_col = 0; index_col < board_width_; index_col++)
     {
       if(index_row == 0 || index_row == (board_height_ + 1))
       {
@@ -353,7 +352,7 @@ void Game::printMap()
         }
         else
         {
-          for(int count = 0; count < 6; count++)
+          for(unsigned int count = 0; count < 6; count++)
           {
             if((index_col + (index_row - 1) * board_width_) ==
                (wormNumber.at(count).getCol() +
@@ -389,10 +388,15 @@ int Game::gameLoop()
 
   Random random;
   createWorms(&random);
+  if(checkWinner())
+  {
+     return END_GAME;
+  }
   printMap();
 
   while(true)
   {
+
     if(setPlayerAndWorm(current_worm, player, turn_one, turn_two))
     {
       return 0; //wormNumber.at(current_worm) makes next move
@@ -401,9 +405,66 @@ int Game::gameLoop()
     while(!userInput(current_worm, move_command))
     {
     }
+    if(checkWinner())
+    {
+       return END_GAME;
+    }
     createChest(&random); // adds chest on the end of every turn
   }
 }
+//------------------------------------------------------------------------------
+int Game::checkWinner()
+{
+   int count_dead_worms = 0;
+   int index = 0;
+   for(index = 0; index < 6; index++)
+   {
+       if(wormNumber.at(index).getHp() <= 0)
+       {
+           count_dead_worms++;
+       }
+   }
+   if(count_dead_worms == 6)
+   {
+     printMap();
+     cout << "END: Draw!" << endl;
+     return END_GAME;
+   }
+   for(int index = 0; index < 3; index++)
+   {
+      if(wormNumber.at(index).getHp() <= 0)
+      {
+        count_dead_worms++;
+      }
+   }
+   if(count_dead_worms == 3)
+   {
+      printMap();
+      cout << "END: Player 2 win!" << endl;
+      return END_GAME;
+   }
+   else
+   {
+       count_dead_worms = 0;
+   }
+   for(int index = 3; index < 6; index++)
+   {
+     if(wormNumber.at(index).getHp() <= 0)
+     {
+       count_dead_worms++;
+     }
+   }
+   if(count_dead_worms == 3)
+   {
+      printMap();
+      cout << "END: Player 1 win!" << endl;
+      return END_GAME;
+   }
+   return EVERYTHING_OK;
+}
+
+
+
 
 //------------------------------------------------------------------------------
 int Game::setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
@@ -1020,7 +1081,6 @@ void Game::makeDamage(int row, int col, int damage)
   }
 }
 
-
 void Game::actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction)
 {
   if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
@@ -1169,12 +1229,10 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
       {
         makeDamage(row - range, col, damage);
       }
-
     }
-
   }
-
 }
+
 
 void Game::actionColCommand(int current_worm, int current_weapon, int damage, int col)
 {

@@ -161,7 +161,8 @@ namespace Sep
           WRONG_PARAMETER_COUNT = -5,
           INVALID_PARAMETER = -6,
           COMMAND_NOT_ALLOWED = -7,
-          NO_AMMUNITION = -8
+          NO_AMMUNITION = -8,
+          END_GAME = -9
       };
 
       enum DeathCases
@@ -244,15 +245,17 @@ namespace Sep
 
       bool gravity(int current_worm, int &row, int col);
 
+      int checkWinner();
+
       void chestGravity();
+
+      void makeDamage(int row, int col, int damage);
 
       //------------------------------------------------------------------------
       // User Input Method
       // Reads commands from stdin and calls command pattern.
       //
       bool userInput( int current_worm, int &move_command);
-
-      void makeDamage(int row, int col, int damage);
   };
 }
 #endif //SEP_GAME_H

@@ -30,8 +30,12 @@ int main(int argc, char* argv[])
 
   Sep::Game game;
   if(game.loadConfig(std::string(argv[1])))
+  {
     return Sep::RETURN_ERROR_BAD_CONFIG;
-  game.gameLoop();
-
+  }
+  if(!game.gameLoop())
+  {
+    return 1;
+  }
   return Sep::RETURN_OK;
 }
