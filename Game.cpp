@@ -575,8 +575,42 @@ void Game::move(int row, int col, int steps, int current_worm)
         break;
       }
     }
+    chestGravity();
   }
 }
+
+void Game::chestGravity()
+{
+    for(int index = 0; index < chest_Number_.size(); index++)
+    {
+        int row = chest_Number_.at(index)->getRow();
+        int col = chest_Number_.at(index)->getCol();
+        while(map_.at(BELOW_CURRENT_FIELD).getType() == (Field::AIR))
+        {
+            map_.at(CURRENT_FIELD).setType(Field::AIR);
+            row++;
+        }
+        if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::EARTH
+        || map_.at(BELOW_CURRENT_FIELD).getType() == Field::CHEST)
+        {
+            map_.at(CURRENT_FIELD).setType(Field::CHEST);
+            chest_Number_.at(index)->setPosition(row, col);
+        }
+        if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::WORM)
+        {
+            wormNumber.at(findWorm(row + 1, col)).getWeapons().at(chest_Number_.at(index)->getIdChest() + 1).increaseAmmo();
+            map_.at(CURRENT_FIELD).setType(Field::AIR);
+            cout << wormNumber.at(findWorm(row + 1, col)).getName() << " (" << wormNumber.at(findWorm(row + 1, col)).getId()
+                 << ") picked up 1 of " <<
+                 wormNumber.at(findWorm(row +1, col)).getWeapons().at(chest_Number_.at(index)->getIdChest() + 1).getName()
+                 << endl;
+            Chest *temp = chest_Number_.at(index);
+            chest_Number_.erase(chest_Number_.begin()+index);
+            delete temp;
+        }
+    }
+}
+
 
 //------------------------------------------------------------------------------
 vector<Worm> Game::getWormNumber()

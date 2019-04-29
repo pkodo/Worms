@@ -25,6 +25,12 @@ namespace Sep
         return weapon_number_;
     }
 
+    void Chest::setPosition(int row, int col)
+    {
+        row_ = row;
+        col_ = col;
+    }
+
     int Chest::getRow()
     {
         return row_;

@@ -25,6 +25,8 @@ namespace Sep
 
       int getIdChest();
 
+      void setPosition(int row, int col);
+
       int getRow();
 
       int getCol();

@@ -242,6 +242,8 @@ namespace Sep
 
       bool gravity(int current_worm, int &row, int col);
 
+      void chestGravity();
+
       //------------------------------------------------------------------------
       // User Input Method
       // Reads commands from stdin and calls command pattern.
