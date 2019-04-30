@@ -1145,21 +1145,10 @@ void Game::makeDamage(int row, int col, int damage)
   }
 }
 
-//------------------------------------------------------------------------------
-void Game::actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction)
+void Game::findTarget(int *row_ptr, int *col_ptr, int direction)
 {
-  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
-  {
-    printErrorMessage(NO_AMMUNITION);
-    return;
-  }
-  if(current_weapon == 3)
-  {
-      blowtorchCommand(current_worm, damage, direction, current_weapon);
-      return;
-  }
-  int row = wormNumber.at(current_worm).getRow();
-  int col = wormNumber.at(current_worm).getCol();
+  int row = *row_ptr;
+  int col = *col_ptr;
 
   try
   {
@@ -1241,6 +1230,28 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
   {
     cout << SHOT_MISSED << endl;
   }
+  *row_ptr = row;
+  *col_ptr = col;
+}
+
+//------------------------------------------------------------------------------
+void Game::actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction)
+{
+  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
+  {
+    printErrorMessage(NO_AMMUNITION);
+    return;
+  }
+  if(current_weapon == 3)
+  {
+      blowtorchCommand(current_worm, damage, direction, current_weapon);
+      return;
+  }
+  int row = wormNumber.at(current_worm).getRow();
+  int col = wormNumber.at(current_worm).getCol();
+
+  findTarget(&row, &col, direction);
+
   if(map_.at(CURRENT_FIELD).getType() == Field::WATER)
   {
     cout << SHOT_MISSED << endl;

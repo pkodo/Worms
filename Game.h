@@ -260,6 +260,8 @@ namespace Sep
       // Reads commands from stdin and calls command pattern.
       //
       bool userInput( int current_worm, int &move_command);
+
+      void findTarget(int *row, int *col, int direction);
   };
 }
 #endif //SEP_GAME_H
