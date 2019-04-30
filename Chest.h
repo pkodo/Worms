@@ -9,29 +9,61 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Chest Class
+  // class to create and design the chest
+  //
   class Chest : public Field
   {
   private:
-      FieldType chest_type_ = Field::CHEST;
-      int weapon_number_;
-      int row_;
-      int col_;
+    //--------------------------------------------------------------------------
+    // The first Variable declares the Type of chest_type_
+    // The other Variables define the number of the weapon, and the coordinates
+    //
+    FieldType chest_type_ = Field::CHEST;
+    int weapon_number_;
+    int row_;
+    int col_;
 
   public:
+    //--------------------------------------------------------------------------
+    // Constructor
+    //
+    Chest(FieldType type, int weapon_number, int row, int col);
 
-      Chest(FieldType type, int weapon_number, int row, int col);
+    //--------------------------------------------------------------------------
+    // Assignment Operator
+    //
+    virtual ~Chest();
 
-      virtual ~Chest();
+    //------------------------------------------------------------------------
+    // Getter Method
+    // returns the weapon_number
+    //
+    int getIdChest();
 
-      int getIdChest();
+    //--------------------------------------------------------------------------
+    // Setter Method
+    // sets the coordinates
+    //
+    void setPosition(int row, int col);
 
-      void setPosition(int row, int col);
+    //--------------------------------------------------------------------------
+    // Getter Method
+    // returns the row number
+    //
+    int getRow();
 
-      int getRow();
-
-      int getCol();
-
-      FieldType getType();
+    //--------------------------------------------------------------------------
+    // Getter Method
+    // returns the col number
+    //
+    int getCol();
+    //------------------------------------------------------------------------
+    // Getter Method
+    // returns the chest_type_
+    //
+    FieldType getType();
   };
 }
 
