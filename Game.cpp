@@ -1078,16 +1078,19 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage) // Me
 //------------------------------------------------------------------------------
 void Game::makeDamage(int row, int col, int damage)
 {
+  try
+  {
     if(map_.at(CURRENT_FIELD).getType() == Field::CHEST)
     {
       for(unsigned int index = 0; index < chest_Number_.size(); index++)
       {
-        if((chest_Number_.at(index)->getRow() * board_width_ + chest_Number_.at(index)->getCol())
+        if((chest_Number_.at(index)->getRow() * board_width_ +
+            chest_Number_.at(index)->getCol())
            == (row * board_width_ + col))
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
           shared_ptr<Chest> temp(chest_Number_.at(index));
-          chest_Number_.erase(chest_Number_.begin()+index);
+          chest_Number_.erase(chest_Number_.begin() + index);
           if(damage == 35) // blowtorch
           {
             cout << "Torch ";
@@ -1107,11 +1110,11 @@ void Game::makeDamage(int row, int col, int damage)
       map_.at(CURRENT_FIELD).setType(Field::AIR);
       if(damage == 35) // blowtorch
       {
-          cout << "Torch ";
+        cout << "Torch ";
       }
       else
       {
-          cout << "Shot ";
+        cout << "Shot ";
       }
       cout << "hit Earth at position: (" << row << ", " << col << ")"
            << endl;
@@ -1122,11 +1125,11 @@ void Game::makeDamage(int row, int col, int damage)
       wormNumber.at(findWorm(row, col)).damage(damage);
       if(damage == 35) // blowtorch
       {
-          cout << "Torch ";
+        cout << "Torch ";
       }
       else
       {
-          cout << "Shot ";
+        cout << "Shot ";
       }
       cout << "hit Worm at position: (" << row << ", " << col << ")"
            << endl;
@@ -1135,6 +1138,11 @@ void Game::makeDamage(int row, int col, int damage)
         printDeathCases(DIED, findWorm((row), col));
       }
     }
+  }
+  catch(std::out_of_range &outOfRange)
+  {
+    cout << SHOT_MISSED << endl;
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -1153,88 +1161,89 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
   int row = wormNumber.at(current_worm).getRow();
   int col = wormNumber.at(current_worm).getCol();
 
-  switch (direction)
+  try
   {
-    case 0:
-       while(map_.at(CURRENT_FIELD - 1).getType() == Field::AIR // left
-         && col > 0)
-         {
-           col--;
-         }
-         col--;
-         break;
-    case 1:
-       while(map_.at(CURRENT_FIELD + 1).getType() == Field::AIR // right
-         && col < board_width_)
-         {
-           col++;
-         }
-         col++;
-         break;
-    case 2:
-       while(map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR // down
-         && row < board_height_)
-         {
-           row++;
-         }
-         row++;
-         break;
-    case 3:
-       while(map_.at(ABOVE_CURRENT_FIELD).getType() == Field::AIR // up
-         && row > 0)
-         {
-           row--;
-         }
-         row--;
-         break;
-    case 4:
-       while(map_.at(CURRENT_FIELD + (board_width_ - 1)).getType() == Field::AIR // left-down
-         && (row < board_height_ && col > 0))
-       {
-         row++;
-         col--;
-       }
-       row++;
-       col--;
-       break;
-    case 5:
-       while(map_.at(CURRENT_FIELD + (board_width_ + 1)).getType() == Field::AIR // right-down
-         && (row < board_height_ && col < board_width_))
-       {
-         row++;
-         col++;
-       }
-       row++;
-       col++;
-       break;
-    case 6:
-       while(map_.at(CURRENT_FIELD - (board_width_ + 1)).getType() == Field::AIR // left-up
-         && (row > 0 && col > 0))
-       {
-         row--;
-         col--;
-       }
-       row--;
-       col--;
-       break;
-    case 7:
-       while(map_.at(CURRENT_FIELD - (board_width_ - 1)).getType() == Field::AIR // right-up
-         && (row > 0 && col < board_width_))
-       {
-         row--;
-         col++;
-       }
-       row--;
-       col++;
-       break;
-    default:
-      break;
+    switch(direction)
+    {
+      case 0:
+        while(map_.at(CURRENT_FIELD - 1).getType() == Field::AIR) // left
+        {
+          col--;
+        }
+        col--;
+        break;
+      case 1:
+        while(map_.at(CURRENT_FIELD + 1).getType() == Field::AIR) // right
+        {
+          col++;
+        }
+        col++;
+        break;
+      case 2:
+        while(map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR) // down
+        {
+          row++;
+        }
+        row++;
+        break;
+      case 3:
+        while(map_.at(ABOVE_CURRENT_FIELD).getType() == Field::AIR) // up
+        {
+          row--;
+        }
+        row--;
+        break;
+      case 4:
+        while(map_.at(CURRENT_FIELD + (board_width_ - 1)).getType() ==
+              Field::AIR) // left-down
+        {
+          row++;
+          col--;
+        }
+        row++;
+        col--;
+        break;
+      case 5:
+        while(map_.at(CURRENT_FIELD + (board_width_ + 1)).getType() ==
+              Field::AIR) // right-down
+        {
+          row++;
+          col++;
+        }
+        row++;
+        col++;
+        break;
+      case 6:
+        while(map_.at(CURRENT_FIELD - (board_width_ + 1)).getType() ==
+              Field::AIR) // left-up
+        {
+          row--;
+          col--;
+        }
+        row--;
+        col--;
+        break;
+      case 7:
+        while(map_.at(CURRENT_FIELD - (board_width_ - 1)).getType() ==
+              Field::AIR) // right-up
+        {
+          row--;
+          col++;
+        }
+        row--;
+        col++;
+        break;
+      default:
+        break;
+    }
   }
-  if((row < 0 || row > board_height_ || col < 0 || col > board_width_)
-      || map_.at(CURRENT_FIELD).getType() == Field::WATER)
+  catch(std::out_of_range &outOfRange)
   {
     cout << SHOT_MISSED << endl;
-    return;
+  }
+  if(map_.at(CURRENT_FIELD).getType() == Field::WATER)
+  {
+    cout << SHOT_MISSED << endl;
   }
   else if(current_weapon == 0) // Gun
   {
