@@ -66,36 +66,43 @@ namespace Sep
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 1);
+        return true;
       }
       else if(params.at(1) == "d") //2
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 2);
+        return true;
       }
       else if(params.at(1) == "u") //3
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 3);
+        return true;
       }
       else if(params.at(1) == "ld") //4
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 4);
+        return true;
       }
       else if(params.at(1) == "rd") //5
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 5);
+        return true;
       }
       else if(params.at(1) == "lu") //6
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 6);
+        return true;
       }
       else if(params.at(1) == "ru") //7
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
                 game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 7);
+        return true;
       }
     }
     if(params.at(1) == "idle")

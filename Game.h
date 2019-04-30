@@ -248,6 +248,8 @@ namespace Sep
 
       int checkWinner();
 
+      void blowtorchCommand(int current_worm, int damage, int direction, int current_weapon);
+
       void chestGravity();
 
       void makeDamage(int row, int col, int damage);
