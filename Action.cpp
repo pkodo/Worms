@@ -105,12 +105,8 @@ namespace Sep
         return true;
       }
     }
-    if(params.at(1) == "idle")
-    {
-      return true;
-    }
-    return false;
-}
+    return params.at(1) == "idle";
+  }
 
   bool Action::checkAirstrikeCommand(Game &game, std::vector<std::string> &params, int current_weapon)
   {
@@ -178,7 +174,5 @@ namespace Sep
 
   //----------------------------------------------------------------------------
   Action::~Action()
-  {
-
-  }
+  = default;
 }

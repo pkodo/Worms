@@ -28,7 +28,6 @@ namespace Sep
     }
 
     Help::~Help()
-    {
-    }
+    = default;
 
 }

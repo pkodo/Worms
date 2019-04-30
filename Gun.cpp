@@ -12,9 +12,7 @@ namespace Sep
   }
 
   Gun::~Gun()
-  {
-
-  }
+  = default;
 
   void Gun::action() const
   {

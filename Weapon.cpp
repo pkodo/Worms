@@ -8,10 +8,11 @@
 namespace Sep
 {
   //----------------------------------------------------------------------------
-  Weapon::Weapon(std::string name) : name_(name), ammo_(0), damage_(0)
+  Weapon::Weapon() : ammo_(0), damage_(0)
   {
   }
 
+  //----------------------------------------------------------------------------
   Weapon::Weapon(const std::string &name, int ammo, int damage) : name_(name),
                                                                   ammo_(ammo),
                                                                   damage_(
@@ -19,14 +20,9 @@ namespace Sep
   {
   }
 
-  Weapon::Weapon()
-  {
-  }
-
   //----------------------------------------------------------------------------
   Weapon::~Weapon()
-  {
-  }
+  = default;
 
   //----------------------------------------------------------------------------
   int Weapon::getAmmo() const
@@ -60,6 +56,5 @@ namespace Sep
 
   void Weapon::action() const
   {
-    std::cout << "fire!" << std::endl; // TODO
   }
 }

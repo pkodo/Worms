@@ -18,7 +18,6 @@ namespace Sep
     }
 
     Map::~Map()
-    {
-    }
+    = default;
 
 }

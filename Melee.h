@@ -14,7 +14,7 @@ namespace Sep
     public:
     Melee();
 
-    virtual ~Melee();
+    ~Melee() override;
 
   };
 }

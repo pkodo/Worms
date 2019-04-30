@@ -56,7 +56,5 @@ namespace Sep
   }
 
   Move::~Move()
-  {
-
-  }
+  = default;
 }

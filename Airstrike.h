@@ -15,7 +15,7 @@ namespace Sep
 
     Airstrike();
 
-    virtual ~Airstrike();
+    ~Airstrike() override;
   };
 }
 

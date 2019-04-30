@@ -14,7 +14,7 @@ namespace Sep
     public:
     Bazooka();
 
-    virtual ~Bazooka();
+    ~Bazooka() override;
 
   };
 }

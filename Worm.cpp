@@ -19,13 +19,11 @@ namespace Sep
 {
   //----------------------------------------------------------------------------
   Worm::~Worm()
-  {
-
-  }
+  = default;
 
   //----------------------------------------------------------------------------
-  Worm::Worm(int id_, std::string name) : Field(WORM), id_(id_),
-    name_(std::move(name))
+  Worm::Worm(int id_, std::string name) : Field(WORM), id_(id_), hp_(), row_
+    (), col_(), name_(std::move(name)), current_weapon_()
   {
   }
 
@@ -56,25 +54,25 @@ namespace Sep
   //----------------------------------------------------------------------------
   int Worm::getRow() const
   {
-      return row_;
+    return row_;
   }
 
   //----------------------------------------------------------------------------
   int Worm::getCol() const
   {
-      return col_;
+    return col_;
   }
 
   //----------------------------------------------------------------------------
   void Worm::setPosition(int row, int col)
   {
-      row_ = row;
-      col_ = col;
+    row_ = row;
+    col_ = col;
   }
 
   void Worm::setHp(int hp)
   {
-      hp_ = hp;
+    hp_ = hp;
   }
 
   //----------------------------------------------------------------------------

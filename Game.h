@@ -82,7 +82,7 @@ namespace Sep
       // @param cfg_file String of an argument to open.
       // @return Returns error or everything okay.
       //
-      int loadConfig(std::string cfg_file);
+      int loadConfig(const std::string& cfg_file);
 
       //------------------------------------------------------------------------
       // Add Worm Method
@@ -208,7 +208,7 @@ namespace Sep
       // @param steps shows how many steps should be done.
       // @return true for left steps and false for right steps.
       //
-      bool checkDirection(int &steps);
+      static bool checkDirection(int &steps);
 
       //------------------------------------------------------------------------
       // Make a move Method

@@ -19,7 +19,7 @@ namespace Sep
 
       int execute(Game &game, std::vector<std::string> &params) override;
 
-      virtual ~Choose();
+      ~Choose() override;
 
     private:
 

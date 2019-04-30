@@ -13,8 +13,7 @@ namespace Sep
     }
 
     Chest::~Chest()
-    {
-    }
+    = default;
 
     Chest::FieldType Chest::getType()
     {

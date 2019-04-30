@@ -16,7 +16,7 @@ namespace Sep
 
       int execute(Game &game, std::vector<std::string> &params) override;
 
-      virtual ~State();
+      ~State() override;
 
   private:
       int current_worm_;

@@ -16,11 +16,9 @@ namespace Sep
   class Weapon
   {
     public:
-      Weapon(std::string name);
+      Weapon();
 
       Weapon(const std::string &name, int ammo, int damage);
-
-      Weapon();
 
       virtual ~Weapon();
 

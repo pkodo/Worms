@@ -11,7 +11,5 @@ namespace Sep
   }
 
   Melee::~Melee()
-  {
-
-  }
+  = default;
 }

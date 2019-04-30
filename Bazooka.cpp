@@ -11,7 +11,5 @@ namespace Sep
   }
 
   Bazooka::~Bazooka()
-  {
-
-  }
+  = default;
 }

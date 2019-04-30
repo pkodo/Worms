@@ -27,7 +27,7 @@ namespace Sep
     public:
     //------------------------------------------------------------------------
     // Constructor
-    Command(std::string name);
+    explicit Command(std::string name);
 
     //------------------------------------------------------------------------
     // Destructor

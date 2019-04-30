@@ -14,7 +14,7 @@ namespace Sep
     public:
     Blowtorch();
 
-    virtual ~Blowtorch();
+    ~Blowtorch() override;
   };
 }
 

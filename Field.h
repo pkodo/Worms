@@ -24,7 +24,7 @@ namespace Sep
       //------------------------------------------------------------------------
       // Constructor
       //
-      Field(FieldType type);
+      explicit Field(FieldType type);
 
       //------------------------------------------------------------------------
       // Assignment Operator

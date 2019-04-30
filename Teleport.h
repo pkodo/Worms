@@ -15,7 +15,7 @@ namespace Sep
     public:
     Teleport();
 
-    virtual ~Teleport();
+    ~Teleport() override;
 
   };
 }

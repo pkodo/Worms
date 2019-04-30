@@ -146,7 +146,7 @@ void Game::printDeathCases(DeathCases type, int current_worm)
 }
 
 //------------------------------------------------------------------------------
-int Game::loadConfig(string cfg_file)
+int Game::loadConfig(const string& cfg_file)
 {
   int row = 0;
   ConfigKeywords check = SIZE;
@@ -826,11 +826,8 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
         move_command = 0;
         printErrorMessage(INVALID_PARAMETER);
     }
-    if(wormNumber.at(current_worm).getHp() <= 0)
-    {
-        return true; // If worm is dead, next Worm starts making commands
-    }
-    return false;
+    // If worm is dead, next Worm starts making commands
+    return wormNumber.at(current_worm).getHp() <= 0;
   }
   else if(command_params.at(0) == COMMAND_CHOOSE)
   {

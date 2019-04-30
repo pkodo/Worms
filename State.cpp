@@ -89,9 +89,7 @@ namespace Sep
     }
 
     State::~State()
-    {
-
-    }
+    = default;
 
 
 }

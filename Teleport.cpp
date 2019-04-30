@@ -11,7 +11,5 @@ namespace Sep
   }
 
   Teleport::~Teleport()
-  {
-
-  }
+  = default;
 }

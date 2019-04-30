@@ -14,7 +14,7 @@ namespace Sep
     public:
       Gun();
 
-      virtual ~Gun();
+      ~Gun() override;
 
       void action() const override;
 
