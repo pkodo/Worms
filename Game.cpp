@@ -98,13 +98,19 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
       break;
     case INVALID_PARAMETER:
         cout << "[ERROR] invalid parameter!" << endl;
-        break;
+      break;
     case COMMAND_NOT_ALLOWED:
       cout << "[ERROR] command currently not allowed!" << endl;
-          break;
+      break;
     case NO_AMMUNITION:
       cout << "[ERROR] no ammunition" << endl;
-          break;
+      break;
+    case MEMORY_ERROR:
+      cout << "[ERROR] memory error!" << endl;
+      break;
+    case END_GAME:
+      cout << "[ERROR] game over" << endl;
+      break;
     case EVERYTHING_OK:
       break;
   }
@@ -339,7 +345,7 @@ void Game::printMap()
     {
       cout << setw(MAX_DIGITS) << (index_row - 1);
     }
-    for(unsigned int index_col = 0; index_col < board_width_; index_col++)
+    for(int index_col = 0; index_col < board_width_; index_col++)
     {
       if(index_row == 0 || index_row == (board_height_ + 1))
       {
@@ -360,7 +366,7 @@ void Game::printMap()
         }
         else
         {
-          for(unsigned int count = 0; count < 6; count++)
+          for(int count = 0; count < 6; count++)
           {
             if((index_col + (index_row - 1) * board_width_) ==
                (wormNumber.at(count).getCol() +
@@ -1221,6 +1227,8 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
        row--;
        col++;
        break;
+    default:
+      break;
   }
   if((row < 0 || row > board_height_ || col < 0 || col > board_width_)
       || map_.at(CURRENT_FIELD).getType() == Field::WATER)
@@ -1254,24 +1262,34 @@ void Game::blowtorchCommand(int current_worm, int damage, int direction, int cur
         {
             case 0: // l
               col--;
+              break;
             case 1: // r
               col++;
+              break;
             case 2: // d
               row++;
+              break;
             case 3: // u
               row--;
+              break;
             case 4: // ld
               row++;
               col--;
+              break;
             case 5: // rd
               row++;
               col++;
+              break;
             case 6: // lu
               row--;
               col--;
+              break;
             case 7: // ru
               row--;
               col++;
+              break;
+            default:
+              break;
         }
         makeDamage(row, col, damage);
     }
