@@ -25,6 +25,7 @@
 #include <map>
 #include <iomanip>
 #include <vector>
+#include <memory>
 
 #define CURRENT_FIELD ((row * board_width_) + col)
 #define BELOW_CURRENT_FIELD ((row + 1) * board_width_ + col)
@@ -44,6 +45,7 @@ using std::map;
 using std::pair;
 using std::setw;
 using std::vector;
+using std::shared_ptr;
 using Sep::Game;
 using Sep::Worm;
 
@@ -291,7 +293,8 @@ bool Game::createChest(Random *random)
   {
     try
     {
-        Chest* chest = new Chest(Field::CHEST, weapon_number, row, col);
+        shared_ptr<Chest> chest(new Chest(Field::CHEST, weapon_number, row,
+          col));
         chest_Number_.emplace_back(chest);  // Vector to save Chest Positions
     }
     catch (std::bad_alloc&)
@@ -309,6 +312,7 @@ bool Game::createChest(Random *random)
   return false;
 }
 
+//------------------------------------------------------------------------------
 void Game::findChest(int row, int col, int current_worm)
 {
     for(unsigned int index = 0; index < chest_Number_.size(); index++)
@@ -322,9 +326,8 @@ void Game::findChest(int row, int col, int current_worm)
             cout << wormNumber.at(current_worm).getName() << " (" << wormNumber.at(current_worm).getId()
                  << ") picked up 1 of " <<
                  wormNumber.at(current_worm).getWeapons().at(chest_Number_.at(index)->getIdChest() + 1).getName() << endl;
-            Chest *temp = chest_Number_.at(index);
+            shared_ptr<Chest> temp(chest_Number_.at(index));
             chest_Number_.erase(chest_Number_.begin()+index);
-            delete temp;
             break;
         }
     }
@@ -438,12 +441,12 @@ int Game::gameLoop()
     }
   }
 }
+
 //------------------------------------------------------------------------------
 int Game::checkWinner()
 {
    int count_dead_worms = 0;
-   int index = 0;
-   for(index = 0; index < 6; index++)
+   for(int index = 0; index < 6; index++)
    {
        if(wormNumber.at(index).getHp() <= 0)
        {
@@ -492,9 +495,6 @@ int Game::checkWinner()
    }
    return EVERYTHING_OK;
 }
-
-
-
 
 //------------------------------------------------------------------------------
 int Game::setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
@@ -672,6 +672,7 @@ void Game::move(int row, int col, int steps, int current_worm)
   }
 }
 
+//------------------------------------------------------------------------------
 void Game::chestGravity()
 {
     for(unsigned int index = 0; index < chest_Number_.size(); index++)
@@ -697,13 +698,11 @@ void Game::chestGravity()
                  << ") picked up 1 of " <<
                  wormNumber.at(findWorm(row +1, col)).getWeapons().at(chest_Number_.at(index)->getIdChest() + 1).getName()
                  << endl;
-            Chest *temp = chest_Number_.at(index);
+            shared_ptr<Chest> temp(chest_Number_.at(index));
             chest_Number_.erase(chest_Number_.begin()+index);
-            delete temp;
         }
     }
 }
-
 
 //------------------------------------------------------------------------------
 vector<Worm> Game::getWormNumber()
@@ -806,7 +805,7 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params, int
   }
 }
 
-
+//------------------------------------------------------------------------------
 bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command)
 {
   if(command_params.at(0) == COMMAND_MOVE)
@@ -870,6 +869,7 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
   }
 }
 
+//------------------------------------------------------------------------------
 bool Game::gravity(int current_worm, int &row, int col)
 {
     int count = 0;
@@ -926,6 +926,7 @@ bool Game::gravity(int current_worm, int &row, int col)
     return true;
 }
 
+//------------------------------------------------------------------------------
 int Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
 {
   if(params.at(1) == GUN)
@@ -1005,6 +1006,7 @@ int Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
   return EVERYTHING_OK;
 }
 
+//------------------------------------------------------------------------------
 int Game::findWorm(int row, int col)
 {
   for(int index = 0; index < 6; index++)
@@ -1018,6 +1020,7 @@ int Game::findWorm(int row, int col)
   return INVALID_TARGET;
 }
 
+//------------------------------------------------------------------------------
 void Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
 {
   if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
@@ -1076,6 +1079,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage) // Me
   }
 }
 
+//------------------------------------------------------------------------------
 void Game::makeDamage(int row, int col, int damage)
 {
     if(map_.at(CURRENT_FIELD).getType() == Field::CHEST)
@@ -1086,9 +1090,8 @@ void Game::makeDamage(int row, int col, int damage)
            == (row * board_width_ + col))
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
-          Chest *temp = chest_Number_.at(index);
+          shared_ptr<Chest> temp(chest_Number_.at(index));
           chest_Number_.erase(chest_Number_.begin()+index);
-          delete temp;
           if(damage == 35) // blowtorch
           {
             cout << "Torch ";
@@ -1138,6 +1141,7 @@ void Game::makeDamage(int row, int col, int damage)
     }
 }
 
+//------------------------------------------------------------------------------
 void Game::actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction)
 {
   if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
@@ -1251,6 +1255,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
   }
 }
 
+//------------------------------------------------------------------------------
 void Game::blowtorchCommand(int current_worm, int damage, int direction, int current_weapon)
 {
     wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
@@ -1295,7 +1300,7 @@ void Game::blowtorchCommand(int current_worm, int damage, int direction, int cur
     }
 }
 
-
+//------------------------------------------------------------------------------
 void Game::actionColCommand(int current_worm, int current_weapon, int damage, int col)
 {
   if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
@@ -1319,6 +1324,7 @@ void Game::actionColCommand(int current_worm, int current_weapon, int damage, in
   }
 }
 
+//------------------------------------------------------------------------------
 bool Game::actionRowColCommand(int current_worm, int current_weapon, int row, int col)
 {
   wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();

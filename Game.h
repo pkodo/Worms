@@ -14,6 +14,7 @@
 #include "Random.h"
 #include <map>
 #include <vector>
+#include <memory>
 
 
 namespace Sep
@@ -148,7 +149,7 @@ namespace Sep
 
       std::vector<Worm> wormNumber;
 
-      std::vector<Chest*> chest_Number_;
+      std::vector<std::shared_ptr<Chest>> chest_Number_;
 
 
       enum ErrorType
