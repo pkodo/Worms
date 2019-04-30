@@ -14,7 +14,7 @@ namespace Sep
     int current_weapon = game.getWormNumber().at(current_worm_).getCurrentWeapon();
     if(params.size() == 1)
     {
-      if(checkOneParameterCommand(game, params, current_weapon))
+      if(checkOneParameterCommand(game, current_weapon))
       {
         return 0;
       }
@@ -38,7 +38,7 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  bool Action::checkOneParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon)
+  bool Action::checkOneParameterCommand(Game &game, int current_weapon)
   {
     if(current_weapon == 4) // MELEE
     {

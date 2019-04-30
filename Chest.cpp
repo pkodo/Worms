@@ -6,9 +6,9 @@
 
 namespace Sep
 {
-    Chest::Chest(FieldType type, int weapon_number, int row,
-                 int col) : Field(CHEST),weapon_number_(weapon_number),
-                 row_(row), col_(col)
+    Chest::Chest(int weapon_number, int row, int col)
+      : Field(CHEST), weapon_number_(weapon_number),
+        row_(row), col_(col)
     {
     }
 

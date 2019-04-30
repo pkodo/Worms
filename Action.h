@@ -22,7 +22,7 @@ namespace Sep
     private:
       int current_worm_;
 
-      bool checkOneParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon);
+      bool checkOneParameterCommand(Game &game, int current_weapon);
 
       bool checkTwoParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon);
 

@@ -293,8 +293,7 @@ bool Game::createChest(Random *random)
   {
     try
     {
-        shared_ptr<Chest> chest(new Chest(Field::CHEST, weapon_number, row,
-          col));
+        shared_ptr<Chest> chest(new Chest(weapon_number, row, col));
         chest_Number_.emplace_back(chest);  // Vector to save Chest Positions
     }
     catch (std::bad_alloc&)

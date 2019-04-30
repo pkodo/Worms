@@ -29,7 +29,7 @@ namespace Sep
     //--------------------------------------------------------------------------
     // Constructor
     //
-    Chest(FieldType type, int weapon_number, int row, int col);
+    Chest(int weapon_number, int row, int col);
 
     //--------------------------------------------------------------------------
     // Destructor
