@@ -9,14 +9,28 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Help Class
+  // class to execute the help command
+  //
   class Help : public Command
   {
   public:
-      Help(const std::string& name);
+    //--------------------------------------------------------------------------
+    // Constructor
+    //
+    Help(const std::string& name);
 
-      int execute(Game& game, std::vector<std::string>& params) override;
+    //--------------------------------------------------------------------------
+    // Method
+    // Method to execute the help command
+    //
+    int execute(Game& game, std::vector<std::string>& params) override;
 
-      virtual ~Help();
+    //--------------------------------------------------------------------------
+    // Destructor
+    //
+    virtual ~Help();
 
   };
 }

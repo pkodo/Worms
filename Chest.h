@@ -32,7 +32,7 @@ namespace Sep
     Chest(FieldType type, int weapon_number, int row, int col);
 
     //--------------------------------------------------------------------------
-    // Assignment Operator
+    // Destructor
     //
     virtual ~Chest();
 
