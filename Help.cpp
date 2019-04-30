@@ -7,11 +7,11 @@
 
 namespace Sep
 {
-    Help::Help(const std::string &name) : Command(name)
+    Help::Help(const std::string& name) : Command(name)
     {
     }
 
-    int Help::execute(Game &game, std::vector<std::string> &params)
+    int Help::execute(Game& game, std::vector<std::string>& params)
     {
         std::cout << "Available commands:\n" << "  move [left/right] [0..3]\n" <<
             "    Move your worm.\n" << "  choose [weapon]\n" << "    Select your weapon.\n"

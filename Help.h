@@ -12,9 +12,9 @@ namespace Sep
   class Help : public Command
   {
   public:
-      Help(const std::string &name);
+      Help(const std::string& name);
 
-      int execute(Game &game, std::vector<std::string> &params) override;
+      int execute(Game& game, std::vector<std::string>& params) override;
 
       virtual ~Help();
 

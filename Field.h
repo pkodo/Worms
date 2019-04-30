@@ -31,7 +31,7 @@ namespace Sep
       // Used to assign one Field object to another. Is set to delete.
       // @param field Original with values to copy.
       //
-      Field& operator=(Field& field) = delete;
+      Field& operator = (Field& field) = delete;
 
       //------------------------------------------------------------------------
       // Getter Methods
