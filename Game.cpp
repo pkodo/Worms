@@ -108,10 +108,8 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
       cout << "[ERROR] no ammunition" << endl;
       break;
     case MEMORY_ERROR:
-      cout << "[ERROR] memory error!" << endl;
       break;
     case END_GAME:
-      cout << "[ERROR] game over" << endl;
       break;
     case EVERYTHING_OK:
       break;
@@ -245,12 +243,12 @@ void Game::createWorms(Random *random)
   for(int index = 1; index < 7; index++)
   {
     wormNumber.emplace_back(Worm(index, random->getWormName()));
-  }
-  for(int index = 1; index < 7; index++)
-  {
     col = random->getRandomInt(0, board_width_ - 1);
-    while((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR
-           && map_.at(CURRENT_FIELD).getType() == Field::AIR))
+    while(map_.at(CURRENT_FIELD).getType() == Field::WORM)
+    {
+      col = random->getRandomInt(0, board_width_ - 1);
+    }
+    while(map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR)
     {
       row++; // row gets increased to handle gravity
     }
@@ -258,7 +256,6 @@ void Game::createWorms(Random *random)
     cout << "spawning " << wormNumber.at(index - 1).getName() << " ("
          << wormNumber.at(index - 1).getId() << ")" << " at " << "(0," << col
          << ")" << endl;
-
     if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::WATER)
     {
       printDeathCases(DROWNED, (index - 1));
@@ -406,15 +403,14 @@ int Game::gameLoop()
 
   Random random;
   createWorms(&random);
-  if(checkWinner())
-  {
-     return EVERYTHING_OK;
-  }
-  printMap();
 
   while(true)
   {
-
+    printMap();
+    if(checkWinner())
+    {
+      return EVERYTHING_OK;
+    }
     if(setPlayerAndWorm(current_worm, player, turn_one, turn_two))
     {
       return 0; //wormNumber.at(current_worm) makes next move
@@ -827,6 +823,7 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
         printErrorMessage(INVALID_PARAMETER);
     }
     // If worm is dead, next Worm starts making commands
+    printMap();
     return wormNumber.at(current_worm).getHp() <= 0;
   }
   else if(command_params.at(0) == COMMAND_CHOOSE)
