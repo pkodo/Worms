@@ -84,16 +84,6 @@ namespace Sep
       //
       int loadConfig(const std::string& cfg_file);
 
-      //------------------------------------------------------------------------
-      // Add Worm Method
-      // Adds a worm on a given field on the playground.
-      // @param row defines in which row the worm should occur.
-      // @param col defines in which column the worm should occur.
-      // @return Returns error or everything okay.
-      //
-
-
-
 
       //------------------------------------------------------------------------
       // Move Method
@@ -111,24 +101,78 @@ namespace Sep
       //
       void printMap();
 
+      //------------------------------------------------------------------------
+      // gameLoop Method
+      // implement the game logic and it sets the basic stats for the game logic
+      //
       int gameLoop();
 
-      int chooseWeapon(int current_worm, std::vector<std::string> &params);
+      //------------------------------------------------------------------------
+      // choose Weapon Method
+      // choose the weapon and check for monition
+      // @param current worm   number of the current worms
+      // @param params    the vector whrere the weapons are stored
+      //
+      int chooseWeapon(int current_worm, std::vector<std::string>& params);
 
+      //------------------------------------------------------------------------
+      // Getter Method
+      // get the board_width_
+      //
       int getBoardWidth();
 
+      //------------------------------------------------------------------------
+      // Getter Method
+      // get the board_height_
+      //
       int getBoardHeight();
 
+      //------------------------------------------------------------------------
+      // actionCommand Method
+      // function for MELEE
+      // @param current_worm  describes the number of the current worms
+      // @param current_weapon describes the number of the current weapon_number
+      // @param damage is used for damage calulations
       void actionCommand(int current_worm,  int current_weapon, int damage);
 
-      void actionDirectionCommand(int current_worm, int current_weapon, int damage, int direction);
+      //------------------------------------------------------------------------
+      // actionDirectionCommand Method
+      // function for the use of the different weapons
+      // @param current_worm  describes the number of the current worms
+      // @param current_weapon describes the number of the current weapon_number
+      // @param damage is used for damage calulations
+      // @param direction is the number of the direction
+      void actionDirectionCommand(int current_worm, int current_weapon,
+                                  int damage, int direction);
 
-      void actionColCommand(int current_worm, int current_weapon, int damage, int col);
+      //------------------------------------------------------------------------
+      // actionColCommand Method
+      // @param current_worm  describes the number of the current worms
+      // @param current_weapon describes the number of the current weapon_number
+      // @param damage is used for damage calulations
+      // @param col   is the number of the column
+      void actionColCommand(int current_worm, int current_weapon,
+                            int damage, int col);
 
-      bool actionRowColCommand(int current_worm, int current_weapon, int row, int col);
+      //------------------------------------------------------------------------
+      // actionRowColCommand Method
+      // @param current_worm  describes the number of the current worms
+      // @param current_weapon describes the number of the current weapon_number
+      // @param damage is used for damage calulations
+      // @param col   is the number of the column
+      bool actionRowColCommand(int current_worm, int current_weapon,
+                               int row, int col);
 
+      //------------------------------------------------------------------------
+      // Getter Method
+      // get the number of the worms
+      //
       std::vector<Sep::Worm> getWormNumber();
 
+      //------------------------------------------------------------------------
+      // Setter Method
+      // sets the variable for determing the game
+      //
       void setQuit(bool quit);
 
 

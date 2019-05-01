@@ -32,11 +32,18 @@ namespace Sep
     Chest(int weapon_number, int row, int col);
 
     //--------------------------------------------------------------------------
+    // Assignment Operator
+    // Used to assign one Chest object to another. Is set to delete.
+    // @param chest Original with values to copy.
+    //
+    Chest& operator = (Chest& chest) = delete;
+
+    //--------------------------------------------------------------------------
     // Destructor
     //
     virtual ~Chest();
 
-    //------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     // Getter Method
     // returns the weapon_number
     //
