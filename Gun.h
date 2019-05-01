@@ -9,15 +9,34 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Gun Class
+  // class to perform Weapon-operations
+  //
   class Gun : public Weapon
   {
     public:
+      //------------------------------------------------------------------------
+      // Constructor
+      //
       Gun();
 
+      //------------------------------------------------------------------------
+      // Assignment Operator
+      // Used to assign one Gun object to another. Is set to delete.
+      // @param gun Original with values to copy.
+      //
+      Gun& operator = (Gun& gun) = delete;
+
+      //------------------------------------------------------------------------
+      // Destructor
+      //
       ~Gun() override;
 
+      //------------------------------------------------------------------------
+      // Method
+      // method to use the Weapon
       void action() const override;
-
   };
 }
 

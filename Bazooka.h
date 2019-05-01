@@ -9,12 +9,29 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Bazooka Class
+  // class to perform Weapon-operations
+  //
   class Bazooka : public Weapon
   {
     public:
-    Bazooka();
+      //------------------------------------------------------------------------
+      // Constructor
+      //
+      Bazooka();
 
-    ~Bazooka() override;
+      //------------------------------------------------------------------------
+      // Assignment Operator
+      // Used to assign one Bazooka object to another. Is set to delete.
+      // @param bazooka Original with values to copy.
+      //
+      Bazooka& operator = (Bazooka& bazooka) = delete;
+
+      //------------------------------------------------------------------------
+      // Destructor
+      //
+      ~Bazooka() override;
 
   };
 }

@@ -9,13 +9,29 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Airstrike Class
+  // class to perform Weapon-operations
+  //
   class Airstrike : public Weapon
   {
     public:
+      //------------------------------------------------------------------------
+      // Constructor
+      //
+      Airstrike();
 
-    Airstrike();
+      //------------------------------------------------------------------------
+      // Assignment Operator
+      // Used to assign one Airstrike object to another. Is set to delete.
+      // @param airstrike Original with values to copy.
+      //
+      Airstrike& operator = (Airstrike& airstrike) = delete;
 
-    ~Airstrike() override;
+      //------------------------------------------------------------------------
+      // Destructor
+      //
+      ~Airstrike() override;
   };
 }
 

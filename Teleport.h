@@ -10,12 +10,29 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Teleport Class
+  // class to perform Weapon-operations
+  //
   class Teleport : public Weapon
   {
     public:
-    Teleport();
+      //------------------------------------------------------------------------
+      // Constructor
+      //
+      Teleport();
 
-    ~Teleport() override;
+      //------------------------------------------------------------------------
+      // Assignment Operator
+      // Used to assign one Teleport object to another. Is set to delete.
+      // @param teleport Original with values to copy.
+      //
+      Teleport& operator = (Teleport& teleport) = delete;
+
+      //------------------------------------------------------------------------
+      // Destructor
+      //
+      ~Teleport() override;
 
   };
 }

@@ -9,12 +9,29 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Melee Class
+  // class to perform Weapon-operations
+  //
   class Melee : public Weapon
   {
     public:
-    Melee();
+      //------------------------------------------------------------------------
+      // Constructor
+      //
+      Melee();
 
-    ~Melee() override;
+      //------------------------------------------------------------------------
+      // Assignment Operator
+      // Used to assign one Melee object to another. Is set to delete.
+      // @param melee Original with values to copy.
+      //
+      Melee& operator = (Melee& melee) = delete;
+
+      //------------------------------------------------------------------------
+      // Destructor
+      //
+      ~Melee() override;
 
   };
 }
