@@ -256,7 +256,7 @@ void Game::createWorms(Random *random)
     }
     wormNumber.at(index - 1).setPosition(row, col);
     cout << "spawning " << wormNumber.at(index - 1).getName() << " ("
-         << wormNumber.at(index - 1).getId() << ")" << " at " << "(0," << col
+         << wormNumber.at(index - 1).getId() << ")" << " at " << "(0, " << col
          << ")" << endl;
     if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::WATER)
     {
@@ -277,8 +277,8 @@ void Game::createWorms(Random *random)
 //------------------------------------------------------------------------------
 bool Game::createChest(Random *random)
 {
-  int weapon_number = random->getRandomInt(0, NUMBER_OF_WEAPONS - 1);
   int col = random->getRandomInt(0, board_width_ - 1);
+  int weapon_number = random->getRandomInt(0, NUMBER_OF_WEAPONS - 1);
   int row = 0;
   while(((map_.at(BELOW_CURRENT_FIELD).getType() == Field::AIR ||
           map_.at(BELOW_CURRENT_FIELD).getType() == Field::WORM)
@@ -617,7 +617,8 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
   if(map_.at(TARGET_FIELD).getType() == Field::CHEST) // Step command
   {
     findChest(row, step_direction, current_worm);
-    if(map_.at(CURRENT_FIELD).getType() == Field::WORM)
+    if(map_.at(CURRENT_FIELD).getType() == Field::WORM
+       && map_.at(CURRENT_FIELD).getType() != Field::WORM)
     {
       map_.at(CURRENT_FIELD).setType(Field::AIR);
     }
@@ -629,7 +630,8 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
   }
   if(map_.at(TARGET_FIELD).getType() == Field::AIR) // Step command
   {
-    if(map_.at(CURRENT_FIELD).getType() == Field::WORM)
+    if(map_.at(CURRENT_FIELD).getType() == Field::WORM
+       && map_.at(CURRENT_FIELD).getType() != Field::WORM)
     {
       map_.at(CURRENT_FIELD).setType(Field::AIR);
     }
@@ -688,16 +690,14 @@ void Game::move(int row, int col, int steps, int current_worm)
         printErrorMessage(WRONG_MOVE);
         break;
       }
-      else if(((col + steps) > board_width_) || (col + steps) < 0)
+      else if(((col + 1) > board_width_) || (col + 1) < 0)
       {
+        map_.at(CURRENT_FIELD).setType(Field::AIR);
+        wormNumber.at(current_worm).setHp(0);
         printDeathCases(OUT_OF_MAP, current_worm);
         break;
       }
-      else
-      {
-        printDeathCases(DROWNED, current_worm);
-        break;
-      }
+      break;
     }
     chestGravity();
   }
