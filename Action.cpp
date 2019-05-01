@@ -126,7 +126,7 @@ namespace Sep
         return false;
       }
       game.actionColCommand(current_worm_, current_weapon,
-              game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), col);
+         game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), col);
       return true;
     }
     else
@@ -161,9 +161,12 @@ namespace Sep
       {
         return false;
       }
-      game.actionRowColCommand(current_worm_, current_weapon, row, col);
+      if(game.actionRowColCommand(current_worm_, current_weapon, row, col))
+      {
+         return true;
+      }
     }
-    return true;
+    return false;
   }
 
   //----------------------------------------------------------------------------

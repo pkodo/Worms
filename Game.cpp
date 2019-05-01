@@ -865,10 +865,16 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
       return false;
     }
     Action action(COMMAND_MOVE, current_worm);
-    if(action.execute(*this, command_params))
+    if(action.execute(*this, command_params)
+       && command_params.size() == 3)
     {
-      printErrorMessage(COMMAND_NOT_ALLOWED);
+      printErrorMessage(INVALID_TARGET);
       return false;
+    }
+    else if(!action.execute(*this, command_params))
+    {
+       printErrorMessage(WRONG_PARAMETER_COUNT);
+       return false;
     }
     return true; // Next turn
   }
@@ -950,8 +956,11 @@ bool Game::gravity(int current_worm, int &row, int col)
     }
     catch(std::out_of_range &outOfRange)
     {
+      if(wormNumber.at(current_worm).getHp() > 0)
+      {
+        printDeathCases(OUT_OF_MAP, current_worm);
+      }
       wormNumber.at(current_worm).setHp(0);
-      printDeathCases(OUT_OF_MAP, current_worm);
       return false;
     }
  }
@@ -1348,11 +1357,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon, int dama
 
   findTarget(&row, &col, direction);
 
-  if(map_.at(CURRENT_FIELD).getType() == Field::WATER)
-  {
-    cout << SHOT_MISSED << endl;
-  }
-  else if(current_weapon == 0) // Gun
+  if(current_weapon == 0) // Gun
   {
      makeDamage(row, col, damage);
   }
@@ -1421,36 +1426,32 @@ void Game::actionColCommand(int current_worm, int current_weapon, int damage, in
     return;
   }
   int row = 0;
-  wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
-  while(map_.at(CURRENT_FIELD).getType() == Field::AIR && row < (board_height_ - 1))
+  try
   {
-    row++;
+      wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+      while(map_.at(CURRENT_FIELD).getType() == Field::AIR)
+      {
+        row++;
+      }
+      makeDamage(row, col, damage);
   }
-  if(map_.at(CURRENT_FIELD).getType() == Field::WATER || row == (board_height_ - 1))
+  catch(std::out_of_range &outOfRange)
   {
-    cout << SHOT_MISSED << endl;
-  }
-  else
-  {
-    makeDamage(row, col, damage);
+      cout << SHOT_MISSED << endl;
   }
 }
 
 //------------------------------------------------------------------------------
 bool Game::actionRowColCommand(int current_worm, int current_weapon, int row, int col)
 {
-  wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
   if(map_.at(CURRENT_FIELD).getType() == Field::AIR
       || map_.at(CURRENT_FIELD).getType() == Field::CHEST)
   {
+    wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
     map_.at((wormNumber.at(current_worm).getRow() * board_width_)
             + wormNumber.at(current_worm).getCol()).setType(Field::AIR);
     gravity(current_worm, row, col);
-    return true; // add worm drowned
+    return true;
   }
-  else
-  {
-    printErrorMessage(INVALID_TARGET);
-    return false;
-  }
+  return false;
 }
