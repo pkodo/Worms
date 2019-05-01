@@ -9,9 +9,10 @@ namespace Sep
 {
 
   //----------------------------------------------------------------------------
-  int Action::execute(Game &game, std::vector<std::string> &params)
+  int Action::execute(Game& game, std::vector<std::string>& params)
   {
-    int current_weapon = game.getWormNumber().at(current_worm_).getCurrentWeapon();
+    int current_weapon = game.getWormNumber().at(current_worm_).
+                              getCurrentWeapon();
     if(params.size() == 1)
     {
       if(checkOneParameterCommand(game, current_weapon))
@@ -38,19 +39,21 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  bool Action::checkOneParameterCommand(Game &game, int current_weapon)
+  bool Action::checkOneParameterCommand(Game& game, int current_weapon)
   {
     if(current_weapon == 4) // MELEE
     {
       game.actionCommand(current_worm_, current_weapon,
-              game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage());
+              game.getWormNumber().at(current_worm_).getWeapons()
+              .at(current_weapon).getDamage());
       return true;
     }
     return false;
   }
 
   //----------------------------------------------------------------------------
-  bool Action::checkTwoParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon)
+  bool Action::checkTwoParameterCommand(Game& game,
+                   std::vector<std::string>& params, int current_weapon)
   {
     if((current_weapon == 0 //GUN
       || current_weapon == 1 // BAZOOKA
@@ -59,56 +62,65 @@ namespace Sep
       if(params.at(1) == "l") // 0
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 0);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 0);
         return true;
       }
       else if(params.at(1) == "r") //1
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 1);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 1);
         return true;
       }
       else if(params.at(1) == "d") //2
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 2);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 2);
         return true;
       }
       else if(params.at(1) == "u") //3
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 3);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 3);
         return true;
       }
       else if(params.at(1) == "ld") //4
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 4);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 4);
         return true;
       }
       else if(params.at(1) == "rd") //5
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 5);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 5);
         return true;
       }
       else if(params.at(1) == "lu") //6
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 6);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 6);
         return true;
       }
       else if(params.at(1) == "ru") //7
       {
         game.actionDirectionCommand(current_worm_, current_weapon,
-                game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), 7);
+                game.getWormNumber().at(current_worm_).getWeapons().
+                at(current_weapon).getDamage(), 7);
         return true;
       }
     }
     return params.at(1) == "idle";
   }
 
-  bool Action::checkAirstrikeCommand(Game &game, std::vector<std::string> &params, int current_weapon)
+  bool Action::checkAirstrikeCommand(Game& game,
+               std::vector<std::string>& params, int current_weapon)
   {
     int col = 0;
     if(current_weapon == 5)// AIRSTRIKE
@@ -117,7 +129,7 @@ namespace Sep
       {
         col = stoi(params.at(1));
       }
-      catch(std::invalid_argument &invalidArgument)
+      catch(std::invalid_argument& invalidArgument)
       {
 
       }
@@ -126,7 +138,8 @@ namespace Sep
         return false;
       }
       game.actionColCommand(current_worm_, current_weapon,
-         game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getDamage(), col);
+         game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).
+         getDamage(), col);
       return true;
     }
     else
@@ -136,28 +149,31 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  bool Action::checkThreeParameterCommand(Game &game, std::vector<std::string> &params, int current_weapon)
+  bool Action::checkThreeParameterCommand(Game& game,
+                   std::vector<std::string>& params, int current_weapon)
   {
     int row = 0;
     int col = 0;
-    if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == 2) // teleport
+    if(game.getWormNumber().at(current_worm_).getCurrentWeapon() == 2)
+    // teleport
     {
       try
       {
         row = stoi(params.at(1));
       }
-      catch(std::invalid_argument &invalidArgument)
+      catch(std::invalid_argument& invalidArgument)
       {
       }
       try
       {
         col = stoi(params.at(2));
       }
-      catch(std::invalid_argument &invalidArgument1)
+      catch(std::invalid_argument& invalidArgument1)
       {
       }
-      if(((col < 0 || col > game.getBoardWidth()) || (row < 0 || row > game.getBoardHeight())) ||
-          game.getWormNumber().at(current_worm_).getWeapons().at(current_weapon).getAmmo() <= 0)
+      if(((col < 0 || col > game.getBoardWidth()) || (row < 0 || row > game.
+          getBoardHeight())) || game.getWormNumber().at(current_worm_).
+          getWeapons().at(current_weapon).getAmmo() <= 0)
       {
         return false;
       }
@@ -170,7 +186,7 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  Action::Action(const std::string &name, int current_worm) : Command(name),
+  Action::Action(const std::string& name, int current_worm) : Command(name),
                                                 current_worm_(current_worm)
   {
   }

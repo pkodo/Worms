@@ -467,7 +467,6 @@ int Game::checkWinner()
   }
   if(count_dead_worms == 6)
   {
-    printMap();
     cout << "END: Draw!" << endl;
     return END_GAME;
   }
@@ -484,7 +483,6 @@ int Game::checkWinner()
   }
   if(count_dead_worms == 3)
   {
-    printMap();
     cout << "END: Player 2 win!" << endl;
     return END_GAME;
   }
@@ -501,7 +499,6 @@ int Game::checkWinner()
   }
   if(count_dead_worms == 3)
   {
-    printMap();
     cout << "END: Player 1 win!" << endl;
     return END_GAME;
   }
@@ -848,7 +845,7 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
   {
     if(command_params.size() != 3)
     {
-      printErrorMessage(WRONG_PARAMETER_COUNT);
+      printErrorMessage(INVALID_PARAMETER);
       return false;
     }
     if(move_command != 0)
@@ -864,7 +861,6 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
       printErrorMessage(INVALID_PARAMETER);
     }
     // If worm is dead, next Worm starts making commands
-    printMap();
     return wormNumber.at(current_worm).getHp() <= 0;
   }
   else if(command_params.at(0) == COMMAND_CHOOSE)
@@ -891,13 +887,18 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
     Action action(COMMAND_MOVE, current_worm);
     if(action.execute(*this, command_params))
     {
-      if(command_params.size() == 3)
+      if(command_params.size() == 3
+      && wormNumber.at(current_worm).getCurrentWeapon() == 2)
       {
         printErrorMessage(INVALID_TARGET);
       }
-      else
+      else if(command_params.size() == 3)
       {
         printErrorMessage(WRONG_PARAMETER_COUNT);
+      }
+      else
+      {
+        printErrorMessage(INVALID_PARAMETER);
       }
       return false;
     }
@@ -1097,9 +1098,8 @@ int Game::findWorm(int row, int col)
 }
 
 //------------------------------------------------------------------------------
-void
-Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
-{
+void Game::actionCommand(int current_worm, int current_weapon, int damage)
+{ // Melee
   if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
   {
     printErrorMessage(NO_AMMUNITION);
@@ -1118,15 +1118,15 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
         wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
         cout << "Attack hit Worm at position (" << (row - 1) << ", " << (col + index)
              << ")" << endl;
-        if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+        if(wormNumber.at(findWorm(row - 1, col + index)).getHp() <= 0)
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
           printDeathCases(DIED, findWorm((row), col));
         }
         else
         {
-          cout << wormNumber.at(findWorm(row, col)).getName() << " ("
-               << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+          cout << wormNumber.at(findWorm(row - 1, col + index)).getName() << " ("
+               << wormNumber.at(findWorm(row - 1, col + index)).getId() << ") took " <<
                damage << "hp damage" << endl;
         }
       }
@@ -1143,15 +1143,15 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
       wormNumber.at(findWorm(row, (col + 1))).damage(damage);
       cout << "Attack hit Worm at position (" << row << ", " << (col + 1) << ")"
            << endl;
-      if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+      if(wormNumber.at(findWorm(row, col + 1)).getHp() <= 0)
       {
         map_.at(CURRENT_FIELD).setType(Field::AIR);
         printDeathCases(DIED, findWorm((row), col));
       }
       else
       {
-        cout << wormNumber.at(findWorm(row, col)).getName() << " ("
-             << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+        cout << wormNumber.at(findWorm(row, col + 1)).getName() << " ("
+             << wormNumber.at(findWorm(row, col + 1)).getId() << ") took " <<
              damage << "hp damage" << endl;
       }
     }
@@ -1169,15 +1169,15 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
         wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
         cout << "Attack hit Worm at position (" << (row + 1) << ", " << (col + index)
              << ")" << endl;
-        if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+        if(wormNumber.at(findWorm(row + 1, col + index)).getHp() <= 0)
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
           printDeathCases(DIED, findWorm((row), col));
         }
         else
         {
-          cout << wormNumber.at(findWorm(row, col)).getName() << " ("
-               << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+          cout << wormNumber.at(findWorm(row + 1, col + index)).getName() << " ("
+               << wormNumber.at(findWorm(row + 1, col + index)).getId() << ") took " <<
                damage << "hp damage" << endl;
         }
       }
@@ -1194,15 +1194,15 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
       wormNumber.at(findWorm(row, (col - 1))).damage(damage);
       cout << "Attack hit Worm at position (" << row << ", " << (col - 1)
            << ")" << endl;
-      if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+      if(wormNumber.at(findWorm(row, col - 1)).getHp() <= 0)
       {
         map_.at(CURRENT_FIELD).setType(Field::AIR);
         printDeathCases(DIED, findWorm((row), col));
       }
       else
       {
-        cout << wormNumber.at(findWorm(row, col)).getName() << " ("
-             << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+        cout << wormNumber.at(findWorm(row, col - 1)).getName() << " ("
+             << wormNumber.at(findWorm(row, col - 1)).getId() << ") took " <<
              damage << "hp damage" << endl;
       }
     }
