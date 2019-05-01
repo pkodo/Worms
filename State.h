@@ -9,16 +9,29 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // State Class
+  // class to show the current state of the game
+  //
   class State : public Command
   {
-  public:
-      State(const std::string &name, int current_worm);
 
-      int execute(Game &game, std::vector<std::string> &params) override;
+    public:
+      // Constructor
+      State(const std::string& name, int current_worm);
 
+      //execute Method
+      //prints state
+      //@param game   is the actual board
+      //@param params  is the input stored in a vector
+      //
+      int execute(Game& game, std::vector<std::string>& params) override;
+
+      //Destructor
       ~State() override;
 
-  private:
+    private:
+      //the variable is the number of the current worm
       int current_worm_;
 
 
