@@ -1292,11 +1292,8 @@ void Game::makeDamage(int row, int col, int damage)
   }
 }
 
-void Game::findTarget(int *row_ptr, int *col_ptr, int direction)
+void Game::findTarget(int &row, int &col, int direction)
 {
-  int row = *row_ptr;
-  int col = *col_ptr;
-
   try
   {
     switch(direction)
@@ -1377,8 +1374,6 @@ void Game::findTarget(int *row_ptr, int *col_ptr, int direction)
   {
     cout << SHOT_MISSED << endl;
   }
-  *row_ptr = row;
-  *col_ptr = col;
 }
 
 //------------------------------------------------------------------------------
@@ -1399,7 +1394,7 @@ Game::actionDirectionCommand(int current_worm, int current_weapon, int damage,
   int row = wormNumber.at(current_worm).getRow();
   int col = wormNumber.at(current_worm).getCol();
 
-  findTarget(&row, &col, direction);
+  findTarget(row, col, direction);
 
   if(current_weapon == 0) // Gun
   {

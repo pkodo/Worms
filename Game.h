@@ -241,7 +241,8 @@ namespace Sep
 
       void createWorms(Random *random);
 
-      int setPlayerAndWorm(int &current_worm, int &player, int& turn_one, int& turn_two);
+      int setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
+        int &turn_two);
 
       bool createChest(Random *random);
 
@@ -269,7 +270,7 @@ namespace Sep
       //
       bool userInput( int current_worm, int &move_command);
 
-      void findTarget(int *row, int *col, int direction);
+      void findTarget(int &row, int &col, int direction);
   };
 }
 #endif //SEP_GAME_H
