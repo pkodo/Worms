@@ -9,6 +9,10 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Map Class
+  // class to execut map
+  //
   class Map : public Command
   {
     public:

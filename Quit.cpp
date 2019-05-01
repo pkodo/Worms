@@ -8,14 +8,14 @@
 namespace Sep
 {
 
-  Quit::Quit(const std::string &name) : Command(name)
+  Quit::Quit(const std::string& name) : Command(name)
   {
   }
 
   Quit::~Quit()
   = default;
 
-  int Quit::execute(Game &game, std::vector<std::string> &params)
+  int Quit::execute(Game &game, std::vector<std::string>& params)
   {
     game.setQuit(true);
     return 0;

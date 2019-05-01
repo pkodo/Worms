@@ -12,7 +12,7 @@ using std::endl;
 namespace Sep
 {
 
-  int Move::execute(Game &game, std::vector<std::string> &params)
+  int Move::execute(Game& game, std::vector<std::string>& params)
   {
     int steps = -1;
     if(params.at(1) == "l" || params.at(1) == "r")
@@ -50,7 +50,7 @@ namespace Sep
   }
 
 
-  Move::Move(const std::string &name, int current_worm) : Command(name),
+  Move::Move(const std::string& name, int current_worm) : Command(name),
                                             current_worm_(current_worm)
   {
   }

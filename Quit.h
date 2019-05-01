@@ -8,14 +8,20 @@
 #include "Command.h"
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Quit Class
+  // class end the game
+  //
   class Quit : public Command
   {
     public:
-    Quit(const std::string &name);
+      //Constructor
+      Quit(const std::string& name);
 
-    virtual ~Quit();
+      //Destructor
+      virtual ~Quit();
 
-    int execute(Game &game, std::vector<std::string> &params) override;
+      int execute(Game& game, std::vector<std::string>& params) override;
   };
 }
 

@@ -9,24 +9,35 @@
 
 namespace Sep
 {
+  //----------------------------------------------------------------------------
+  // Move Class
+  // class to move the worms
+  //
   class Move : public Command
   {
     public:
-      Move(const std::string &name, int current_worm);
+      //Constructor
+      Move(const std::string& name, int current_worm);
 
-      int execute(Game &game, std::vector<std::string> &params) override;
+      //execute Method
+      //moves the worm
+      //@param game   is the actual board
+      //@param params  is the input stored in a vector
+      //
+      int execute(Game& game, std::vector<std::string>& params) override;
 
+      //Destructor
       ~Move() override;
 
     private:
 
-    enum ErrorType
-    {
-       EVERYTHING_OK,
-       INVALID_PARAMETER
-    };
-
-    int current_worm_;
+      enum ErrorType
+      {
+        EVERYTHING_OK,
+        INVALID_PARAMETER
+      };
+      //the variable shows the current worm
+      int current_worm_;
   };
 }
 

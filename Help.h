@@ -15,22 +15,24 @@ namespace Sep
   //
   class Help : public Command
   {
-  public:
-    //--------------------------------------------------------------------------
-    // Constructor
-    //
-    explicit Help(const std::string& name);
+    public:
+      //--------------------------------------------------------------------------
+      // Constructor
+      //
+      explicit Help(const std::string& name);
 
-    //--------------------------------------------------------------------------
-    // Method
-    // Method to execute the help command
-    //
-    int execute(Game& game, std::vector<std::string>& params) override;
+      //--------------------------------------------------------------------------
+      // Method
+      // Method to execute the help command
+      //@param game  is the actual board
+      //@param params    is the input stored in a vector
+      //
+      int execute(Game& game, std::vector<std::string>& params) override;
 
-    //--------------------------------------------------------------------------
-    // Destructor
-    //
-    ~Help() override;
+      //--------------------------------------------------------------------------
+      // Destructor
+      //
+      ~Help() override;
 
   };
 }
