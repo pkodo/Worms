@@ -415,6 +415,7 @@ int Game::gameLoop()
     {
       return 0; //wormNumber.at(current_worm) makes next move
     }
+    wormNumber.at(current_worm).setCurrentWeapon(0); // sets gun to default
     move_command = 0;
     while(!userInput(current_worm, move_command))
     {
@@ -865,16 +866,17 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params, in
       return false;
     }
     Action action(COMMAND_MOVE, current_worm);
-    if(action.execute(*this, command_params)
-       && command_params.size() == 3)
+    if(action.execute(*this, command_params))
     {
-      printErrorMessage(INVALID_TARGET);
+      if(command_params.size() == 3)
+      {
+          printErrorMessage(INVALID_TARGET);
+      }
+      else
+      {
+          printErrorMessage(WRONG_PARAMETER_COUNT);
+      }
       return false;
-    }
-    else if(!action.execute(*this, command_params))
-    {
-       printErrorMessage(WRONG_PARAMETER_COUNT);
-       return false;
     }
     return true; // Next turn
   }
