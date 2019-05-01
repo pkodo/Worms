@@ -377,9 +377,10 @@ void Game::printMap()
         {
           for(int count = 0; count < 6; count++)
           {
-            if((index_col + (index_row - 1) * board_width_) ==
+            if(((index_col + (index_row - 1) * board_width_) ==
                (wormNumber.at(count).getCol() +
                 wormNumber.at(count).getRow() * board_width_))
+                && wormNumber.at(count).getHp() > 0)
             {
               cout << wormNumber.at(count).getCharacter();
             }

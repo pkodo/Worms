@@ -46,6 +46,7 @@ namespace Sep
     {
       return INVALID_PARAMETER;
     }
+    game.printMap();
     return EVERYTHING_OK;
   }
 
