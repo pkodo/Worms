@@ -1116,7 +1116,7 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
          && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
-        cout << "Attack hit Worm at: (" << (row - 1) << ", " << (col + index)
+        cout << "Attack hit Worm at position (" << (row - 1) << ", " << (col + index)
              << ")" << endl;
         if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
         {
@@ -1141,7 +1141,7 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
        && wormNumber.at(findWorm(row, col + 1)).getHp() > 0)
     {
       wormNumber.at(findWorm(row, (col + 1))).damage(damage);
-      cout << "Attack hit Worm at: (" << row << ", " << (col + 1) << ")"
+      cout << "Attack hit Worm at position (" << row << ", " << (col + 1) << ")"
            << endl;
       if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
       {
@@ -1167,7 +1167,7 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
          && wormNumber.at(findWorm((row + 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
-        cout << "Attack hit Worm at: (" << (row + 1) << ", " << (col + index)
+        cout << "Attack hit Worm at position (" << (row + 1) << ", " << (col + index)
              << ")" << endl;
         if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
         {
@@ -1192,7 +1192,7 @@ Game::actionCommand(int current_worm, int current_weapon, int damage) // Melee
        && wormNumber.at(findWorm(row, col - 1)).getHp() > 0)
     {
       wormNumber.at(findWorm(row, (col - 1))).damage(damage);
-      cout << "Attack hit Worm at position: (" << row << ", " << (col - 1)
+      cout << "Attack hit Worm at position (" << row << ", " << (col - 1)
            << ")" << endl;
       if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
       {
@@ -1236,7 +1236,7 @@ void Game::makeDamage(int row, int col, int damage)
           {
             cout << "Shot ";
           }
-          cout << "hit Chest at position: (" << row << ", " << col << ")"
+          cout << "hit Chest at position (" << row << ", " << col << ")"
                << endl;
           break;
         }
@@ -1253,7 +1253,7 @@ void Game::makeDamage(int row, int col, int damage)
       {
         cout << "Shot ";
       }
-      cout << "hit Earth at position: (" << row << ", " << col << ")"
+      cout << "hit Earth at position (" << row << ", " << col << ")"
            << endl;
     }
     else if(map_.at(CURRENT_FIELD).getType() == Field::WORM &&
@@ -1268,7 +1268,7 @@ void Game::makeDamage(int row, int col, int damage)
       {
         cout << "Shot ";
       }
-      cout << "hit Worm at position: (" << row << ", " << col << ")"
+      cout << "hit Worm at position (" << row << ", " << col << ")"
            << endl;
       if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
       {
