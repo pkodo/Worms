@@ -1292,7 +1292,7 @@ void Game::makeDamage(int row, int col, int damage)
   }
 }
 
-void Game::findTarget(int &row, int &col, int direction)
+bool Game::findTarget(int &row, int &col, int direction)
 {
   try
   {
@@ -1369,11 +1369,17 @@ void Game::findTarget(int &row, int &col, int direction)
       default:
         break;
     }
+    if(row < 0 || col < 0 || row > board_height_ || col > board_width_)
+    {
+      throw std::out_of_range(SHOT_MISSED);
+    }
   }
   catch(std::out_of_range &outOfRange)
   {
     cout << SHOT_MISSED << endl;
+    return false;
   }
+  return true;
 }
 
 //------------------------------------------------------------------------------
@@ -1394,20 +1400,21 @@ Game::actionDirectionCommand(int current_worm, int current_weapon, int damage,
   int row = wormNumber.at(current_worm).getRow();
   int col = wormNumber.at(current_worm).getCol();
 
-  findTarget(row, col, direction);
-
-  if(current_weapon == 0) // Gun
+  if(findTarget(row, col, direction))
   {
-    makeDamage(row, col, damage);
-  }
-  else if(current_weapon == 1) // Bazooka
-  {
-    wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
-    makeDamage(row, col, damage);
-    makeDamage(row - 1, col, damage);
-    makeDamage(row, col + 1, damage);
-    makeDamage(row + 1, col, damage);
-    makeDamage(row, col - 1, damage);
+    if(current_weapon == 0) // Gun
+    {
+      makeDamage(row, col, damage);
+    }
+    else if(current_weapon == 1) // Bazooka
+    {
+      wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+      makeDamage(row, col, damage);
+      makeDamage(row - 1, col, damage);
+      makeDamage(row, col + 1, damage);
+      makeDamage(row + 1, col, damage);
+      makeDamage(row, col - 1, damage);
+    }
   }
 }
 

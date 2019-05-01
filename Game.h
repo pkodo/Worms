@@ -314,7 +314,7 @@ namespace Sep
       //
       bool userInput( int current_worm, int &move_command);
 
-      void findTarget(int &row, int &col, int direction);
+      bool findTarget(int &row, int &col, int direction);
   };
 }
 #endif //SEP_GAME_H
