@@ -426,6 +426,7 @@ int Game::gameLoop()
       gravity(index, row, col);
       wormNumber.at(index).setPosition(row, col);
     }
+    chestGravity();
     if(checkWinner())
     {
        return EVERYTHING_OK;
@@ -907,8 +908,9 @@ bool Game::gravity(int current_worm, int &row, int col)
                 }
             }
         }
-        if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::EARTH
+        if((map_.at(BELOW_CURRENT_FIELD).getType() == Field::EARTH
            || map_.at(BELOW_CURRENT_FIELD).getType() == Field::WORM)
+           && wormNumber.at(current_worm).getHp() > 0)
         {
             map_.at(CURRENT_FIELD).setType(Field::WORM);
             wormNumber.at(current_worm).setPosition(row, col);
@@ -921,7 +923,6 @@ bool Game::gravity(int current_worm, int &row, int col)
             count++;
             findChest(row , col, current_worm);
           }
-
           if(count > 1)
           {
             wormNumber.at(current_worm).damage((count - 1) * 10);
@@ -1060,51 +1061,103 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage) // Me
   int row = wormNumber.at(current_worm).getRow();
   int col = wormNumber.at(current_worm).getCol();
   wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
-  for(int index = -1; index < 2; index++)
+  try
   {
-    if(map_.at(ABOVE_CURRENT_FIELD + index).getType() == Field::WORM
-        && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
-    {
-      wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
-      cout << "Attack hit Worm at: (" << (row - 1) << ", " << (col + index) << ")" << endl;
-      if(wormNumber.at(findWorm((row - 1), (col + index))).getHp() <= 0)
+      for(int index = -1; index < 2; index++)
       {
-        printDeathCases(DIED, findWorm((row - 1), (col + index)));
+        if(map_.at(ABOVE_CURRENT_FIELD + index).getType() == Field::WORM
+          && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
+          {
+            wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
+            cout << "Attack hit Worm at: (" << (row - 1) << ", " << (col + index) << ")" << endl;
+            if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+             {
+               map_.at(CURRENT_FIELD).setType(Field::AIR);
+               printDeathCases(DIED, findWorm((row), col));
+             }
+             else
+             {
+               cout << wormNumber.at(findWorm(row, col)).getName() << " ("
+                  << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+                  damage << "hp damage" << endl;
+             }
+          }
       }
-    }
   }
-  if(map_.at(CURRENT_FIELD + 1).getType() == Field::WORM
-      && wormNumber.at(findWorm(row, col + 1)).getHp() > 0)
+  catch(std::out_of_range &outOfRange)
   {
-    wormNumber.at(findWorm(row, (col + 1))).damage(damage);
-    cout << "Attack hit Worm at: (" << row << ", " << (col + 1) << ")" << endl;
-    if(wormNumber.at(findWorm(row, col + 1)).getHp() <= 0)
-    {
-      printDeathCases(DIED, findWorm((row),col + 1));
-    }
   }
-  for(int index = 1; index > -2; index--)
+  try
   {
-    if(map_.at(BELOW_CURRENT_FIELD + index).getType() == Field::WORM
-        && wormNumber.at(findWorm((row + 1), (col + index))).getHp() > 0)
-    {
-      wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
-      cout << "Attack hit Worm at: (" << (row + 1) << ", " << (col + index) << ")" << endl;
-      if(wormNumber.at(findWorm((row + 1), (col + index))).getHp() <= 0)
+    if(map_.at(CURRENT_FIELD + 1).getType() == Field::WORM
+          && wormNumber.at(findWorm(row, col + 1)).getHp() > 0)
       {
-        printDeathCases(DIED, findWorm((row + 1), (col + index)));
+        wormNumber.at(findWorm(row, (col + 1))).damage(damage);
+        cout << "Attack hit Worm at: (" << row << ", " << (col + 1) << ")" << endl;
+          if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+          {
+              map_.at(CURRENT_FIELD).setType(Field::AIR);
+              printDeathCases(DIED, findWorm((row), col));
+          }
+          else
+          {
+              cout << wormNumber.at(findWorm(row, col)).getName() << " ("
+                   << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+                   damage << "hp damage" << endl;
+          }
       }
-    }
   }
-  if(map_.at(CURRENT_FIELD - 1).getType() == Field::WORM
-      && wormNumber.at(findWorm(row, col - 1)).getHp() > 0)
+  catch(std::out_of_range &outOfRange)
   {
-    wormNumber.at(findWorm(row, (col - 1))).damage(damage);
-    cout << "Attack hit Worm at position: (" << row << ", " << (col - 1) << ")" << endl;
-    if(wormNumber.at(findWorm(row, col - 1)).getHp() <= 0)
-    {
-      printDeathCases(DIED, findWorm((row),col - 1));
-    }
+  }
+  try
+  {
+    for(int index = 1; index > -2; index--)
+      {
+        if(map_.at(BELOW_CURRENT_FIELD + index).getType() == Field::WORM
+            && wormNumber.at(findWorm((row + 1), (col + index))).getHp() > 0)
+        {
+          wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
+          cout << "Attack hit Worm at: (" << (row + 1) << ", " << (col + index) << ")" << endl;
+            if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+            {
+                map_.at(CURRENT_FIELD).setType(Field::AIR);
+                printDeathCases(DIED, findWorm((row), col));
+            }
+            else
+            {
+                cout << wormNumber.at(findWorm(row, col)).getName() << " ("
+                     << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+                     damage << "hp damage" << endl;
+            }
+        }
+      }
+  }
+  catch(std::out_of_range &outOfRange)
+  {
+  }
+  try
+  {
+    if(map_.at(CURRENT_FIELD - 1).getType() == Field::WORM
+          && wormNumber.at(findWorm(row, col - 1)).getHp() > 0)
+      {
+        wormNumber.at(findWorm(row, (col - 1))).damage(damage);
+        cout << "Attack hit Worm at position: (" << row << ", " << (col - 1) << ")" << endl;
+          if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
+          {
+              map_.at(CURRENT_FIELD).setType(Field::AIR);
+              printDeathCases(DIED, findWorm((row), col));
+          }
+          else
+          {
+              cout << wormNumber.at(findWorm(row, col)).getName() << " ("
+                   << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+                   damage << "hp damage" << endl;
+          }
+      }
+  }
+  catch(std::out_of_range &outOfRange)
+  {
   }
 }
 
@@ -1168,6 +1221,7 @@ void Game::makeDamage(int row, int col, int damage)
            << endl;
       if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
       {
+        map_.at(CURRENT_FIELD).setType(Field::AIR);
         printDeathCases(DIED, findWorm((row), col));
       }
       else
@@ -1180,7 +1234,10 @@ void Game::makeDamage(int row, int col, int damage)
   }
   catch(std::out_of_range &outOfRange)
   {
-    cout << SHOT_MISSED << endl;
+    if(damage != 35) // Blowtorch
+    {
+      cout << SHOT_MISSED << endl;
+    }
   }
 }
 
