@@ -15,6 +15,7 @@
 #include "Help.h"
 #include "State.h"
 #include "Map.h"
+#include "Quit.h"
 #include "Action.h"
 #include "Choose.h"
 #include <iostream>
@@ -72,7 +73,8 @@ const string Game::AIRSTRIKE = "airstrike";
 const string Game::SHOT_MISSED = "Shot missed...";
 
 //------------------------------------------------------------------------------
-Game::Game() : board_width_(0), board_height_(0), map_(), wormNumber(), chest_Number_()
+Game::Game() : board_width_(0), board_height_(0), quit_(false), map_(),
+wormNumber(), chest_Number_()
 {
   Game::map_.insert(pair<int, Field>(board_height_ * board_width_,
                                      Field(Field::AIR)));
@@ -420,6 +422,10 @@ int Game::gameLoop()
     while(!userInput(current_worm, move_command))
     {
     }
+    if(quit_)
+    {
+      break;
+    }
     for(int index = 0; index < 6; index ++)
     {
       row = wormNumber.at(index).getRow();
@@ -437,6 +443,7 @@ int Game::gameLoop()
        return MEMORY_ERROR;
     }
   }
+  return EVERYTHING_OK;
 }
 
 //------------------------------------------------------------------------------
@@ -655,6 +662,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
     map_.at(CURRENT_FIELD).setType(Field::WORM);
     return false;
   }
+  return false;
 }
 
 //------------------------------------------------------------------------------
@@ -747,7 +755,8 @@ bool Game::userInput(int current_worm, int &move_command)
   std::transform(input_line.begin(), input_line.end(), input_line.begin(), ::tolower); // case insensitiv
   if(cin.eof())
   {
-      exit(EVERYTHING_OK);
+    Help help(COMMAND_HELP);
+    return help.execute(*this, command_params) == 0;
   }
   stringstream input_stream(input_line);
   while(input_stream >> param)
@@ -763,11 +772,7 @@ bool Game::userInput(int current_worm, int &move_command)
       printErrorMessage(UNKNOWN_COMMAND);
       return false;
   }
-  if(checkOneParameterCommand(command_params, current_worm, move_command))
-  {
-    return false;
-  }
-  return true;
+  return !checkOneParameterCommand(command_params, current_worm, move_command);
 }
 
 //------------------------------------------------------------------------------
@@ -778,7 +783,8 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params, int
   {
     if(command_params.at(0) == COMMAND_QUIT)
     {
-      exit(EVERYTHING_OK);
+      Quit quit(COMMAND_QUIT);
+      return quit.execute(*this, command_params) == 0;
     }
     else if(command_params.at(0) == COMMAND_HELP)
     {
@@ -810,11 +816,8 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params, int
   }
   else
   {
-    if(checkMoreParameterCommand(command_params, current_worm, move_command))
-    {
-      return false;
-    }
-    return true;
+    return !checkMoreParameterCommand(command_params, current_worm,
+                                      move_command);
   }
 }
 
@@ -1082,16 +1085,16 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage) // Me
             wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
             cout << "Attack hit Worm at: (" << (row - 1) << ", " << (col + index) << ")" << endl;
             if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
-             {
+            {
                map_.at(CURRENT_FIELD).setType(Field::AIR);
                printDeathCases(DIED, findWorm((row), col));
-             }
-             else
-             {
-               cout << wormNumber.at(findWorm(row, col)).getName() << " ("
-                  << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
-                  damage << "hp damage" << endl;
-             }
+            }
+            else
+            {
+              cout << wormNumber.at(findWorm(row, col)).getName() << " ("
+                   << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
+                   damage << "hp damage" << endl;
+            }
           }
       }
   }
@@ -1456,4 +1459,10 @@ bool Game::actionRowColCommand(int current_worm, int current_weapon, int row, in
     return true;
   }
   return false;
+}
+
+//------------------------------------------------------------------------------
+void Sep::Game::setQuit(bool quit)
+{
+  quit_ = quit;
 }

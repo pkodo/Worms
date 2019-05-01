@@ -129,6 +129,9 @@ namespace Sep
 
       std::vector<Sep::Worm> getWormNumber();
 
+      void setQuit(bool quit);
+
+
 
     private:
 
@@ -141,6 +144,11 @@ namespace Sep
       // Variable for determining the longitude of the gameboard
       //
       int board_height_;
+
+      //------------------------------------------------------------------------
+      // Variable for determining the end of the game
+      //
+      bool quit_;
 
       //------------------------------------------------------------------------
       // Datastructure for objects on the gameboard
