@@ -11,11 +11,18 @@ namespace Sep
 {
   class Map : public Command
   {
-  public:
+    public:
+      //Constructor
       explicit Map(const std::string &name);
 
-      int execute(Game &game, std::vector<std::string> &params) override;
+      //execute Method
+      //prints the board
+      //@param game   is the actual board
+      //@param params  is the input stored in a vector
+      //
+      int execute(Game &game, std::vector<std::string>& params) override;
 
+      //Destructor
       ~Map() override;
 
   };
