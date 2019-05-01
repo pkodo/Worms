@@ -24,7 +24,7 @@ namespace Sep
       //@param game   is the actual board
       //@param params  is the input stored in a vector
       //
-      int execute(Game &game, std::vector<std::string>& params) override;
+      int execute(Game& game, std::vector<std::string>& params) override;
 
       //Destructor
       ~Map() override;

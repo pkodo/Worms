@@ -28,13 +28,13 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  const std::string &Worm::getName() const
+  const std::string& Worm::getName() const
   {
     return name_;
   }
 
   //----------------------------------------------------------------------------
-  void Worm::setName(const std::string &name)
+  void Worm::setName(const std::string& name)
   {
     Worm::name_ = name;
   }
@@ -76,7 +76,7 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  std::vector<Weapon> &Worm::getWeapons()
+  std::vector<Weapon>& Worm::getWeapons()
   {
     return weapons_;
   }
