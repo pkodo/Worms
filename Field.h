@@ -20,7 +20,9 @@ namespace Sep
   class Field
   {
     public:
-
+      //------------------------------------------------------------------------
+      // Enum describing the current field type
+      //
       enum FieldType {AIR, EARTH, WATER, WORM, CHEST};
 
       //------------------------------------------------------------------------

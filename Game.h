@@ -57,7 +57,16 @@ namespace Sep
       static const std::string AIRSTRIKE;
 
       static const std::string SHOT_MISSED;
-
+      static const std::string TORCH;
+      static const std::string SHOT;
+      static const std::string TOOK;
+      static const std::string TOOK_ACTION;
+      static const std::string HP_FALL_DAMAGE;
+      static const std::string HP_DAMAGE;
+      static const std::string ATTACK_HIT_WORM;
+      static const std::string BRACKET_1;
+      static const std::string BRACKET_2;
+      static const std::string COMMA;
 
       //------------------------------------------------------------------------
       // Constructor

@@ -65,7 +65,7 @@ namespace Sep
       int current_worm_;
 
       //------------------------------------------------------------------------
-      // Enum describing the currently choosed weapon
+      // Enum describing the currently chosen weapon
       //
       enum Weapons
       {

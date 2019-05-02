@@ -73,6 +73,16 @@ const string Game::MELEE = "melee";
 const string Game::AIRSTRIKE = "airstrike";
 
 const string Game::SHOT_MISSED = "Shot missed...";
+const string Game::TORCH = "Torch ";
+const string Game::SHOT = "Shot ";
+const string Game::TOOK = " took ";
+const string Game::TOOK_ACTION = ") took ";
+const string Game::HP_FALL_DAMAGE = "hp fall damage";
+const string Game::HP_DAMAGE = "hp damage";
+const string Game::ATTACK_HIT_WORM = "Attack hit Worm at position (";
+const string Game::BRACKET_1 = " (";
+const string Game::BRACKET_2 = ")";
+const string Game::COMMA = ", ";
 
 //------------------------------------------------------------------------------
 Game::Game() : board_width_(0), board_height_(0), quit_(false), map_(),
@@ -127,22 +137,23 @@ void Game::printDeathCases(DeathCases type, int current_worm)
   switch(type)
   {
     case DROWNED:
-      cout << wormNumber.at(current_worm).getName() << " (" <<
-           wormNumber.at(current_worm).getId() << ")" << " drowned." << endl;
+      cout << wormNumber.at(current_worm).getName() << BRACKET_1 <<
+           wormNumber.at(current_worm).getId() << BRACKET_2 << " drowned." <<
+           endl;
       break;
     case FELL:
-      cout << wormNumber.at(current_worm).getName() << " (" <<
-           wormNumber.at(current_worm).getId() << ")" << " fell into his death."
-           << endl;
+      cout << wormNumber.at(current_worm).getName() << BRACKET_1 <<
+           wormNumber.at(current_worm).getId() << BRACKET_2 <<
+           " fell into his death." << endl;
       break;
     case OUT_OF_MAP:
-      cout << wormNumber.at(current_worm).getName() << " (" <<
-           wormNumber.at(current_worm).getId() << ")" << " fell out of the map."
-           << endl;
+      cout << wormNumber.at(current_worm).getName() << BRACKET_1 <<
+           wormNumber.at(current_worm).getId() << BRACKET_2 <<
+           " fell out of the map." << endl;
       break;
     case DIED:
-      cout << wormNumber.at(current_worm).getName() << " (" <<
-           wormNumber.at(current_worm).getId() << ")" << " died." << endl;
+      cout << wormNumber.at(current_worm).getName() << BRACKET_1 <<
+           wormNumber.at(current_worm).getId() << BRACKET_2 << " died." << endl;
       break;
   }
 }
@@ -257,9 +268,9 @@ void Game::createWorms(Random *random)
       row++; // row gets increased to handle gravity
     }
     wormNumber.at(index - 1).setPosition(row, col);
-    cout << "spawning " << wormNumber.at(index - 1).getName() << " ("
-         << wormNumber.at(index - 1).getId() << ")" << " at " << "(0, " << col
-         << ")" << endl;
+    cout << "spawning " << wormNumber.at(index - 1).getName() << BRACKET_1
+         << wormNumber.at(index - 1).getId() << BRACKET_2 << " at " << "(0, "
+         << col << BRACKET_2 << endl;
     if(map_.at(BELOW_CURRENT_FIELD).getType() == Field::WATER)
     {
       printDeathCases(DROWNED, (index - 1));
@@ -307,7 +318,7 @@ bool Game::createChest(Random *random)
   {
     wormNumber.at(findWorm(row, col)).getWeapons().at(
       weapon_number + 1).increaseAmmo();
-    cout << wormNumber.at(findWorm(row, col)).getName() << " ("
+    cout << wormNumber.at(findWorm(row, col)).getName() << BRACKET_1
          << wormNumber.at(findWorm(row, col)).getId()
          << ") picked up 1 of "
          << wormNumber.at(findWorm(row, col)).getWeapons().at(
@@ -329,7 +340,7 @@ void Game::findChest(int row, int col, int current_worm)
       wormNumber.at(current_worm).setPosition(row, col);
       wormNumber.at(current_worm).getWeapons().at(
         chest_Number_.at(index)->getIdChest() + 1).increaseAmmo();
-      cout << wormNumber.at(current_worm).getName() << " ("
+      cout << wormNumber.at(current_worm).getName() << BRACKET_1
            << wormNumber.at(current_worm).getId()
            << ") picked up 1 of " <<
            wormNumber.at(current_worm).getWeapons().at(
@@ -545,9 +556,9 @@ int Game::setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
         player = 1;
       }
       cout << " Worm " << wormNumber.at(current_worm).getName() <<
-           " (" << wormNumber.at(current_worm).getId() << ") at " << "("
+      BRACKET_1 << wormNumber.at(current_worm).getId() << ") at " << "("
            << wormNumber.at(current_worm).getRow()
-           << ", " << wormNumber.at(current_worm).getCol() << ") ready" << endl;
+           << COMMA << wormNumber.at(current_worm).getCol() << ") ready" << endl;
       return EVERYTHING_OK;
     }
   }
@@ -726,7 +737,7 @@ void Game::chestGravity()
       wormNumber.at(findWorm(row + 1, col)).getWeapons().at(
         chest_Number_.at(index)->getIdChest() + 1).increaseAmmo();
       map_.at(CURRENT_FIELD).setType(Field::AIR);
-      cout << wormNumber.at(findWorm(row + 1, col)).getName() << " ("
+      cout << wormNumber.at(findWorm(row + 1, col)).getName() << BRACKET_1
            << wormNumber.at(findWorm(row + 1, col)).getId()
            << ") picked up 1 of " <<
            wormNumber.at(findWorm(row + 1, col)).getWeapons().at(
@@ -825,7 +836,8 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
   }
   else if(command_params.size() != 1 && (command_params.at(0) == COMMAND_QUIT
                                          ||
-                                         command_params.at(0) == COMMAND_HELP ||
+                                         command_params.at(0) == COMMAND_HELP
+                                         ||
                                          command_params.at(0) == COMMAND_STATE
                                          ||
                                          command_params.at(0) == COMMAND_MAP))
@@ -940,9 +952,9 @@ bool Game::gravity(int current_worm, int &row, int col)
         }
         else
         {
-          cout << wormNumber.at(current_worm).getName() << " ("
-               << wormNumber.at(current_worm).getId() << ")"
-               << " took " << (count - 1) * 10 << "hp fall damage" << endl;
+          cout << wormNumber.at(current_worm).getName() << BRACKET_1
+               << wormNumber.at(current_worm).getId() << BRACKET_2
+               << TOOK << (count - 1) * 10 << HP_FALL_DAMAGE << endl;
         }
       }
     }
@@ -971,9 +983,9 @@ bool Game::gravity(int current_worm, int &row, int col)
         }
         else
         {
-          cout << wormNumber.at(current_worm).getName() << " ("
-               << wormNumber.at(current_worm).getId() << ")"
-               << " took " << (count - 1) * 10 << "hp fall damage" << endl;
+          cout << wormNumber.at(current_worm).getName() << BRACKET_1
+               << wormNumber.at(current_worm).getId() << BRACKET_2
+               << TOOK << (count - 1) * 10 << HP_FALL_DAMAGE << endl;
         }
       }
 
@@ -1092,7 +1104,7 @@ int Game::findWorm(int row, int col)
   {
     if(((wormNumber.at(index).getRow() * board_width_) +
         wormNumber.at(index).getCol())
-       == (row * board_width_) + col)
+        == (row * board_width_) + col)
     {
       return index;
     }
@@ -1119,8 +1131,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
          && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
-        cout << "Attack hit Worm at position (" << (row - 1) << ", "
-        << (col + index) << ")" << endl;
+        cout << ATTACK_HIT_WORM << (row - 1) << COMMA
+        << (col + index) << BRACKET_2 << endl;
         if(wormNumber.at(findWorm(row - 1, col + index)).getHp() <= 0)
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
@@ -1129,8 +1141,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         else
         {
           cout << wormNumber.at(findWorm(row - 1, col + index)).getName()
-               << " (" << wormNumber.at(findWorm(row - 1, col + index)).getId()
-               << ") took " << damage << "hp damage" << endl;
+               << BRACKET_1 << wormNumber.at(findWorm(row - 1, col + index)).getId()
+               << TOOK_ACTION << damage << HP_DAMAGE << endl;
         }
       }
     }
@@ -1144,7 +1156,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
        && wormNumber.at(findWorm(row, col + 1)).getHp() > 0)
     {
       wormNumber.at(findWorm(row, (col + 1))).damage(damage);
-      cout << "Attack hit Worm at position (" << row << ", " << (col + 1) << ")"
+      cout << ATTACK_HIT_WORM << row << COMMA << (col + 1) << BRACKET_2
            << endl;
       if(wormNumber.at(findWorm(row, col + 1)).getHp() <= 0)
       {
@@ -1153,9 +1165,9 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
       else
       {
-        cout << wormNumber.at(findWorm(row, col + 1)).getName() << " ("
-             << wormNumber.at(findWorm(row, col + 1)).getId() << ") took " <<
-             damage << "hp damage" << endl;
+        cout << wormNumber.at(findWorm(row, col + 1)).getName() << BRACKET_1
+             << wormNumber.at(findWorm(row, col + 1)).getId() << TOOK_ACTION <<
+             damage << HP_DAMAGE << endl;
       }
     }
   }
@@ -1170,8 +1182,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
          && wormNumber.at(findWorm((row + 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
-        cout << "Attack hit Worm at position (" << (row + 1) << ", "
-              << (col + index) << ")" << endl;
+        cout << ATTACK_HIT_WORM << (row + 1) << COMMA
+              << (col + index) << BRACKET_2 << endl;
         if(wormNumber.at(findWorm(row + 1, col + index)).getHp() <= 0)
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
@@ -1180,8 +1192,9 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         else
         {
           cout << wormNumber.at(findWorm(row + 1, col + index)).getName()
-               << " (" << wormNumber.at(findWorm(row + 1, col + index)).getId()
-               << ") took " << damage << "hp damage" << endl;
+               << BRACKET_1 << wormNumber.at(findWorm(row + 1, col +
+               index)).getId()
+               << TOOK_ACTION << damage << HP_DAMAGE << endl;
         }
       }
     }
@@ -1195,8 +1208,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
        && wormNumber.at(findWorm(row, col - 1)).getHp() > 0)
     {
       wormNumber.at(findWorm(row, (col - 1))).damage(damage);
-      cout << "Attack hit Worm at position (" << row << ", " << (col - 1)
-           << ")" << endl;
+      cout << ATTACK_HIT_WORM << row << COMMA << (col - 1)
+           << BRACKET_2 << endl;
       if(wormNumber.at(findWorm(row, col - 1)).getHp() <= 0)
       {
         map_.at(CURRENT_FIELD).setType(Field::AIR);
@@ -1204,9 +1217,9 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
       else
       {
-        cout << wormNumber.at(findWorm(row, col - 1)).getName() << " ("
-             << wormNumber.at(findWorm(row, col - 1)).getId() << ") took " <<
-             damage << "hp damage" << endl;
+        cout << wormNumber.at(findWorm(row, col - 1)).getName() << BRACKET_1
+             << wormNumber.at(findWorm(row, col - 1)).getId() << TOOK_ACTION <<
+             damage << HP_DAMAGE << endl;
       }
     }
   }
@@ -1233,13 +1246,13 @@ void Game::makeDamage(int row, int col, int damage)
           chest_Number_.erase(chest_Number_.begin() + index);
           if(damage == 35) // blowtorch
           {
-            cout << "Torch ";
+            cout << TORCH;
           }
           else
           {
-            cout << "Shot ";
+            cout << SHOT;
           }
-          cout << "hit Chest at position (" << row << ", " << col << ")"
+          cout << "hit Chest at position (" << row << COMMA << col << BRACKET_2
                << endl;
           break;
         }
@@ -1250,13 +1263,13 @@ void Game::makeDamage(int row, int col, int damage)
       map_.at(CURRENT_FIELD).setType(Field::AIR);
       if(damage == 35) // blowtorch
       {
-        cout << "Torch ";
+        cout << TORCH;
       }
       else
       {
-        cout << "Shot ";
+        cout << SHOT;
       }
-      cout << "hit Earth at position (" << row << ", " << col << ")"
+      cout << "hit Earth at position (" << row << COMMA << col << BRACKET_2
            << endl;
     }
     else if(map_.at(CURRENT_FIELD).getType() == Field::WORM &&
@@ -1265,13 +1278,13 @@ void Game::makeDamage(int row, int col, int damage)
       wormNumber.at(findWorm(row, col)).damage(damage);
       if(damage == 35) // blowtorch
       {
-        cout << "Torch ";
+        cout << TORCH;
       }
       else
       {
-        cout << "Shot ";
+        cout << SHOT;
       }
-      cout << "hit Worm at position (" << row << ", " << col << ")"
+      cout << "hit Worm at position (" << row << COMMA << col << BRACKET_2
            << endl;
       if(wormNumber.at(findWorm(row, col)).getHp() <= 0)
       {
@@ -1280,9 +1293,9 @@ void Game::makeDamage(int row, int col, int damage)
       }
       else
       {
-        cout << wormNumber.at(findWorm(row, col)).getName() << " ("
-             << wormNumber.at(findWorm(row, col)).getId() << ") took " <<
-             damage << "hp damage" << endl;
+        cout << wormNumber.at(findWorm(row, col)).getName() << BRACKET_1
+             << wormNumber.at(findWorm(row, col)).getId() << TOOK_ACTION <<
+             damage << HP_DAMAGE << endl;
       }
     }
   }
@@ -1295,6 +1308,7 @@ void Game::makeDamage(int row, int col, int damage)
   }
 }
 
+//------------------------------------------------------------------------------
 bool Game::findTarget(int &row, int &col, int direction)
 {
   try
@@ -1386,9 +1400,8 @@ bool Game::findTarget(int &row, int &col, int direction)
 }
 
 //------------------------------------------------------------------------------
-void
-Game::actionDirectionCommand(int current_worm, int current_weapon, int damage,
-                             int direction)
+void Game::actionDirectionCommand(int current_worm, int current_weapon,
+                                  int damage, int direction)
 {
   if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
   {
