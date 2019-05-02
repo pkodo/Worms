@@ -31,7 +31,6 @@ namespace Sep
     public:
 
       static const int MAX_DIGITS = 2;
-      static const int MAX_STEPS = 3;
       static const int NUMBER_OF_WEAPONS = 5;
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
@@ -288,7 +287,7 @@ namespace Sep
       // @param steps shows how many steps should be done.
       // @return true for left steps and false for right steps.
       //
-      static bool checkDirection(int &steps);
+      static bool checkDirection(int& steps);
 
       //------------------------------------------------------------------------
       // Make a move Method
@@ -300,7 +299,7 @@ namespace Sep
       // direction
       // @return true if the move is valid and executed.
       //
-      bool makeMove(int &row, int &col, bool left_steps, int current_worm);
+      bool makeMove(int& row, int& col, bool left_steps, int current_worm);
 
       //------------------------------------------------------------------------
       // Worm Tower Method
@@ -309,7 +308,7 @@ namespace Sep
       // @param col defines the position of the worm.
       // @param detect_worm_tower saves the original value of the row.
       //
-      void testWormTower(int &row, int &col, int &detect_worm_tower,
+      void testWormTower(int& row, int& col, int& detect_worm_tower,
                          int current_worm);
 
       //------------------------------------------------------------------------
@@ -317,7 +316,7 @@ namespace Sep
       // Creates worms randomly on the board
       // @param random object that creates name and position of the worm
       //
-      void createWorms(Random *random);
+      void createWorms(Random* random);
 
       //------------------------------------------------------------------------
       // Gamelogic
@@ -328,15 +327,15 @@ namespace Sep
       // @param turn_two counts turns of player two
       // @return next worm and next turn
       //
-      int setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
-        int &turn_two);
+      int setPlayerAndWorm(int& current_worm, int& player, int& turn_one,
+        int& turn_two);
 
       //------------------------------------------------------------------------
       // Create Worms
       // Creates worms randomly on the board
       // @param random object that creates name and position of the worm
       //
-      bool createChest(Random *random);
+      bool createChest(Random* random);
 
       //------------------------------------------------------------------------
       // Find Chest
@@ -355,7 +354,7 @@ namespace Sep
       // @param move_command checks if a move has been done before
       //
       bool checkOneParameterCommand(std::vector<std::string> command_params,
-        int current_worm, int &move_command);
+        int current_worm, int& move_command);
 
       //------------------------------------------------------------------------
       // Check more parameters
@@ -365,7 +364,7 @@ namespace Sep
       // @param move_command checks if a move has been done before
       //
       bool checkMoreParameterCommand(std::vector<std::string> command_params,
-        int current_worm, int &move_command);
+        int current_worm, int& move_command);
 
       //------------------------------------------------------------------------
       // Find Worm
@@ -383,7 +382,7 @@ namespace Sep
       // @param row defines the position of the chest.
       // @param col defines the position of the chest.
       //
-      bool gravity(int current_worm, int &row, int col);
+      bool gravity(int current_worm, int& row, int col);
 
       //------------------------------------------------------------------------
       // Check Winner
@@ -425,7 +424,7 @@ namespace Sep
       // @param current_worm defines the currently played worm.
       // @param move_command checks if a move has been done before
       //
-      bool userInput(int current_worm, int &move_command);
+      bool userInput(int current_worm, int& move_command);
 
       //------------------------------------------------------------------------
       // Find a target
@@ -434,7 +433,7 @@ namespace Sep
       // @param col defines the position of the chest.
       // @param direction defines the direction of the shot.
       //
-      bool findTarget(int &row, int &col, int direction);
+      bool findTarget(int& row, int& col, int direction);
 
   };
 }

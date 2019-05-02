@@ -28,24 +28,24 @@ int main(int argc, char* argv[])
   {
     if(argc != 2)
     {
-      std::cout << Sep::ERROR_WRONG_ARGUMENTS << '\n';
+      std::cout << Sep::ERROR_WRONG_ARGUMENTS << std::endl;
       return Sep::RETURN_ERROR_ARGUMENT;
     }
 
     Sep::Game game;
     if(game.loadConfig(std::string(argv[1])))
     {
-      std::cout << Sep::ERROR_INVALID_CONFIG << '\n';
+      std::cout << Sep::ERROR_INVALID_CONFIG << std::endl;
       return Sep::RETURN_ERROR_BAD_CONFIG;
     }
     if(game.gameLoop())
     {
-      std::cout << Sep::ERROR_NO_MEMORY << '\n';
+      std::cout << Sep::ERROR_NO_MEMORY << std::endl;
       return Sep::RETURN_MEMORY_ERROR;
     }
     return Sep::RETURN_OK;
   }
-  catch(std::bad_alloc &)
+  catch(std::bad_alloc&)
   {
     return Sep::RETURN_MEMORY_ERROR;
   }

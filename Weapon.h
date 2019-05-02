@@ -68,7 +68,7 @@ namespace Sep
       //Getter Method
       //gets the name of the weapen
       //
-      const std::string &getName() const;
+      const std::string& getName() const;
 
       //------------------------------------------------------------------------
       //getDamage Method

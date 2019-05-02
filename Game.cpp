@@ -159,7 +159,7 @@ void Game::printDeathCases(DeathCases type, int current_worm)
 }
 
 //------------------------------------------------------------------------------
-int Game::loadConfig(const string &cfg_file)
+int Game::loadConfig(const string& cfg_file)
 {
   int row = 0;
   ConfigKeywords check = SIZE;
@@ -308,7 +308,7 @@ bool Game::createChest(Random *random)
       shared_ptr<Chest> chest(new Chest(weapon_number, row, col));
       chest_Number_.emplace_back(chest);  // Vector to save Chest Positions
     }
-    catch(std::bad_alloc &)
+    catch(std::bad_alloc&)
     {
       return true;
     }
@@ -520,8 +520,8 @@ int Game::checkWinner()
 }
 
 //------------------------------------------------------------------------------
-int Game::setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
-                           int &turn_two)
+int Game::setPlayerAndWorm(int& current_worm, int& player, int& turn_one,
+                           int& turn_two)
 {
   int check = 0;
   while(check++ < 3)
@@ -566,7 +566,7 @@ int Game::setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
 }
 
 //------------------------------------------------------------------------------
-void Game::testWormTower(int &row, int &col, int &detect_worm_tower,
+void Game::testWormTower(int& row, int& col, int& detect_worm_tower,
                          int current_worm)
 {
   if(map_.at(ABOVE_CURRENT_FIELD).getType() == Field::WORM)
@@ -596,7 +596,7 @@ void Game::testWormTower(int &row, int &col, int &detect_worm_tower,
 }
 
 //------------------------------------------------------------------------------
-bool Game::checkDirection(int &steps)
+bool Game::checkDirection(int& steps)
 {
   bool left_steps = false;
   if(steps < 0)
@@ -607,7 +607,7 @@ bool Game::checkDirection(int &steps)
 }
 
 //------------------------------------------------------------------------------
-bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
+bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
 {
   int detect_worm_tower = row;
   int step_direction = (col + 1);
@@ -680,7 +680,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
       return true;
     }
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
     map_.at(CURRENT_FIELD).setType(Field::WORM);
     return false;
@@ -768,7 +768,7 @@ int Game::getBoardHeight()
 }
 
 //------------------------------------------------------------------------------
-bool Game::userInput(int current_worm, int &move_command)
+bool Game::userInput(int current_worm, int& move_command)
 {
   string input_line;
   string param;
@@ -802,7 +802,7 @@ bool Game::userInput(int current_worm, int &move_command)
 
 //------------------------------------------------------------------------------
 bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
-                                    int current_worm, int &move_command)
+                                    int current_worm, int& move_command)
 {
   if(command_params.size() == 1 && (command_params.at(0) != COMMAND_MOVE &&
                                     command_params.at(0) != COMMAND_CHOOSE &&
@@ -854,7 +854,7 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
 
 //------------------------------------------------------------------------------
 bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
-                                     int current_worm, int &move_command)
+                                     int current_worm, int& move_command)
 {
   if(command_params.at(0) == COMMAND_MOVE)
   {
@@ -927,7 +927,7 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
 }
 
 //------------------------------------------------------------------------------
-bool Game::gravity(int current_worm, int &row, int col)
+bool Game::gravity(int current_worm, int& row, int col)
 {
   int count = 0;
   try
@@ -1000,7 +1000,7 @@ bool Game::gravity(int current_worm, int &row, int col)
     }
     return true;
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
     if(wormNumber.at(current_worm).getHp() > 0)
     {
@@ -1012,7 +1012,7 @@ bool Game::gravity(int current_worm, int &row, int col)
 }
 
 //------------------------------------------------------------------------------
-int Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
+int Game::chooseWeapon(int current_worm, std::vector<std::string>& params)
 {
   if(params.at(1) == GUN)
   {
@@ -1147,7 +1147,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
     }
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
   }
   try
@@ -1171,7 +1171,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
     }
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
   }
   try
@@ -1199,7 +1199,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
     }
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
   }
   try
@@ -1223,7 +1223,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
     }
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
   }
 }
@@ -1299,7 +1299,7 @@ void Game::makeDamage(int row, int col, int damage)
       }
     }
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
     if(damage != 35) // Blowtorch
     {
@@ -1309,7 +1309,7 @@ void Game::makeDamage(int row, int col, int damage)
 }
 
 //------------------------------------------------------------------------------
-bool Game::findTarget(int &row, int &col, int direction)
+bool Game::findTarget(int& row, int& col, int direction)
 {
   try
   {
@@ -1391,7 +1391,7 @@ bool Game::findTarget(int &row, int &col, int direction)
       throw std::out_of_range(SHOT_MISSED);
     }
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
     cout << SHOT_MISSED << endl;
     return false;
@@ -1500,7 +1500,7 @@ void Game::actionColCommand(int current_worm, int current_weapon, int damage,
     }
     makeDamage(row, col, damage);
   }
-  catch(std::out_of_range &outOfRange)
+  catch(std::out_of_range&)
   {
     cout << SHOT_MISSED << endl;
   }
