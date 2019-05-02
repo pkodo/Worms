@@ -1,11 +1,13 @@
 //------------------------------------------------------------------------------
-// Filename: main.cpp
-// Description: simple main
-// Authors: Michael Hancianu
-// Group: xxxxx
-// Created: 14.03.2019
-// Last change: 15.03.2019 : some CS
+// main.cpp
+//
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger 01556194
+//          Stefan Wietreich 11811040
 //------------------------------------------------------------------------------
+//
 
 #include "Game.h"
 #include <string>
