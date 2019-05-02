@@ -4,8 +4,8 @@
 // Group: Group 11, study assistant Philip Loibl
 //
 // Authors: Paul Kodolitsch 01436808
-//          Christian Luginger
-//          Stefan Wietreich
+//          Christian Luginger 01556194
+//          Stefan Wietreich 11811040
 //------------------------------------------------------------------------------
 //
 
@@ -22,5 +22,5 @@ namespace Sep
   //----------------------------------------------------------------------------
   Teleport::~Teleport()
   = default;
-  
+
 }
