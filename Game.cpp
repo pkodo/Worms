@@ -250,7 +250,7 @@ bool Game::createMapFields(string keyword, int row)
 }
 
 //------------------------------------------------------------------------------
-void Game::createWorms(Random *random)
+void Game::createWorms(Random* random)
 {
   int col;
   int row = 0;
@@ -288,7 +288,7 @@ void Game::createWorms(Random *random)
 }
 
 //------------------------------------------------------------------------------
-bool Game::createChest(Random *random)
+bool Game::createChest(Random* random)
 {
   int col = random->getRandomInt(0, board_width_ - 1);
   int weapon_number = random->getRandomInt(0, NUMBER_OF_WEAPONS - 1);
