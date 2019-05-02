@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Weapon.cpp
 //
-// Created by stefan on 17.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #include <iostream>
@@ -54,7 +61,4 @@ namespace Sep
     return damage_;
   }
 
-  void Weapon::action() const
-  {
-  }
 }

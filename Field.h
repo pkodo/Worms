@@ -1,9 +1,11 @@
 //------------------------------------------------------------------------------
-// Field.h
+// Command.h
 //
 // Group: Group 11, study assistant Philip Loibl
 //
-// Author: Paul Kodolitsch 01436808
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
 //------------------------------------------------------------------------------
 //
 #ifndef SEP_FIELD_H

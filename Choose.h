@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Choose.h
 //
-// Created by stefan on 23.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_CHOOSE_H
@@ -7,8 +14,6 @@
 
 #include "Command.h"
 #include <string>
-
-using std::string;
 
 namespace Sep
 {
@@ -27,6 +32,13 @@ namespace Sep
       Choose(const std::string& name, int current_worm);
 
       //------------------------------------------------------------------------
+      // Copy Constructor
+      // Makes a copy of another Choose Object. Is set to delete.
+      // @param choose object to copy.
+      //
+      Choose(Choose& choose) = delete;
+
+      //------------------------------------------------------------------------
       // Assignment Operator
       // Used to assign one Choose object to another. Is set to delete.
       // @param choose Original with values to copy.
@@ -38,6 +50,8 @@ namespace Sep
       // method to execute the choose command
       // @param game  describes the current attributes of the board
       // @param params describes a worm within the vector
+      //@return returns if the command was successfully executed
+      //
       int execute(Game& game, std::vector<std::string>& params) override;
 
       //------------------------------------------------------------------------

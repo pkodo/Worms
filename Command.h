@@ -1,12 +1,13 @@
-//----------------------------------------------------------------------------
-// Filename: Command.h
-// Description: Class representing a general command
-// Authors: Tutors
-// Tutor: Tutors
-// Group: 42
-// Created: 32.13.2048
-// Last change: 33.13.2048
-//----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// Command.h
+//
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
+//
 
 #ifndef COMMAND_H_INCLUDED
 #define COMMAND_H_INCLUDED
@@ -19,6 +20,7 @@ namespace Sep
 
   class Command
   {
+    
     private:
     //------------------------------------------------------------------------
     /// Name of this command

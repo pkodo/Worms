@@ -3,7 +3,9 @@
 //
 // Group: Group 11, study assistant Philip Loibl
 //
-// Author: Paul Kodolitsch 01436808
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
 //------------------------------------------------------------------------------
 //
 
@@ -1117,8 +1119,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
          && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
-        cout << "Attack hit Worm at position (" << (row - 1) << ", " << (col + index)
-             << ")" << endl;
+        cout << "Attack hit Worm at position (" << (row - 1) << ", "
+        << (col + index) << ")" << endl;
         if(wormNumber.at(findWorm(row - 1, col + index)).getHp() <= 0)
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
@@ -1126,9 +1128,9 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         }
         else
         {
-          cout << wormNumber.at(findWorm(row - 1, col + index)).getName() << " ("
-               << wormNumber.at(findWorm(row - 1, col + index)).getId() << ") took " <<
-               damage << "hp damage" << endl;
+          cout << wormNumber.at(findWorm(row - 1, col + index)).getName()
+               << " (" << wormNumber.at(findWorm(row - 1, col + index)).getId()
+               << ") took " << damage << "hp damage" << endl;
         }
       }
     }
@@ -1168,8 +1170,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
          && wormNumber.at(findWorm((row + 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
-        cout << "Attack hit Worm at position (" << (row + 1) << ", " << (col + index)
-             << ")" << endl;
+        cout << "Attack hit Worm at position (" << (row + 1) << ", "
+              << (col + index) << ")" << endl;
         if(wormNumber.at(findWorm(row + 1, col + index)).getHp() <= 0)
         {
           map_.at(CURRENT_FIELD).setType(Field::AIR);
@@ -1177,9 +1179,9 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         }
         else
         {
-          cout << wormNumber.at(findWorm(row + 1, col + index)).getName() << " ("
-               << wormNumber.at(findWorm(row + 1, col + index)).getId() << ") took " <<
-               damage << "hp damage" << endl;
+          cout << wormNumber.at(findWorm(row + 1, col + index)).getName()
+               << " (" << wormNumber.at(findWorm(row + 1, col + index)).getId()
+               << ") took " << damage << "hp damage" << endl;
         }
       }
     }
@@ -1409,7 +1411,8 @@ Game::actionDirectionCommand(int current_worm, int current_weapon, int damage,
     }
     else if(current_weapon == 1) // Bazooka
     {
-      wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+      wormNumber.at(current_worm).getWeapons()
+            .at(current_weapon).decreaseAmmo();
       makeDamage(row, col, damage);
       makeDamage(row - 1, col, damage);
       makeDamage(row, col + 1, damage);

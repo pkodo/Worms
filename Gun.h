@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Gun.h
 //
-// Created by stefan on 24.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_GUN_H
@@ -22,6 +29,13 @@ namespace Sep
       Gun();
 
       //------------------------------------------------------------------------
+      // Copy Constructor
+      // Makes a copy of another Gun Object. Is set to delete.
+      // @param gun object to copy.
+      //
+      Gun(Gun& gun) = delete;
+
+      //------------------------------------------------------------------------
       // Assignment Operator
       // Used to assign one Gun object to another. Is set to delete.
       // @param gun Original with values to copy.
@@ -33,10 +47,6 @@ namespace Sep
       //
       ~Gun() override;
 
-      //------------------------------------------------------------------------
-      // Method
-      // method to use the Weapon
-      void action() const override;
   };
 }
 

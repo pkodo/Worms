@@ -3,7 +3,9 @@
 //
 // Group: Group 11, study assistant Philip Loibl
 //
-// Author: Paul Kodolitsch 01436808
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
 //------------------------------------------------------------------------------
 //
 
@@ -104,6 +106,7 @@ namespace Sep
     }
   }
 
+  //----------------------------------------------------------------------------
   void Worm::setWeapons()
   {
     weapons_.emplace_back(Gun());
@@ -121,8 +124,9 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  void Worm::setCurrentWeapon(int currentWeapon)
+  void Worm::setCurrentWeapon(int current_weapon)
   {
-    current_weapon_ = currentWeapon;
+    current_weapon_ = current_weapon;
   }
+  
 }

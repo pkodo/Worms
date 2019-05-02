@@ -3,9 +3,12 @@
 //
 // Group: Group 11, study assistant Philip Loibl
 //
-// Author: Paul Kodolitsch 01436808
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
 //------------------------------------------------------------------------------
 //
+
 #ifndef SEP_GAME_H
 #define SEP_GAME_H
 #include "Field.h"
@@ -26,7 +29,6 @@ namespace Sep
   class Game
   {
     public:
-
 
       static const int MAX_DIGITS = 2;
       static const int MAX_STEPS = 3;
@@ -83,7 +85,6 @@ namespace Sep
       // @return Returns error or everything okay.
       //
       int loadConfig(const std::string& cfg_file);
-
 
       //------------------------------------------------------------------------
       // Move Method
@@ -175,8 +176,6 @@ namespace Sep
       //
       void setQuit(bool quit);
 
-
-
     private:
 
       //------------------------------------------------------------------------
@@ -199,11 +198,19 @@ namespace Sep
       //
       std::map<int, Field> map_;
 
+      //------------------------------------------------------------------------
+      // Datastructure for weapon objects
+      //
       std::vector<Worm> wormNumber;
 
+      //------------------------------------------------------------------------
+      // Datastructure for chest objects
+      //
       std::vector<std::shared_ptr<Chest>> chest_Number_;
 
-
+      //------------------------------------------------------------------------
+      // Enums for the various error types
+      //
       enum ErrorType
       {
           EVERYTHING_OK,
@@ -219,6 +226,9 @@ namespace Sep
           END_GAME = -10
       };
 
+      //------------------------------------------------------------------------
+      // Enums for the various death types
+      //
       enum DeathCases
       {
           DROWNED,
@@ -227,6 +237,9 @@ namespace Sep
           DIED
       };
 
+      //------------------------------------------------------------------------
+      // Enums for the various config file words
+      //
       enum ConfigKeywords
       {
           SIZE,
@@ -242,6 +255,12 @@ namespace Sep
       //
       ErrorType printErrorMessage(ErrorType type);
 
+      //------------------------------------------------------------------------
+      // Print Death Messages Method
+      // Prints death message on the screen, if a worm dies.
+      // @param type defines the type of the error
+      // @param current_worm defines the dying worm
+      //
       void printDeathCases(DeathCases type, int current_worm);
 
       //------------------------------------------------------------------------
@@ -281,40 +300,133 @@ namespace Sep
       // @param col defines the position of the worm.
       // @param detect_worm_tower saves the original value of the row.
       //
-      void testWormTower(int &row, int &col, int &detect_worm_tower, int current_worm);
+      void testWormTower(int &row, int &col, int &detect_worm_tower,
+                         int current_worm);
 
+      //------------------------------------------------------------------------
+      // Create Worms
+      // Creates worms randomly on the board
+      // @param random object that creates name and position of the worm
+      //
       void createWorms(Random *random);
 
+      //------------------------------------------------------------------------
+      // Gamelogic
+      // Sets which player and which worm has its next turn
+      // @param current_worm sets the worm for the next turn
+      // @param player sets the player for the next turn
+      // @param turn_one counts turns of player one
+      // @param turn_two counts turns of player two
+      // @return next worm and next turn
+      //
       int setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
         int &turn_two);
 
+      //------------------------------------------------------------------------
+      // Create Worms
+      // Creates worms randomly on the board
+      // @param random object that creates name and position of the worm
+      //
       bool createChest(Random *random);
 
+      //------------------------------------------------------------------------
+      // Find Chest
+      // Searches through all chest objects for a chest on the given position
+      // @param row defines the position of the chest.
+      // @param col defines the position of the chest.
+      // @param current_worm defines the worm who gathers in the chest
+      //
       void findChest(int row, int col, int current_worm);
 
-      bool checkOneParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
+      //------------------------------------------------------------------------
+      // Check one parameter
+      // Check all commands from user input with one parameter
+      // @param command_params describes the vector where the input is stored
+      // @param current_worm defines the currently played worm.
+      // @param move_command checks if a move has been done before
+      //
+      bool checkOneParameterCommand(std::vector<std::string> command_params,
+        int current_worm, int &move_command);
 
-      bool checkMoreParameterCommand(std::vector<std::string> command_params, int current_worm, int &move_command);
+      //------------------------------------------------------------------------
+      // Check more parameters
+      // Check all commands from user input with more than one parameter
+      // @param command_params describes the vector where the input is stored
+      // @param current_worm defines the currently played worm.
+      // @param move_command checks if a move has been done before
+      //
+      bool checkMoreParameterCommand(std::vector<std::string> command_params,
+        int current_worm, int &move_command);
 
+      //------------------------------------------------------------------------
+      // Find Worm
+      // Searches through all Worm objects for a worm on the given position
+      // @param row defines the position of the chest.
+      // @param col defines the position of the chest.
+      // @return returns current worm
+      //
       int findWorm(int row, int col);
 
+      //------------------------------------------------------------------------
+      // Gravity
+      // Searches through all Worms and checks for gravity among them
+      // @param current_worm defines the currently played worm.
+      // @param row defines the position of the chest.
+      // @param col defines the position of the chest.
+      //
       bool gravity(int current_worm, int &row, int col);
 
+      //------------------------------------------------------------------------
+      // Check Winner
+      // Checks hp of the worms of each player and ends the game is one team
+      // has no more worms with hp larger than zero.
+      // @return returns if someone has won
+      //
       int checkWinner();
 
-      void blowtorchCommand(int current_worm, int damage, int direction, int current_weapon);
+      //------------------------------------------------------------------------
+      // Blowtorch
+      // Executes the blowtorch command
+      // @param current_worm defines the currently played worm.
+      // @param damamge defines the damage of the weapon.
+      // @param direction defines the direction of the torch.
+      // @param current_weapon defines the currently used weapon.
+      //
+      void blowtorchCommand(int current_worm, int damage, int direction,
+        int current_weapon);
 
+      //------------------------------------------------------------------------
+      // ChestGravity
+      // Searches through all chest objects and checks for gravity among them
+      //
       void chestGravity();
 
+      //------------------------------------------------------------------------
+      // Damage
+      // Causing damage to a given field
+      // @param row defines the position of the chest.
+      // @param col defines the position of the chest.
+      // @param damamge defines the damage of the weapon.
+      //
       void makeDamage(int row, int col, int damage);
 
       //------------------------------------------------------------------------
       // User Input Method
       // Reads commands from stdin and calls command pattern.
+      // @param current_worm defines the currently played worm.
+      // @param move_command checks if a move has been done before
       //
-      bool userInput( int current_worm, int &move_command);
+      bool userInput(int current_worm, int &move_command);
 
+      //------------------------------------------------------------------------
+      // Find a target
+      // Increase row and col in one direction until a target is hit
+      // @param row defines the position of the chest.
+      // @param col defines the position of the chest.
+      // @param direction defines the direction of the shot.
+      //
       bool findTarget(int &row, int &col, int direction);
+
   };
 }
 #endif //SEP_GAME_H

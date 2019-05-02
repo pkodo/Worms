@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// State.h
 //
-// Created by stefan on 23.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_STATE_H
@@ -19,6 +26,20 @@ namespace Sep
     public:
       // Constructor
       State(const std::string& name, int current_worm);
+
+      //------------------------------------------------------------------------
+      // Copy Constructor
+      // Makes a copy of another State Object. Is set to delete.
+      // @param state object to copy.
+      //
+      State(State& state) = delete;
+
+      //------------------------------------------------------------------------
+      // Assignment Operator
+      // Used to assign one State object to another. Is set to delete.
+      // @param state Original with values to copy.
+      //
+      State& operator = (State& state) = delete;
 
       //execute Method
       //prints state

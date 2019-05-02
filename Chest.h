@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Chest.h
 //
-// Created by stefan on 19.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_CHEST_H
@@ -15,21 +22,19 @@ namespace Sep
   //
   class Chest : public Field
   {
-  private:
-    //--------------------------------------------------------------------------
-    // The first Variable declares the Type of chest_type_
-    // The other Variables define the number of the weapon, and the coordinates
-    //
-    FieldType chest_type_ = Field::CHEST;
-    int weapon_number_;
-    int row_;
-    int col_;
 
   public:
     //--------------------------------------------------------------------------
     // Constructor
     //
     Chest(int weapon_number, int row, int col);
+
+    //------------------------------------------------------------------------
+    // Copy Constructor
+    // Makes a copy of another Chest Object. Is set to delete.
+    // @param chest object to copy.
+    //
+    Chest(Chest& chest) = delete;
 
     //--------------------------------------------------------------------------
     // Assignment Operator
@@ -52,6 +57,8 @@ namespace Sep
     //--------------------------------------------------------------------------
     // Setter Method
     // sets the coordinates
+    // @param row is the new row position of the object
+    // @param col is the new col position of the object
     //
     void setPosition(int row, int col);
 
@@ -66,11 +73,23 @@ namespace Sep
     // returns the col number
     //
     int getCol();
+
     //------------------------------------------------------------------------
     // Getter Method
     // returns the chest_type_
     //
     FieldType getType();
+
+  private:
+
+    //--------------------------------------------------------------------------
+    // The first Variable declares the Type of chest_type_
+    // The other Variables define the number of the weapon, and the coordinates
+    //
+    FieldType chest_type_ = Field::CHEST;
+    int weapon_number_;
+    int row_;
+    int col_;
   };
 }
 

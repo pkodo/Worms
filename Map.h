@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Map.h
 //
-// Created by stefan on 23.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_MAP_H
@@ -16,9 +23,13 @@ namespace Sep
   class Map : public Command
   {
     public:
-      //Constructor
+
+      //------------------------------------------------------------------------
+      // Constructor
+      //
       explicit Map(const std::string &name);
 
+      //------------------------------------------------------------------------
       //execute Method
       //prints the board
       //@param game   is the actual board
@@ -26,7 +37,9 @@ namespace Sep
       //
       int execute(Game& game, std::vector<std::string>& params) override;
 
+      //------------------------------------------------------------------------
       //Destructor
+      //
       ~Map() override;
 
   };

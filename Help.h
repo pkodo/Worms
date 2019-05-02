@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Help.h
 //
-// Created by stefan on 23.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_HELP_H
@@ -15,6 +22,7 @@ namespace Sep
   //
   class Help : public Command
   {
+
     public:
       //--------------------------------------------------------------------------
       // Constructor

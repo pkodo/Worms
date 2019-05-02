@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Blowtorch.h
 //
-// Created by stefan on 24.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_BLOWTORCH_H
@@ -20,6 +27,13 @@ namespace Sep
       // Constructor
       //
       Blowtorch();
+
+      //------------------------------------------------------------------------
+      // Copy Constructor
+      // Makes a copy of another Blowtorch Object. Is set to delete.
+      // @param blowtorch object to copy.
+      //
+      Blowtorch(Blowtorch& blowtorch) = delete;
 
       //------------------------------------------------------------------------
       // Assignment Operator

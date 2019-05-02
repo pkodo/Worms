@@ -1,5 +1,12 @@
+//------------------------------------------------------------------------------
+// Airstrike.h
 //
-// Created by stefan on 24.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #ifndef SEP19_GROUP21486_AIRSTRIKE_H
@@ -20,6 +27,13 @@ namespace Sep
       // Constructor
       //
       Airstrike();
+
+      //------------------------------------------------------------------------
+      // Copy Constructor
+      // Makes a copy of another Airstrike Object. Is set to delete.
+      // @param airstrike object to copy.
+      //
+      Airstrike(Airstrike& airstrike) = delete;
 
       //------------------------------------------------------------------------
       // Assignment Operator

@@ -1,17 +1,22 @@
+//------------------------------------------------------------------------------
+// Move.cpp
 //
-// Created by stefan on 19.04.19.
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
+//------------------------------------------------------------------------------
 //
 
 #include <iostream>
 #include "Move.h"
 #include "Game.h"
 
-using std::cout;
-using std::endl;
-
 namespace Sep
 {
 
+  //----------------------------------------------------------------------------
   int Move::execute(Game& game, std::vector<std::string>& params)
   {
     int steps = -1;
@@ -40,7 +45,6 @@ namespace Sep
       {
         return INVALID_PARAMETER;
       }
-
     }
     else
     {
@@ -50,12 +54,14 @@ namespace Sep
     return EVERYTHING_OK;
   }
 
-
+  //----------------------------------------------------------------------------
   Move::Move(const std::string& name, int current_worm) : Command(name),
                                             current_worm_(current_worm)
   {
   }
 
+  //----------------------------------------------------------------------------
   Move::~Move()
   = default;
+  
 }

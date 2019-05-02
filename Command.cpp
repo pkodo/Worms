@@ -1,12 +1,13 @@
 //------------------------------------------------------------------------------
-// Filename: Command.cpp
-// Description: Class representing a general command
-// Authors: Tutors
-// Tutor: Tutors
-// Group: 42
-// Created: 32.13.2048
-// Last change: 33.13.2048
+// Command.cpp
+//
+// Group: Group 11, study assistant Philip Loibl
+//
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger
+//          Stefan Wietreich
 //------------------------------------------------------------------------------
+//
 
 #include "Command.h"
 namespace Sep
