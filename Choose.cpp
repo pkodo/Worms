@@ -26,7 +26,7 @@ namespace Sep
   = default;
 
   //----------------------------------------------------------------------------
-  Choose::Choose(const std::string &name, int current_worm) : Command(name),
+  Choose::Choose(const std::string& name, int current_worm) : Command(name),
                   current_worm_(current_worm)
   {
   }

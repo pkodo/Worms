@@ -22,7 +22,7 @@ namespace Sep
   = default;
 
   //----------------------------------------------------------------------------
-  const std::string &Command::getName() const
+  const std::string& Command::getName() const
   {
     return command_name_;
   }
