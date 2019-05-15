@@ -20,6 +20,8 @@
 #include "Quit.h"
 #include "Action.h"
 #include "Choose.h"
+#include "Play.h"
+#include "Whoami.h"
 #include <iostream>
 #include <algorithm>
 #include <fstream>
@@ -64,6 +66,9 @@ const string Game::COMMAND_HELP = "help";
 const string Game::COMMAND_STATE = "state";
 const string Game::COMMAND_MAP = "map";
 const string Game::COMMAND_CHOOSE = "choose";
+const string Game::COMMAND_PLAY = "play";
+const string Game::COMMAND_WHOAMI = "whoami";
+
 
 const string Game::GUN = "gun";
 const string Game::BAZOOKA = "bazooka";
@@ -828,6 +833,16 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
       Map map(COMMAND_MAP);
       return map.execute(*this, command_params) == 0;
     }
+    else if(command_params.at(0) == COMMAND_PLAY)
+    {
+      Play play(COMMAND_PLAY);
+      return play.execute(*this, command_params) == 0;
+    }
+    else if(command_params.at(0) == COMMAND_WHOAMI)
+    {
+      Whoami whoami(COMMAND_WHOAMI);
+      return whoami.execute(*this, command_params) == 0;
+    }
     else
     {
       printErrorMessage(UNKNOWN_COMMAND);
@@ -1141,7 +1156,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         else
         {
           cout << wormNumber.at(findWorm(row - 1, col + index)).getName()
-               << BRACKET_1 << wormNumber.at(findWorm(row - 1, col + index)).getId()
+               << BRACKET_1 << wormNumber.at(findWorm(row - 1, col
+                 + index)).getId()
                << TOOK_ACTION << damage << HP_DAMAGE << endl;
         }
       }

@@ -19,6 +19,10 @@
 #include <vector>
 #include <memory>
 
+using std::string;
+using std::map;
+using std::vector;
+using std::shared_ptr;
 
 namespace Sep
 {
@@ -35,37 +39,39 @@ namespace Sep
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
 
-      static const std::string MAGIC_VALUE;
-      static const std::string CHECK_FOR_SIZE;
-      static const std::string CHECK_FOR_MAP;
+      static const string MAGIC_VALUE;
+      static const string CHECK_FOR_SIZE;
+      static const string CHECK_FOR_MAP;
 
-      static const std::string COMMAND_PROMPT;
-      static const std::string COMMAND_MOVE;
-      static const std::string COMMAND_QUIT;
-      static const std::string COMMAND_ACTION;
-      static const std::string COMMAND_HELP;
-      static const std::string COMMAND_STATE;
-      static const std::string COMMAND_MAP;
-      static const std::string COMMAND_CHOOSE;
+      static const string COMMAND_PROMPT;
+      static const string COMMAND_MOVE;
+      static const string COMMAND_QUIT;
+      static const string COMMAND_ACTION;
+      static const string COMMAND_HELP;
+      static const string COMMAND_STATE;
+      static const string COMMAND_MAP;
+      static const string COMMAND_CHOOSE;
+      static const string COMMAND_PLAY;
+      static const string COMMAND_WHOAMI;
 
-      static const std::string GUN;
-      static const std::string BAZOOKA;
-      static const std::string TELEPORT;
-      static const std::string BLOWTORCH;
-      static const std::string MELEE;
-      static const std::string AIRSTRIKE;
+      static const string GUN;
+      static const string BAZOOKA;
+      static const string TELEPORT;
+      static const string BLOWTORCH;
+      static const string MELEE;
+      static const string AIRSTRIKE;
 
-      static const std::string SHOT_MISSED;
-      static const std::string TORCH;
-      static const std::string SHOT;
-      static const std::string TOOK;
-      static const std::string TOOK_ACTION;
-      static const std::string HP_FALL_DAMAGE;
-      static const std::string HP_DAMAGE;
-      static const std::string ATTACK_HIT_WORM;
-      static const std::string BRACKET_1;
-      static const std::string BRACKET_2;
-      static const std::string COMMA;
+      static const string SHOT_MISSED;
+      static const string TORCH;
+      static const string SHOT;
+      static const string TOOK;
+      static const string TOOK_ACTION;
+      static const string HP_FALL_DAMAGE;
+      static const string HP_DAMAGE;
+      static const string ATTACK_HIT_WORM;
+      static const string BRACKET_1;
+      static const string BRACKET_2;
+      static const string COMMA;
 
       //------------------------------------------------------------------------
       // Constructor
@@ -92,7 +98,7 @@ namespace Sep
       // @param cfg_file String of an argument to open.
       // @return Returns error or everything okay.
       //
-      int loadConfig(const std::string& cfg_file);
+      int loadConfig(const string& cfg_file);
 
       //------------------------------------------------------------------------
       // Move Method
@@ -122,7 +128,7 @@ namespace Sep
       // @param current worm   number of the current worms
       // @param params    the vector whrere the weapons are stored
       //
-      int chooseWeapon(int current_worm, std::vector<std::string>& params);
+      int chooseWeapon(int current_worm, vector<string>& params);
 
       //------------------------------------------------------------------------
       // Getter Method
@@ -176,7 +182,7 @@ namespace Sep
       // Getter Method
       // get the number of the worms
       //
-      std::vector<Sep::Worm> getWormNumber();
+      vector<Sep::Worm> getWormNumber();
 
       //------------------------------------------------------------------------
       // Setter Method
@@ -204,17 +210,17 @@ namespace Sep
       //------------------------------------------------------------------------
       // Datastructure for objects on the gameboard
       //
-      std::map<int, Field> map_;
+      map<int, Field> map_;
 
       //------------------------------------------------------------------------
       // Datastructure for weapon objects
       //
-      std::vector<Worm> wormNumber;
+      vector<Worm> wormNumber;
 
       //------------------------------------------------------------------------
       // Datastructure for chest objects
       //
-      std::vector<std::shared_ptr<Chest>> chest_Number_;
+      vector<shared_ptr<Chest>> chest_Number_;
 
       //------------------------------------------------------------------------
       // Enums for the various error types
@@ -353,7 +359,7 @@ namespace Sep
       // @param current_worm defines the currently played worm.
       // @param move_command checks if a move has been done before
       //
-      bool checkOneParameterCommand(std::vector<std::string> command_params,
+      bool checkOneParameterCommand(vector<string> command_params,
         int current_worm, int& move_command);
 
       //------------------------------------------------------------------------
@@ -363,7 +369,7 @@ namespace Sep
       // @param current_worm defines the currently played worm.
       // @param move_command checks if a move has been done before
       //
-      bool checkMoreParameterCommand(std::vector<std::string> command_params,
+      bool checkMoreParameterCommand(vector<string> command_params,
         int current_worm, int& move_command);
 
       //------------------------------------------------------------------------
