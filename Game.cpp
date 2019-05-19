@@ -559,7 +559,8 @@ int Game::setPlayerAndWorm(int& current_worm, int& player, int& turn_one,
       cout << " Worm " << wormNumber.at(current_worm).getName() <<
       BRACKET_1 << wormNumber.at(current_worm).getId() << ") at " << "("
            << wormNumber.at(current_worm).getRow()
-           << COMMA << wormNumber.at(current_worm).getCol() << ") ready" << endl;
+           << COMMA << wormNumber.at(current_worm).getCol() <<
+           ") ready" << endl;
       return EVERYTHING_OK;
     }
   }
@@ -1126,7 +1127,8 @@ int Game::findWorm(int row, int col)
 //------------------------------------------------------------------------------
 void Game::actionCommand(int current_worm, int current_weapon, int damage)
 { // Melee
-  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
+  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo()
+     <= 0)
   {
     printErrorMessage(NO_AMMUNITION);
     return;
@@ -1138,7 +1140,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
   {
     for(int index = -1; index < 2; index++)
     {
-      if(map_.at(aboveCurrentField(row, col) + index).getType() == Field::WORM
+      if(map_.at(aboveCurrentField(row, col) +
+         index).getType() == Field::WORM
          && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
@@ -1256,7 +1259,7 @@ void Game::makeDamage(int row, int col, int damage)
           map_.at(currentField(row, col)).setType(Field::AIR);
           shared_ptr<Chest> temp(chest_Number_.at(index));
           chest_Number_.erase(chest_Number_.begin() + index);
-          if(damage == 35) // blowtorch
+          if(damage == BLOWTORCH_DAMAGE) // blowtorch
           {
             cout << TORCH;
           }
@@ -1273,7 +1276,7 @@ void Game::makeDamage(int row, int col, int damage)
     else if(map_.at(currentField(row, col)).getType() == Field::EARTH)
     {
       map_.at(currentField(row, col)).setType(Field::AIR);
-      if(damage == 35) // blowtorch
+      if(damage == BLOWTORCH_DAMAGE) // blowtorch
       {
         cout << TORCH;
       }
@@ -1288,7 +1291,7 @@ void Game::makeDamage(int row, int col, int damage)
             wormNumber.at(findWorm(row, col)).getHp() > 0)
     {
       wormNumber.at(findWorm(row, col)).damage(damage);
-      if(damage == 35) // blowtorch
+      if(damage == BLOWTORCH_DAMAGE) // blowtorch
       {
         cout << TORCH;
       }
@@ -1313,7 +1316,7 @@ void Game::makeDamage(int row, int col, int damage)
   }
   catch(std::out_of_range&)
   {
-    if(damage != 35) // Blowtorch
+    if(damage != BLOWTORCH_DAMAGE) // Blowtorch
     {
       cout << SHOT_MISSED << endl;
     }
@@ -1328,14 +1331,14 @@ bool Game::findTarget(int& row, int& col, int direction)
     switch(direction)
     {
       case 0:
-        while(map_.at(currentField(row, col) - 1).getType() == Field::AIR) // left
+        while(map_.at(currentField(row, col) - CHECK_LEFT).getType() == Field::AIR) // left
         {
           col--;
         }
         col--;
         break;
       case 1:
-        while(map_.at(currentField(row, col) + 1).getType() == Field::AIR) // right
+        while(map_.at(currentField(row, col) + CHECK_RIGHT).getType() == Field::AIR) // right
         {
           col++;
         }
@@ -1356,7 +1359,7 @@ bool Game::findTarget(int& row, int& col, int direction)
         row--;
         break;
       case 4:
-        while(map_.at(currentField(row, col) + (board_width_ - 1)).getType() ==
+        while(map_.at(currentField(row, col) + (board_width_ - CHECK_LEFT_DOWN)).getType() ==
               Field::AIR) // left-down
         {
           row++;
@@ -1366,7 +1369,7 @@ bool Game::findTarget(int& row, int& col, int direction)
         col--;
         break;
       case 5:
-        while(map_.at(currentField(row, col) + (board_width_ + 1)).getType() ==
+        while(map_.at(currentField(row, col) + (board_width_ + CHECK_RIGHT_DOWN)).getType() ==
               Field::AIR) // right-down
         {
           row++;
@@ -1376,7 +1379,7 @@ bool Game::findTarget(int& row, int& col, int direction)
         col++;
         break;
       case 6:
-        while(map_.at(currentField(row, col) - (board_width_ + 1)).getType() ==
+        while(map_.at(currentField(row, col) - (board_width_ + CHECK_LEFt_UP)).getType() ==
               Field::AIR) // left-up
         {
           row--;
@@ -1386,7 +1389,7 @@ bool Game::findTarget(int& row, int& col, int direction)
         col--;
         break;
       case 7:
-        while(map_.at(currentField(row, col) - (board_width_ - 1)).getType() ==
+        while(map_.at(currentField(row, col) - (board_width_ - CHECK_RIGHT_UP)).getType() ==
               Field::AIR) // right-up
         {
           row--;
@@ -1420,7 +1423,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon,
     printErrorMessage(NO_AMMUNITION);
     return;
   }
-  if(current_weapon == 3)
+  if(current_weapon == BLOWTORCH_INT)
   {
     blowtorchCommand(current_worm, damage, direction, current_weapon);
     return;
@@ -1430,19 +1433,19 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon,
 
   if(findTarget(row, col, direction))
   {
-    if(current_weapon == 0) // Gun
+    if(current_weapon == GUN_INT) // Gun
     {
       makeDamage(row, col, damage);
     }
-    else if(current_weapon == 1) // Bazooka
+    else if(current_weapon == BAZOOKA_INT) // Bazooka
     {
       wormNumber.at(current_worm).getWeapons()
             .at(current_weapon).decreaseAmmo();
       makeDamage(row, col, damage);
-      makeDamage(row - 1, col, damage);
-      makeDamage(row, col + 1, damage);
-      makeDamage(row + 1, col, damage);
-      makeDamage(row, col - 1, damage);
+      makeDamage(row - CHECK_ROW, col, damage);
+      makeDamage(row, col + CHECK_RIGHT, damage);
+      makeDamage(row + CHECK_ROW, col, damage);
+      makeDamage(row, col + CHECK_LEFT, damage);
     }
   }
 }

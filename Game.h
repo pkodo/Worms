@@ -38,6 +38,19 @@ namespace Sep
       static const int NUMBER_OF_WEAPONS = 5;
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
+      static const int BLOWTORCH_DAMAGE = 35;
+      static const int CHECK_LEFT = -1;
+      static const int CHECK_RIGHT = 1;
+      static const int CHECK_ROW = 1;
+      static const int CHECK_LEFt_UP = 1;
+      static const int CHECK_LEFT_DOWN = -1;
+      static const int CHECK_RIGHT_UP = -1;
+      static const int CHECK_RIGHT_DOWN = 1;
+      static const int BLOWTORCH_INT = 3;
+      static const int GUN_INT = 0;
+      static const int BAZOOKA_INT = 1;
+
+
 
       static const string MAGIC_VALUE;
       static const string CHECK_FOR_SIZE;
