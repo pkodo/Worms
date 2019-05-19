@@ -37,7 +37,6 @@ int main(int argc, char* argv[])
     Sep::Game game;
     if(game.loadConfig(std::string(argv[1])))
     {
-      std::cout << Sep::ERROR_INVALID_CONFIG << std::endl;
       return Sep::RETURN_ERROR_BAD_CONFIG;
     }
     if(game.gameLoop())
@@ -50,5 +49,13 @@ int main(int argc, char* argv[])
   catch(std::bad_alloc&)
   {
     return Sep::RETURN_MEMORY_ERROR;
+  }
+  catch(std::exception&)
+  {
+
+  }
+  catch(...)
+  {
+
   }
 }

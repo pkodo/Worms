@@ -31,7 +31,7 @@ namespace Sep
       // Makes a copy of another Play Object. Is set to delete.
       // @param play object to copy.
       //
-      Play(Play& play = delete;
+      Play(Play& play) = delete;
 
       //------------------------------------------------------------------------
       // Assignment Operator

@@ -441,6 +441,11 @@ namespace Sep
       //
       bool findTarget(int& row, int& col, int direction);
 
+    int currentField(int row, int col);
+
+    int belowCurrentField(int row, int col);
+
+    int aboveCurrentField(int row, int col);
   };
 }
 #endif //SEP_GAME_H
