@@ -452,11 +452,45 @@ namespace Sep
       //
       bool findTarget(int& row, int& col, int direction);
 
-    int currentField(int row, int col);
+      //------------------------------------------------------------------------
+      // Find the current field
+      // calculates the current field index
+      // @param row defines the position of the field.
+      // @param col defines the position of the field.
+      //
+      int currentField(int row, int col);
 
-    int belowCurrentField(int row, int col);
+      //------------------------------------------------------------------------
+      // Find the field below the current field
+      // calculates the field index
+      // @param row defines the position of the field.
+      // @param col defines the position of the field.
+      //
+      int belowCurrentField(int row, int col);
 
-    int aboveCurrentField(int row, int col);
+      //------------------------------------------------------------------------
+      // Find the field above the current field
+      // calculates the field index
+      // @param row defines the position of the field.
+      // @param col defines the position of the field.
+      //
+      int aboveCurrentField(int row, int col);
+
+      //------------------------------------------------------------------------
+      // Find a target
+      // calculates the target field
+      // @param row defines the row of the target.
+      // @param step_direction defines the direction of the shot.
+      //
+      int targetField(int row, int step_direction);
+
+      //------------------------------------------------------------------------
+      // Find above target field
+      // calculates the field above the target
+      // @param row defines the row of the target.
+      // @param step_direction defines the direction of the shot.
+      //
+      int aboveTargetField(int row, int step_direction);
   };
 }
 #endif //SEP_GAME_H

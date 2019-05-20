@@ -32,10 +32,6 @@
 #include <vector>
 #include <memory>
 
-#define TARGET_FIELD ((row * board_width_) + step_direction)
-#define BELOW_TARGET_FIELD ((row + 1) * board_width_ + step_direction)
-#define ABOVE_TARGET_FIELD (((row - 1) * board_width_) + step_direction)
-
 using std::cout;
 using std::cin;
 using std::endl;
@@ -160,7 +156,7 @@ void Game::printDeathCases(DeathCases type, int current_worm)
 }
 
 //------------------------------------------------------------------------------
-int Game::loadConfig(const string& cfg_file)
+int Game::loadConfig(const string &cfg_file)
 {
   int row = 0;
   ConfigKeywords check = SIZE;
@@ -251,7 +247,7 @@ bool Game::createMapFields(string keyword, int row)
 }
 
 //------------------------------------------------------------------------------
-void Game::createWorms(Random* random)
+void Game::createWorms(Random *random)
 {
   int col;
   int row = 0;
@@ -289,7 +285,7 @@ void Game::createWorms(Random* random)
 }
 
 //------------------------------------------------------------------------------
-bool Game::createChest(Random* random)
+bool Game::createChest(Random *random)
 {
   int col = random->getRandomInt(0, board_width_ - 1);
   int weapon_number = random->getRandomInt(0, NUMBER_OF_WEAPONS - 1);
@@ -309,7 +305,7 @@ bool Game::createChest(Random* random)
       shared_ptr<Chest> chest(new Chest(weapon_number, row, col));
       chest_Number_.emplace_back(chest);  // Vector to save Chest Positions
     }
-    catch(std::bad_alloc&)
+    catch(std::bad_alloc &)
     {
       return true;
     }
@@ -392,9 +388,9 @@ void Game::printMap()
           for(int count = 0; count < 6; count++)
           {
             if(((index_col + (index_row - 1) * board_width_) ==
-               (wormNumber.at(count).getCol() +
-                wormNumber.at(count).getRow() * board_width_))
-                && wormNumber.at(count).getHp() > 0)
+                (wormNumber.at(count).getCol() +
+                 wormNumber.at(count).getRow() * board_width_))
+               && wormNumber.at(count).getHp() > 0)
             {
               cout << wormNumber.at(count).getCharacter();
             }
@@ -514,8 +510,8 @@ int Game::checkWinner()
 }
 
 //------------------------------------------------------------------------------
-int Game::setPlayerAndWorm(int& current_worm, int& player, int& turn_one,
-                           int& turn_two)
+int Game::setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
+                           int &turn_two)
 {
   int check = 0;
   while(check++ < 3)
@@ -550,7 +546,7 @@ int Game::setPlayerAndWorm(int& current_worm, int& player, int& turn_one,
         player = 1;
       }
       cout << " Worm " << wormNumber.at(current_worm).getName() <<
-      BRACKET_1 << wormNumber.at(current_worm).getId() << ") at " << "("
+           BRACKET_1 << wormNumber.at(current_worm).getId() << ") at " << "("
            << wormNumber.at(current_worm).getRow()
            << COMMA << wormNumber.at(current_worm).getCol() <<
            ") ready" << endl;
@@ -561,7 +557,7 @@ int Game::setPlayerAndWorm(int& current_worm, int& player, int& turn_one,
 }
 
 //------------------------------------------------------------------------------
-bool Game::checkDirection(int& steps)
+bool Game::checkDirection(int &steps)
 {
   bool left_steps = false;
   if(steps < 0)
@@ -572,7 +568,7 @@ bool Game::checkDirection(int& steps)
 }
 
 //------------------------------------------------------------------------------
-bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
+bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
 {
   int step_direction = (col + 1);
   if(left_steps)
@@ -587,9 +583,10 @@ bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
   }
   if(row > 0)
   {
-      map_.at(currentField(row, col)).setType(Field::AIR);
+    map_.at(currentField(row, col)).setType(Field::AIR);
   }
-  if(map_.at(TARGET_FIELD).getType() == Field::CHEST) // Step command
+  if(map_.at(targetField(row, step_direction)).getType() ==
+     Field::CHEST) // Step command
   {
     findChest(row, step_direction, current_worm);
     if(map_.at(currentField(row, col)).getType() == Field::WORM
@@ -603,7 +600,8 @@ bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
       return true;
     }
   }
-  if(map_.at(TARGET_FIELD).getType() == Field::AIR) // Step command
+  if(map_.at(targetField(row, step_direction)).getType() ==
+     Field::AIR) // Step command
   {
     if(map_.at(currentField(row, col)).getType() == Field::WORM
        && map_.at(currentField(row, col)).getType() != Field::WORM)
@@ -619,23 +617,26 @@ bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
   try
   {
     if((map_.at(aboveCurrentField(row, col)).getType() != Field::EARTH)
-       && ((map_.at(TARGET_FIELD).getType() == Field::WORM ||
-            map_.at(TARGET_FIELD).getType() == Field::EARTH)
-           &&
-           map_.at(ABOVE_TARGET_FIELD).getType() ==
-           Field::AIR)) // Climb command
+       &&
+       ((map_.at(targetField(row, step_direction)).getType() == Field::WORM ||
+         map_.at(targetField(row, step_direction)).getType() == Field::EARTH)
+        &&
+        map_.at(aboveTargetField(row, step_direction)).getType() ==
+        Field::AIR)) // Climb command
     {
-      map_.at(ABOVE_TARGET_FIELD).setType(Field::WORM);
+      map_.at(aboveTargetField(row, step_direction)).setType(Field::WORM);
       wormNumber.at(current_worm).setPosition((row - 1), step_direction);
       row--;
       col = step_direction;
       return true;
     }
     else if((map_.at(aboveCurrentField(row, col)).getType() != Field::EARTH)
-            && ((map_.at(TARGET_FIELD).getType() == Field::WORM ||
-                 map_.at(TARGET_FIELD).getType() == Field::EARTH)
+            && ((map_.at(targetField(row, step_direction)).getType() ==
+                 Field::WORM ||
+                 map_.at(targetField(row, step_direction)).getType() ==
+                 Field::EARTH)
                 &&
-                map_.at(ABOVE_TARGET_FIELD).getType() ==
+                map_.at(aboveTargetField(row, step_direction)).getType() ==
                 Field::CHEST)) // Climb command into Chest
     {
       row--;
@@ -644,7 +645,7 @@ bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
       return true;
     }
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
     map_.at(currentField(row, col)).setType(Field::WORM);
     return false;
@@ -683,26 +684,26 @@ void Game::move(int row, int col, int steps, int current_worm)
 //------------------------------------------------------------------------------
 void Game::wormGravityCheck()
 {
-    int row_gravity;
-    int check_row;
-    int col_gravity = 0;
-    int next_round_flag = 1;
-    while(next_round_flag)
+  int row_gravity;
+  int check_row;
+  int col_gravity = 0;
+  int next_round_flag = 1;
+  while(next_round_flag)
+  {
+    next_round_flag = 0;
+    for(int index = 0; index < 6; index++)
     {
-        next_round_flag = 0;
-        for(int index = 0; index < 6; index++)
-        {
-            row_gravity = wormNumber.at(index).getRow();
-            check_row = wormNumber.at(index).getRow();
-            col_gravity = wormNumber.at(index).getCol();
-            gravity(index, row_gravity, col_gravity);
-            if(row_gravity != check_row)
-            {
-                next_round_flag = 1;
-            }
-            wormNumber.at(index).setPosition(row_gravity, col_gravity);
-        }
+      row_gravity = wormNumber.at(index).getRow();
+      check_row = wormNumber.at(index).getRow();
+      col_gravity = wormNumber.at(index).getCol();
+      gravity(index, row_gravity, col_gravity);
+      if(row_gravity != check_row)
+      {
+        next_round_flag = 1;
+      }
+      wormNumber.at(index).setPosition(row_gravity, col_gravity);
     }
+  }
 }
 
 //------------------------------------------------------------------------------
@@ -759,7 +760,7 @@ int Game::getBoardHeight()
 }
 
 //------------------------------------------------------------------------------
-bool Game::userInput(int current_worm, int& move_command)
+bool Game::userInput(int current_worm, int &move_command)
 {
   string input_line;
   string param;
@@ -793,7 +794,7 @@ bool Game::userInput(int current_worm, int& move_command)
 
 //------------------------------------------------------------------------------
 bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
-                                    int current_worm, int& move_command)
+                                    int current_worm, int &move_command)
 {
   if(command_params.size() == 1 && (command_params.at(0) != COMMAND_MOVE &&
                                     command_params.at(0) != COMMAND_CHOOSE &&
@@ -822,7 +823,8 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
     else if(command_params.at(0) == COMMAND_PLAY)
     {
       Play play(COMMAND_PLAY);
-      return play.execute(*this, command_params) == 0; //return wert muss auf true geandert werden, wenn befehl ausgefuehrt
+      return play.execute(*this, command_params) ==
+             0; //return wert muss auf true geandert werden, wenn befehl ausgefuehrt
     }
     else if(command_params.at(0) == COMMAND_WHOAMI)
     {
@@ -855,7 +857,7 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
 
 //------------------------------------------------------------------------------
 bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
-                                     int current_worm, int& move_command)
+                                     int current_worm, int &move_command)
 {
   if(command_params.at(0) == COMMAND_MOVE)
   {
@@ -904,7 +906,7 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
     if(action.execute(*this, command_params))
     {
       if(command_params.size() == 3
-      && wormNumber.at(current_worm).getCurrentWeapon() == 2)
+         && wormNumber.at(current_worm).getCurrentWeapon() == 2)
       {
         printErrorMessage(INVALID_TARGET);
       }
@@ -928,7 +930,7 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
 }
 
 //------------------------------------------------------------------------------
-bool Game::gravity(int current_worm, int& row, int col)
+bool Game::gravity(int current_worm, int &row, int col)
 {
   int count = 0;
   try
@@ -942,9 +944,10 @@ bool Game::gravity(int current_worm, int& row, int col)
         row++;
         count++;
       }
-      if(count > 1 && (map_.at(belowCurrentField(row, col)).getType() != Field::WATER
-                       &&
-                       map_.at(belowCurrentField(row, col)).getType() != Field::CHEST))
+      if(count > 1 &&
+         (map_.at(belowCurrentField(row, col)).getType() != Field::WATER
+          &&
+          map_.at(belowCurrentField(row, col)).getType() != Field::CHEST))
       {
         wormNumber.at(current_worm).damage((count - 1) * 10);
         if(wormNumber.at(current_worm).getHp() <= 0)
@@ -1001,7 +1004,7 @@ bool Game::gravity(int current_worm, int& row, int col)
     }
     return true;
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
     if(wormNumber.at(current_worm).getHp() > 0)
     {
@@ -1013,7 +1016,7 @@ bool Game::gravity(int current_worm, int& row, int col)
 }
 
 //------------------------------------------------------------------------------
-int Game::chooseWeapon(int current_worm, std::vector<std::string>& params)
+int Game::chooseWeapon(int current_worm, std::vector<std::string> &params)
 {
   if(params.at(1) == GUN)
   {
@@ -1105,7 +1108,7 @@ int Game::findWorm(int row, int col)
   {
     if(((wormNumber.at(index).getRow() * board_width_) +
         wormNumber.at(index).getCol())
-        == (row * board_width_) + col)
+       == (row * board_width_) + col)
     {
       return index;
     }
@@ -1130,12 +1133,12 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
     for(int index = -1; index < 2; index++)
     {
       if(map_.at(aboveCurrentField(row, col) +
-         index).getType() == Field::WORM
+                 index).getType() == Field::WORM
          && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0)
       {
         wormNumber.at(findWorm((row - 1), (col + index))).damage(damage);
         cout << ATTACK_HIT_WORM << (row - 1) << COMMA
-        << (col + index) << BRACKET_2 << endl;
+             << (col + index) << BRACKET_2 << endl;
         if(wormNumber.at(findWorm(row - 1, col + index)).getHp() <= 0)
         {
           map_.at(aboveCurrentField(row, col + index)).setType(Field::AIR);
@@ -1145,13 +1148,13 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         {
           cout << wormNumber.at(findWorm(row - 1, col + index)).getName()
                << BRACKET_1 << wormNumber.at(findWorm(row - 1, col
-                 + index)).getId()
+                                                               + index)).getId()
                << TOOK_ACTION << damage << HP_DAMAGE << endl;
         }
       }
     }
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
   }
   try
@@ -1175,7 +1178,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
     }
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
   }
   try
@@ -1187,7 +1190,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       {
         wormNumber.at(findWorm((row + 1), (col + index))).damage(damage);
         cout << ATTACK_HIT_WORM << (row + 1) << COMMA
-              << (col + index) << BRACKET_2 << endl;
+             << (col + index) << BRACKET_2 << endl;
         if(wormNumber.at(findWorm(row + 1, col + index)).getHp() <= 0)
         {
           map_.at(belowCurrentField(row, col + index)).setType(Field::AIR);
@@ -1197,13 +1200,13 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         {
           cout << wormNumber.at(findWorm(row + 1, col + index)).getName()
                << BRACKET_1 << wormNumber.at(findWorm(row + 1, col +
-               index)).getId()
+                                                               index)).getId()
                << TOOK_ACTION << damage << HP_DAMAGE << endl;
         }
       }
     }
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
   }
   try
@@ -1227,7 +1230,7 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
       }
     }
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
   }
 }
@@ -1304,7 +1307,7 @@ void Game::makeDamage(int row, int col, int damage)
       }
     }
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
     if(damage != BLOWTORCH_DAMAGE) // Blowtorch
     {
@@ -1314,42 +1317,47 @@ void Game::makeDamage(int row, int col, int damage)
 }
 
 //------------------------------------------------------------------------------
-bool Game::findTarget(int& row, int& col, int direction)
+bool Game::findTarget(int &row, int &col, int direction)
 {
   try
   {
     switch(direction)
     {
       case 0:
-        while(map_.at(currentField(row, (col + CHECK_LEFT))).getType() == Field::AIR) // left
+        while(map_.at(currentField(row, (col + CHECK_LEFT))).getType() ==
+              Field::AIR) // left
         {
           col--;
         }
         col--;
         break;
       case 1:
-        while(map_.at(currentField(row, col) + CHECK_RIGHT).getType() == Field::AIR) // right
+        while(map_.at(currentField(row, col) + CHECK_RIGHT).getType() ==
+              Field::AIR) // right
         {
           col++;
         }
         col++;
         break;
       case 2:
-        while(map_.at(belowCurrentField(row, col)).getType() == Field::AIR) // down
+        while(map_.at(belowCurrentField(row, col)).getType() ==
+              Field::AIR) // down
         {
           row++;
         }
         row++;
         break;
       case 3:
-        while(map_.at(aboveCurrentField(row, col)).getType() == Field::AIR) // up
+        while(map_.at(aboveCurrentField(row, col)).getType() ==
+              Field::AIR) // up
         {
           row--;
         }
         row--;
         break;
       case 4:
-        while(map_.at(currentField(row, col) + (board_width_ + CHECK_LEFT_DOWN)).getType() ==
+        while(map_.at(currentField(row, col) +
+                      (board_width_ + CHECK_LEFT_DOWN)).getType() ==
               Field::AIR) // left-down
         {
           row++;
@@ -1359,7 +1367,8 @@ bool Game::findTarget(int& row, int& col, int direction)
         col--;
         break;
       case 5:
-        while(map_.at(currentField(row, col) + (board_width_ + CHECK_RIGHT_DOWN)).getType() ==
+        while(map_.at(currentField(row, col) +
+                      (board_width_ + CHECK_RIGHT_DOWN)).getType() ==
               Field::AIR) // right-down
         {
           row++;
@@ -1369,7 +1378,8 @@ bool Game::findTarget(int& row, int& col, int direction)
         col++;
         break;
       case 6:
-        while(map_.at(currentField(row, col) - (board_width_ + CHECK_LEFT_UP)).getType() ==
+        while(map_.at(
+          currentField(row, col) - (board_width_ + CHECK_LEFT_UP)).getType() ==
               Field::AIR) // left-up
         {
           row--;
@@ -1379,7 +1389,8 @@ bool Game::findTarget(int& row, int& col, int direction)
         col--;
         break;
       case 7:
-        while(map_.at(currentField(row, col) - (board_width_ - CHECK_RIGHT_UP)).getType() ==
+        while(map_.at(
+          currentField(row, col) - (board_width_ - CHECK_RIGHT_UP)).getType() ==
               Field::AIR) // right-up
         {
           row--;
@@ -1396,7 +1407,7 @@ bool Game::findTarget(int& row, int& col, int direction)
       throw std::out_of_range(SHOT_MISSED);
     }
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
     cout << SHOT_MISSED << endl;
     return false;
@@ -1430,7 +1441,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon,
     else if(current_weapon == BAZOOKA_INT) // Bazooka
     {
       wormNumber.at(current_worm).getWeapons()
-            .at(current_weapon).decreaseAmmo();
+        .at(current_weapon).decreaseAmmo();
       makeDamage(row, col, damage);
       makeDamage(row - CHECK_ROW, col, damage);
       makeDamage(row, col + CHECK_RIGHT, damage);
@@ -1505,7 +1516,7 @@ void Game::actionColCommand(int current_worm, int current_weapon, int damage,
     }
     makeDamage(row, col, damage);
   }
-  catch(std::out_of_range&)
+  catch(std::out_of_range &)
   {
     cout << SHOT_MISSED << endl;
   }
@@ -1525,12 +1536,12 @@ bool Game::actionRowColCommand(int current_worm, int current_weapon, int row,
   }
   else if(map_.at(currentField(row, col)).getType() == Field::CHEST)
   {
-      wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
-      map_.at((wormNumber.at(current_worm).getRow() * board_width_)
-              + wormNumber.at(current_worm).getCol()).setType(Field::AIR);
-      findChest(row, col, current_worm);
-      gravity(current_worm, row, col);
-      return true;
+    wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+    map_.at((wormNumber.at(current_worm).getRow() * board_width_)
+            + wormNumber.at(current_worm).getCol()).setType(Field::AIR);
+    findChest(row, col, current_worm);
+    gravity(current_worm, row, col);
+    return true;
   }
   return false;
 }
@@ -1557,4 +1568,16 @@ int Sep::Game::belowCurrentField(int row, int col)
 int Sep::Game::aboveCurrentField(int row, int col)
 {
   return (((row - 1) * board_width_) + col);
+}
+
+//------------------------------------------------------------------------------
+int Sep::Game::targetField(int row, int step_direction)
+{
+  return ((row * board_width_) + step_direction);
+}
+
+//------------------------------------------------------------------------------
+int Sep::Game::aboveTargetField(int row, int step_direction)
+{
+  return (((row - 1) * board_width_) + step_direction);
 }
