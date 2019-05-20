@@ -822,7 +822,7 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
     }
     else if(command_params.at(0) == COMMAND_PLAY)
     {
-      Play play(COMMAND_PLAY);
+      Play play(COMMAND_PLAY, current_worm);
       return play.execute(*this, command_params) ==
              0; //return wert muss auf true geandert werden, wenn befehl ausgefuehrt
     }
@@ -1580,4 +1580,13 @@ int Sep::Game::targetField(int row, int step_direction)
 int Sep::Game::aboveTargetField(int row, int step_direction)
 {
   return (((row - 1) * board_width_) + step_direction);
+}
+
+//------------------------------------------------------------------------------
+int Game::playCommand(int current_worm, int team)
+{
+  //insert simulator - example move right 1
+  move(getWormNumber().at(current_worm).getRow(),
+       getWormNumber().at(current_worm).getCol(),
+       1, current_worm);
 }

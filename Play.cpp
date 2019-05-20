@@ -9,13 +9,14 @@
 //------------------------------------------------------------------------------
 //
 
-
+#include "Game.h"
 #include "Play.h"
 
 namespace Sep
 {
   //----------------------------------------------------------------------------
-  Play::Play(const std::string &name) : Command(name)
+  Play::Play(const std::string &name, int current_worm) : Command(name),
+            current_worm_(current_worm)
   {
   }
 
@@ -27,7 +28,11 @@ namespace Sep
   //----------------------------------------------------------------------------
   int Play::execute(Game &game, std::vector<std::string> &params)
   {
-    // TODO
-    return 0;
+    int team = 0;
+    if(current_worm_ < 3)
+    {
+      team = 3; // Team 1
+    }
+    game.playCommand(current_worm_, team);
   }
 }

@@ -24,7 +24,7 @@ namespace Sep
   {
     public:
       // Constructor
-      Play(const std::string &name);
+      Play(const std::string &name, int current_worm);
 
       //------------------------------------------------------------------------
       // Copy Constructor
@@ -49,6 +49,10 @@ namespace Sep
       //@param params  is the input stored in a vector
       //
       int execute(Game &game, std::vector<std::string> &params) override;
+
+  private:
+
+      int current_worm_;
   };
 }
 

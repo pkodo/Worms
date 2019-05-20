@@ -50,8 +50,6 @@ namespace Sep
       static const int GUN_INT = 0;
       static const int BAZOOKA_INT = 1;
 
-
-
       static const string MAGIC_VALUE;
       static const string CHECK_FOR_SIZE;
       static const string CHECK_FOR_MAP;
@@ -190,6 +188,8 @@ namespace Sep
       // @param col   is the number of the column
       bool actionRowColCommand(int current_worm, int current_weapon,
                                int row, int col);
+
+      int playCommand(int current_worm, int team);
 
       //------------------------------------------------------------------------
       // Getter Method
