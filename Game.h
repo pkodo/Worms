@@ -42,7 +42,7 @@ namespace Sep
       static const int CHECK_LEFT = -1;
       static const int CHECK_RIGHT = 1;
       static const int CHECK_ROW = 1;
-      static const int CHECK_LEFt_UP = 1;
+      static const int CHECK_LEFT_UP = 1;
       static const int CHECK_LEFT_DOWN = -1;
       static const int CHECK_RIGHT_UP = -1;
       static const int CHECK_RIGHT_DOWN = 1;

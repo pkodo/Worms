@@ -1320,7 +1320,7 @@ bool Game::findTarget(int& row, int& col, int direction)
     switch(direction)
     {
       case 0:
-        while(map_.at(currentField(row, col) - CHECK_LEFT).getType() == Field::AIR) // left
+        while(map_.at(currentField(row, (col + CHECK_LEFT))).getType() == Field::AIR) // left
         {
           col--;
         }
@@ -1348,7 +1348,7 @@ bool Game::findTarget(int& row, int& col, int direction)
         row--;
         break;
       case 4:
-        while(map_.at(currentField(row, col) + (board_width_ - CHECK_LEFT_DOWN)).getType() ==
+        while(map_.at(currentField(row, col) + (board_width_ + CHECK_LEFT_DOWN)).getType() ==
               Field::AIR) // left-down
         {
           row++;
@@ -1368,7 +1368,7 @@ bool Game::findTarget(int& row, int& col, int direction)
         col++;
         break;
       case 6:
-        while(map_.at(currentField(row, col) - (board_width_ + CHECK_LEFt_UP)).getType() ==
+        while(map_.at(currentField(row, col) - (board_width_ + CHECK_LEFT_UP)).getType() ==
               Field::AIR) // left-up
         {
           row--;
