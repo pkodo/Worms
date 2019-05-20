@@ -20,11 +20,10 @@ namespace Sep
   const int RETURN_MEMORY_ERROR = -2;
   const int RETURN_ERROR_ARGUMENT = -3;
   const std::string ERROR_WRONG_ARGUMENTS = "Usage: ./sworms <config-file>";
-  const std::string ERROR_INVALID_CONFIG = "[ERROR] invalid config file!";
   const std::string ERROR_NO_MEMORY = "[ERROR] memory error!";
 }
 
-//The main function creates an game object, loads the configuration-file on it
+// The main function creates an game object, loads the configuration-file on it
 // and then it performs the game loop
 
 int main(int argc, char* argv[])

@@ -20,6 +20,5 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  Bazooka::~Bazooka()
-  = default;
+  Bazooka::~Bazooka() = default;
 }

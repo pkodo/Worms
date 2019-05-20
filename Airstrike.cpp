@@ -20,6 +20,5 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  Airstrike::~Airstrike()
-  = default;
+  Airstrike::~Airstrike() = default;
 }

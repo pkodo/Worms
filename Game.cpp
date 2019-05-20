@@ -99,7 +99,7 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
   switch(type)
   {
     case INVALID_CONFIGFILE:
-      cout << "[ERROR] invalid config file" << endl;
+      cout << "[ERROR] invalid config file!" << endl;
       break;
     case INVALID_TARGET:
       cout << "[ERROR] invalid target!" << endl;
@@ -423,8 +423,6 @@ int Game::gameLoop()
 
   int turn_one = 0;
   int turn_two = 3;
-  int row = 0;
-  int col = 0;
 
   Random random;
   createWorms(&random);
@@ -449,13 +447,7 @@ int Game::gameLoop()
     {
       break;
     }
-    for(int index = 0; index < 6; index++)
-    {
-      row = wormNumber.at(index).getRow();
-      col = wormNumber.at(index).getCol();
-      gravity(index, row, col);
-      wormNumber.at(index).setPosition(row, col);
-    }
+    wormGravityCheck();
     chestGravity();
     if(checkWinner())
     {
@@ -568,36 +560,6 @@ int Game::setPlayerAndWorm(int& current_worm, int& player, int& turn_one,
 }
 
 //------------------------------------------------------------------------------
-void Game::testWormTower(int& row, int& col, int& detect_worm_tower,
-                         int current_worm)
-{
-  if(map_.at(aboveCurrentField(row, col)).getType() == Field::WORM)
-  {
-    while(map_.at(aboveCurrentField(row, col)).getType() == Field::WORM)
-    {
-      for(int index = 0; index < 6; index++)
-      {
-        if((wormNumber.at(index).getRow() * wormNumber.at(index).getCol())
-           == ((wormNumber.at(current_worm).getRow() - 1) *
-               wormNumber.at(current_worm).getCol()))
-        {
-          wormNumber.at(index).setPosition(row, col);
-          current_worm = index;
-        }
-      }
-      row--;// If a "worm tower" was found
-    }
-    map_.at(currentField(row, col)).setType(Field::AIR);
-
-    row = detect_worm_tower;
-  }
-  else
-  {
-    map_.at(currentField(row, col)).setType(Field::AIR);
-  }
-}
-
-//------------------------------------------------------------------------------
 bool Game::checkDirection(int& steps)
 {
   bool left_steps = false;
@@ -611,7 +573,6 @@ bool Game::checkDirection(int& steps)
 //------------------------------------------------------------------------------
 bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
 {
-  int detect_worm_tower = row;
   int step_direction = (col + 1);
   if(left_steps)
   {
@@ -625,7 +586,7 @@ bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
   }
   if(row > 0)
   {
-    testWormTower(row, col, detect_worm_tower, current_worm);
+      map_.at(currentField(row, col)).setType(Field::AIR);
   }
   if(map_.at(TARGET_FIELD).getType() == Field::CHEST) // Step command
   {
@@ -687,6 +648,7 @@ bool Game::makeMove(int& row, int& col, bool left_steps, int current_worm)
     map_.at(currentField(row, col)).setType(Field::WORM);
     return false;
   }
+  map_.at(currentField(row, col)).setType(Field::WORM);
   return false;
 }
 
@@ -703,7 +665,7 @@ void Game::move(int row, int col, int steps, int current_worm)
         printErrorMessage(WRONG_MOVE);
         break;
       }
-      else if(((col + 1) > board_width_) || (col + 1) < 0)
+      else if(((col + 1) > board_width_) || (col - 1) < 0)
       {
         map_.at(currentField(row, col)).setType(Field::AIR);
         wormNumber.at(current_worm).setHp(0);
@@ -713,7 +675,33 @@ void Game::move(int row, int col, int steps, int current_worm)
       break;
     }
     chestGravity();
+    wormGravityCheck();
   }
+}
+
+//------------------------------------------------------------------------------
+void Game::wormGravityCheck()
+{
+    int row_gravity;
+    int check_row;
+    int col_gravity = 0;
+    int next_round_flag = 1;
+    while(next_round_flag)
+    {
+        next_round_flag = 0;
+        for(int index = 0; index < 6; index++)
+        {
+            row_gravity = wormNumber.at(index).getRow();
+            check_row = wormNumber.at(index).getRow();
+            col_gravity = wormNumber.at(index).getCol();
+            gravity(index, row_gravity, col_gravity);
+            if(row_gravity != check_row)
+            {
+                next_round_flag = 1;
+            }
+            wormNumber.at(index).setPosition(row_gravity, col_gravity);
+        }
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -1311,6 +1299,7 @@ void Game::makeDamage(int row, int col, int damage)
         cout << wormNumber.at(findWorm(row, col)).getName() << BRACKET_1
              << wormNumber.at(findWorm(row, col)).getId() << TOOK_ACTION <<
              damage << HP_DAMAGE << endl;
+        wormGravityCheck();
       }
     }
   }
@@ -1525,14 +1514,22 @@ void Game::actionColCommand(int current_worm, int current_weapon, int damage,
 bool Game::actionRowColCommand(int current_worm, int current_weapon, int row,
                                int col)
 {
-  if(map_.at(currentField(row, col)).getType() == Field::AIR
-     || map_.at(currentField(row, col)).getType() == Field::CHEST)
+  if(map_.at(currentField(row, col)).getType() == Field::AIR)
   {
     wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
     map_.at((wormNumber.at(current_worm).getRow() * board_width_)
             + wormNumber.at(current_worm).getCol()).setType(Field::AIR);
     gravity(current_worm, row, col);
     return true;
+  }
+  else if(map_.at(currentField(row, col)).getType() == Field::CHEST)
+  {
+      wormNumber.at(current_worm).getWeapons().at(current_weapon).decreaseAmmo();
+      map_.at((wormNumber.at(current_worm).getRow() * board_width_)
+              + wormNumber.at(current_worm).getCol()).setType(Field::AIR);
+      findChest(row, col, current_worm);
+      gravity(current_worm, row, col);
+      return true;
   }
   return false;
 }

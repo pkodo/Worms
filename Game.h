@@ -321,14 +321,12 @@ namespace Sep
       bool makeMove(int& row, int& col, bool left_steps, int current_worm);
 
       //------------------------------------------------------------------------
-      // Worm Tower Method
-      // Makes a test if a "worm tower" has occured
-      // @param row defines the position of the worm.
-      // @param col defines the position of the worm.
-      // @param detect_worm_tower saves the original value of the row.
+      // Checks through vector with worm numbers for gravity
       //
-      void testWormTower(int& row, int& col, int& detect_worm_tower,
-                         int current_worm);
+      // @param random object that creates name and position of the worm
+      //
+      void wormGravityCheck();
+
 
       //------------------------------------------------------------------------
       // Create Worms
