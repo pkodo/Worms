@@ -170,6 +170,7 @@ namespace Sep
       }
       catch(std::invalid_argument& invalidArgument)
       {
+        return false;
       }
       try
       {
@@ -177,6 +178,7 @@ namespace Sep
       }
       catch(std::invalid_argument& invalidArgument1)
       {
+        return false;
       }
       if(((col < 0 || col > game.getBoardWidth()) || (row < 0 || row > game.
           getBoardHeight())) || game.getWormNumber().at(current_worm_).

@@ -426,10 +426,10 @@ int Game::gameLoop()
 
   Random random;
   createWorms(&random);
+  printMap();
 
   while(true)
   {
-    printMap();
     if(checkWinner())
     {
       return EVERYTHING_OK;
@@ -449,13 +449,14 @@ int Game::gameLoop()
     }
     wormGravityCheck();
     chestGravity();
-    if(checkWinner())
-    {
-      return EVERYTHING_OK;
-    }
     if(createChest(&random))// adds chest on the end of every turn
     {
       return MEMORY_ERROR;
+    }
+    printMap();
+    if(checkWinner())
+    {
+      return EVERYTHING_OK;
     }
   }
   return EVERYTHING_OK;
@@ -860,7 +861,7 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
   {
     if(command_params.size() != 3)
     {
-      printErrorMessage(INVALID_PARAMETER);
+      printErrorMessage(WRONG_PARAMETER_COUNT);
       return false;
     }
     if(move_command != 0)
@@ -909,11 +910,11 @@ bool Game::checkMoreParameterCommand(std::vector<std::string> command_params,
       }
       else if(command_params.size() == 3)
       {
-        printErrorMessage(WRONG_PARAMETER_COUNT);
+        printErrorMessage(INVALID_PARAMETER);
       }
       else
       {
-        printErrorMessage(INVALID_PARAMETER);
+        printErrorMessage(WRONG_PARAMETER_COUNT);
       }
       return false;
     }
