@@ -821,7 +821,7 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
     else if(command_params.at(0) == COMMAND_PLAY)
     {
       Play play(COMMAND_PLAY);
-      return play.execute(*this, command_params) == 0;
+      return play.execute(*this, command_params) == 0; //return wert muss auf true geandert werden, wenn befehl ausgefuehrt
     }
     else if(command_params.at(0) == COMMAND_WHOAMI)
     {
@@ -1137,8 +1137,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
         << (col + index) << BRACKET_2 << endl;
         if(wormNumber.at(findWorm(row - 1, col + index)).getHp() <= 0)
         {
-          map_.at(currentField(row, col)).setType(Field::AIR);
-          printDeathCases(DIED, findWorm((row), col));
+          map_.at(aboveCurrentField(row, col + index)).setType(Field::AIR);
+          printDeathCases(DIED, findWorm((row - 1), col + index));
         }
         else
         {
@@ -1163,8 +1163,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
            << endl;
       if(wormNumber.at(findWorm(row, col + 1)).getHp() <= 0)
       {
-        map_.at(currentField(row, col)).setType(Field::AIR);
-        printDeathCases(DIED, findWorm((row), col));
+        map_.at(currentField(row, col + 1)).setType(Field::AIR);
+        printDeathCases(DIED, findWorm((row), col + 1));
       }
       else
       {
@@ -1189,8 +1189,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
               << (col + index) << BRACKET_2 << endl;
         if(wormNumber.at(findWorm(row + 1, col + index)).getHp() <= 0)
         {
-          map_.at(currentField(row, col)).setType(Field::AIR);
-          printDeathCases(DIED, findWorm((row), col));
+          map_.at(belowCurrentField(row, col + index)).setType(Field::AIR);
+          printDeathCases(DIED, findWorm((row + 1), col + index));
         }
         else
         {
@@ -1215,8 +1215,8 @@ void Game::actionCommand(int current_worm, int current_weapon, int damage)
            << BRACKET_2 << endl;
       if(wormNumber.at(findWorm(row, col - 1)).getHp() <= 0)
       {
-        map_.at(currentField(row, col)).setType(Field::AIR);
-        printDeathCases(DIED, findWorm((row), col));
+        map_.at(currentField(row, col - 1)).setType(Field::AIR);
+        printDeathCases(DIED, findWorm((row), col - 1));
       }
       else
       {

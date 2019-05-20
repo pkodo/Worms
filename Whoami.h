@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------
-// Whoami
+// Whoami.h
 //
 // Group: Group 11, study assistant Philip Loibl
 //

@@ -23,9 +23,13 @@ namespace Sep
   const std::string ERROR_NO_MEMORY = "[ERROR] memory error!";
 }
 
-// The main function creates an game object, loads the configuration-file on it
-// and then it performs the game loop
-
+//------------------------------------------------------------------------------
+// The main function creates an game object, loads the configuration-file
+// and starts the game-loop.
+// @param argc number of entered command-line-arguments.
+// @param argv string of file name.
+// @return error values
+//
 int main(int argc, char* argv[])
 {
   try
@@ -54,10 +58,8 @@ int main(int argc, char* argv[])
   }
   catch(std::exception&)
   {
-
   }
   catch(...)
   {
-
   }
 }

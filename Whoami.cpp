@@ -1,27 +1,34 @@
+//------------------------------------------------------------------------------
+// Whoami.cpp
 //
-// Created by stefan on 15.05.19.
+// Group: Group 11, study assistant Philip Loibl
 //
+// Authors: Paul Kodolitsch 01436808
+//          Christian Luginger 01556194
+//          Stefan Wietreich 11811040
+//------------------------------------------------------------------------------
+//
+
 
 #include <iostream>
 #include "Whoami.h"
 
-using std::cout;
-using std::endl;
-
 namespace Sep
 {
+  //----------------------------------------------------------------------------
   Sep::Whoami::Whoami(const std::string &name) : Command(name)
   {
   }
 
+  //----------------------------------------------------------------------------
   Whoami::~Whoami()
   {
-
   }
 
+  //----------------------------------------------------------------------------
   int Whoami::execute(Game &game, std::vector<std::string> &params)
   {
-    cout << "Team: SwormTrooper" << endl;
+    std::cout << "Team: SwormTrooper" << std::endl;
     return 0;
   }
 }
