@@ -824,7 +824,8 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
     {
       Play play(COMMAND_PLAY, current_worm);
       return play.execute(*this, command_params) ==
-             0; //return wert muss auf true geandert werden, wenn befehl ausgefuehrt
+             0; //return wert muss auf true geandert werden, wenn befehl
+                // ausgefuehrt
     }
     else if(command_params.at(0) == COMMAND_WHOAMI)
     {
@@ -1591,20 +1592,20 @@ void Game::setGhostMode()
 //------------------------------------------------------------------------------
 int Game::playCommand(int current_worm, bool team)
 {
-  if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0)
-  {
-    botInput(current_worm, "choose melee");
-    botInput(current_worm, "action");
-  }
-  else
-  {
-    botInput(current_worm, "action l");
-  }
-
-  //if(makeGhostActionCommand(current_worm, team))
+  //if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0)
   //{
-  //  makeGhostMoveCommand(current_worm, team);
+  //  botInput(current_worm, "choose melee");
+  //  botInput(current_worm, "action");
   //}
+  //else
+  //{
+  //  botInput(current_worm, "action l");
+  //}
+
+  if(makeGhostActionCommand(current_worm, team))
+  {
+    makeGhostMoveCommand(current_worm, team);
+  }
   return true;
 }
 
@@ -1614,16 +1615,17 @@ bool Game::makeGhostActionCommand(int current_worm, bool team)
   if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
       && testGhostMelee(current_worm, team))
   {
-    cout << "Chose weapon melee Ammunition: "
-    << wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo()
-    << endl;
-    actionCommand(current_worm, MELEE_INT, MELEE_DAMAGE);
-    cout << "command: choose melee\n" << "command: action" << endl;
+    botInput(current_worm, "choose melee");
+    botInput(current_worm, "action");
     return true;
   }
   else
   {
-    cout << "command: action idle" << endl;
+    if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0)
+    {
+      botInput(current_worm, "choose bazooka");
+    }
+    botInput(current_worm, "action l");
     return true;
   }
 
