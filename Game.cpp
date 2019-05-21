@@ -83,7 +83,7 @@ const string Game::COMMA = ", ";
 
 //------------------------------------------------------------------------------
 Game::Game() : board_width_(0), board_height_(0), quit_(false), map_(),
-               wormNumber(), chest_Number_()
+               wormNumber(), chest_Number_(), ghost_mode_(false)
 {
   Game::map_.insert(pair<int, Field>(board_height_ * board_width_,
                                      Field(Field::AIR)));
@@ -1582,11 +1582,91 @@ int Sep::Game::aboveTargetField(int row, int step_direction)
   return (((row - 1) * board_width_) + step_direction);
 }
 
-//------------------------------------------------------------------------------
-int Game::playCommand(int current_worm, int team)
+void Game::setGhostMode()
 {
-  //insert simulator - example move right 1
-  move(getWormNumber().at(current_worm).getRow(),
-       getWormNumber().at(current_worm).getCol(),
-       1, current_worm);
+  ghost_mode_ = true;
+}
+
+//------------------------------------------------------------------------------
+int Game::playCommand(int current_worm, bool team)
+{
+  if(makeGhostActionCommand(current_worm, team))
+  {
+    makeGhostMoveCommand(current_worm, team);
+  }
+  return true;
+}
+
+bool Game::makeGhostActionCommand(int current_worm, bool team)
+{
+  if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
+      && testGhostMelee(current_worm, team))
+  {
+    cout << "Chose weapon melee Ammunition: "
+    << wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo()
+    << endl;
+    actionCommand(current_worm, MELEE_INT, MELEE_DAMAGE);
+    cout << "command: choose melee\n" << "command: action" << endl;
+    return true;
+  }
+  else
+  {
+    cout << "command: action idle" << endl;
+    return true;
+  }
+
+}
+
+bool Game::testGhostMelee(int current_worm, bool team)
+{
+  int row = wormNumber.at(current_worm).getRow();
+  int col = wormNumber.at(current_worm).getCol();
+  try
+  {
+    for(int index = -1; index < 2; index++)
+    {
+      if(map_.at(aboveCurrentField(row, col) +
+                 index).getType() == Field::WORM
+         && wormNumber.at(findWorm((row - 1), (col + index))).getHp() > 0
+         && ((team && findWorm((row - 1), (col + index)) > 2)
+             || (!team && findWorm((row - 1), (col + index)) < 3)))
+      {
+        return true;
+      }
+    }
+    if(map_.at(currentField(row, col) + 1).getType() == Field::WORM
+       && wormNumber.at(findWorm(row, col + 1)).getHp() > 0
+       && ((team && findWorm((row), (col + 1)) > 2)
+           || (!team && findWorm((row), (col + 1)) < 3)))
+    {
+      return true;
+    }
+    for(int index = -1; index < 2; index++)
+    {
+      if(map_.at(belowCurrentField(row, col) +
+                 index).getType() == Field::WORM
+         && wormNumber.at(findWorm((row + 1), (col + index))).getHp() > 0
+         && ((team && findWorm((row + 1), (col + index)) > 2)
+             || (!team && findWorm((row + 1), (col + index)) < 3)))
+      {
+        return true;
+      }
+    }
+    if(map_.at(currentField(row, col) - 1).getType() == Field::WORM
+       && wormNumber.at(findWorm(row, col - 1)).getHp() > 0
+       && ((team && findWorm((row), (col - 1)) > 2)
+           || (!team && findWorm((row), (col - 1)) < 3)))
+    {
+      return true;
+    }
+    return false;
+  }
+  catch(std::out_of_range &)
+  {
+  }
+}
+
+void Game::makeGhostMoveCommand(int current_worm, bool team)
+{
+
 }

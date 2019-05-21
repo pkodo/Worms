@@ -28,11 +28,12 @@ namespace Sep
   //----------------------------------------------------------------------------
   int Play::execute(Game &game, std::vector<std::string> &params)
   {
-    int team = 0;
+    bool team = false;
     if(current_worm_ < 3)
     {
-      team = 3; // Team 1
+      team = true; // Team 1
     }
+    game.setGhostMode();
     game.playCommand(current_worm_, team);
   }
 }

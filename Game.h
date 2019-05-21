@@ -38,7 +38,6 @@ namespace Sep
       static const int NUMBER_OF_WEAPONS = 5;
       static const int MIN_LENGTH = 10;
       static const int MAX_LENGTH = 80;
-      static const int BLOWTORCH_DAMAGE = 35;
       static const int CHECK_LEFT = -1;
       static const int CHECK_RIGHT = 1;
       static const int CHECK_ROW = 1;
@@ -46,9 +45,17 @@ namespace Sep
       static const int CHECK_LEFT_DOWN = -1;
       static const int CHECK_RIGHT_UP = -1;
       static const int CHECK_RIGHT_DOWN = 1;
-      static const int BLOWTORCH_INT = 3;
+
       static const int GUN_INT = 0;
+      static const int GUN_DAMAGE = 25;
       static const int BAZOOKA_INT = 1;
+      static const int BAZOOKA_DAMAGE = 40;
+      static const int BLOWTORCH_INT = 3;
+      static const int BLOWTORCH_DAMAGE = 35;
+      static const int MELEE_INT = 4;
+      static const int MELEE_DAMAGE = 50;
+      static const int AIRSTRIKE_INT = 5;
+      static const int AIRSTRIKE_DAMAGE = 20;
 
       static const string MAGIC_VALUE;
       static const string CHECK_FOR_SIZE;
@@ -189,7 +196,9 @@ namespace Sep
       bool actionRowColCommand(int current_worm, int current_weapon,
                                int row, int col);
 
-      int playCommand(int current_worm, int team);
+      int playCommand(int current_worm, bool team);
+
+      void setGhostMode();
 
       //------------------------------------------------------------------------
       // Getter Method
@@ -219,6 +228,11 @@ namespace Sep
       // Variable for determining the end of the game
       //
       bool quit_;
+
+      //------------------------------------------------------------------------
+      // Variable for acting in ghost mode
+      //
+      bool ghost_mode_;
 
       //------------------------------------------------------------------------
       // Datastructure for objects on the gameboard
@@ -491,6 +505,12 @@ namespace Sep
       // @param step_direction defines the direction of the shot.
       //
       int aboveTargetField(int row, int step_direction);
+
+      bool makeGhostActionCommand(int current_worm, bool team);
+
+      bool testGhostMelee(int current_worm, bool team);
+
+      void makeGhostMoveCommand(int current_worm, bool team);
   };
 }
 #endif //SEP_GAME_H
