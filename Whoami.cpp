@@ -28,7 +28,7 @@ namespace Sep
   //----------------------------------------------------------------------------
   int Whoami::execute(Game &game, std::vector<std::string> &params)
   {
-    std::cout << "Team: SwormTrooper" << std::endl;
+    std::cout << "Team: I use Arch, btw" << std::endl;
     return 0;
   }
 }

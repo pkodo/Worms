@@ -1582,6 +1582,7 @@ int Sep::Game::aboveTargetField(int row, int step_direction)
   return (((row - 1) * board_width_) + step_direction);
 }
 
+//------------------------------------------------------------------------------
 void Game::setGhostMode()
 {
   ghost_mode_ = true;
@@ -1597,6 +1598,7 @@ int Game::playCommand(int current_worm, bool team)
   return true;
 }
 
+//------------------------------------------------------------------------------
 bool Game::makeGhostActionCommand(int current_worm, bool team)
 {
   if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
@@ -1617,6 +1619,7 @@ bool Game::makeGhostActionCommand(int current_worm, bool team)
 
 }
 
+//------------------------------------------------------------------------------
 bool Game::testGhostMelee(int current_worm, bool team)
 {
   int row = wormNumber.at(current_worm).getRow();
@@ -1666,6 +1669,7 @@ bool Game::testGhostMelee(int current_worm, bool team)
   }
 }
 
+//------------------------------------------------------------------------------
 void Game::makeGhostMoveCommand(int current_worm, bool team)
 {
 
