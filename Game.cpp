@@ -1625,6 +1625,11 @@ bool Game::makeGhostActionCommand(int current_worm, bool team)
     {
       botInput(current_worm, "choose bazooka");
     }
+    else if(wormNumber.at(current_worm).getWeapons().at(BLOWTORCH_INT).getAmmo()
+    > 0)
+    {
+      botInput(current_worm, "choose blowtorch");
+    }
     botInput(current_worm, "action l");
     return true;
   }
