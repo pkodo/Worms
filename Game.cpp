@@ -1591,10 +1591,20 @@ void Game::setGhostMode()
 //------------------------------------------------------------------------------
 int Game::playCommand(int current_worm, bool team)
 {
-  if(makeGhostActionCommand(current_worm, team))
+  if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0)
   {
-    makeGhostMoveCommand(current_worm, team);
+    botInput(current_worm, "choose melee");
+    botInput(current_worm, "action");
   }
+  else
+  {
+    botInput(current_worm, "action l");
+  }
+
+  //if(makeGhostActionCommand(current_worm, team))
+  //{
+  //  makeGhostMoveCommand(current_worm, team);
+  //}
   return true;
 }
 
@@ -1673,4 +1683,30 @@ bool Game::testGhostMelee(int current_worm, bool team)
 void Game::makeGhostMoveCommand(int current_worm, bool team)
 {
 
+}
+
+//------------------------------------------------------------------------------
+bool Game::botInput(int current_worm, string command)
+{
+  string param;
+  vector<string> command_params;
+  int move_command = 0;
+
+  cout << "command: " << command << endl;
+
+  stringstream input_stream(command);
+  while(input_stream >> param)
+  {
+    command_params.push_back(param);
+  }
+  if(command_params.empty())
+  {
+    return false;
+  }
+  if(command_params.size() > 3)
+  {
+    printErrorMessage(UNKNOWN_COMMAND);
+    return false;
+  }
+  return !checkOneParameterCommand(command_params, current_worm, move_command);
 }
