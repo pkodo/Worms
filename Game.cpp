@@ -471,7 +471,7 @@ int Game::checkWinner()
   }
   if(count_dead_worms == 6)
   {
-    cout << "END: Draw!" << endl;
+    cout << "END: Draw" << endl;
     return END_GAME;
   }
   else
@@ -534,7 +534,7 @@ int Game::setPlayerAndWorm(int &current_worm, int &player, int &turn_one,
       }
     }
 
-    if(wormNumber.at(current_worm).getHp() != 0)
+    if(wormNumber.at(current_worm).getHp() > 0)
     {
       cout << "Player " << player;
       if(player % 2) // Player one
@@ -1391,7 +1391,7 @@ bool Game::findTarget(int &row, int &col, int direction)
         break;
       case 7:
         while(map_.at(
-          currentField(row, col) - (board_width_ - CHECK_RIGHT_UP)).getType() ==
+          currentField(row, col) - (board_width_ + CHECK_RIGHT_UP)).getType() ==
               Field::AIR) // right-up
         {
           row--;
@@ -1604,7 +1604,7 @@ int Game::playCommand(int current_worm, bool team)
 
   if(makeGhostActionCommand(current_worm, team))
   {
-    makeGhostMoveCommand(current_worm, team);
+   // makeGhostMoveCommand(current_worm, team);
   }
   return true;
 }
@@ -1612,6 +1612,7 @@ int Game::playCommand(int current_worm, bool team)
 //------------------------------------------------------------------------------
 bool Game::makeGhostActionCommand(int current_worm, bool team)
 {
+  string command;
   if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
       && testGhostMelee(current_worm, team))
   {
@@ -1624,13 +1625,17 @@ bool Game::makeGhostActionCommand(int current_worm, bool team)
     if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0)
     {
       botInput(current_worm, "choose bazooka");
+      command = "command: choose bazooka";
     }
     else if(wormNumber.at(current_worm).getWeapons().at(BLOWTORCH_INT).getAmmo()
     > 0)
     {
       botInput(current_worm, "choose blowtorch");
+      command = "command: choose blowtorch";
     }
     botInput(current_worm, "action l");
+    cout << command << endl;
+    cout << "command: action l" << endl;
     return true;
   }
 
@@ -1687,10 +1692,10 @@ bool Game::testGhostMelee(int current_worm, bool team)
 }
 
 //------------------------------------------------------------------------------
-void Game::makeGhostMoveCommand(int current_worm, bool team)
-{
+//void Game::makeGhostMoveCommand(int current_worm, bool team)
+//{
 
-}
+//}
 
 //------------------------------------------------------------------------------
 bool Game::botInput(int current_worm, string command)
@@ -1698,8 +1703,6 @@ bool Game::botInput(int current_worm, string command)
   string param;
   vector<string> command_params;
   int move_command = 0;
-
-  cout << "command: " << command << endl;
 
   stringstream input_stream(command);
   while(input_stream >> param)

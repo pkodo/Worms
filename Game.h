@@ -510,7 +510,7 @@ namespace Sep
 
       bool testGhostMelee(int current_worm, bool team);
 
-      void makeGhostMoveCommand(int current_worm, bool team);
+     // void makeGhostMoveCommand(int current_worm, bool team);
 
     bool botInput(int current_worm, string input_line);
   };
