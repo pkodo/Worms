@@ -198,6 +198,10 @@ namespace Sep
 
       int playCommand(int current_worm, bool team);
 
+      int getGhostSteps() const;
+
+      bool getGhostMode() const;
+
       void setGhostMode(bool on);
 
       //------------------------------------------------------------------------
@@ -233,6 +237,11 @@ namespace Sep
       // Variable for acting in ghost mode
       //
       bool ghost_mode_;
+
+      //------------------------------------------------------------------------
+      // Variable for steps in ghost mode
+      //
+      int ghost_steps_;
 
       //------------------------------------------------------------------------
       // Datastructure for objects on the gameboard

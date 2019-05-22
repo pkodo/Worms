@@ -50,7 +50,10 @@ namespace Sep
     {
       return INVALID_PARAMETER;
     }
-    game.printMap();
+    if(game.getGhostSteps() != 0 || !game.getGhostMode())
+    {
+      game.printMap();
+    }
     return EVERYTHING_OK;
   }
 

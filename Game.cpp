@@ -83,7 +83,8 @@ const string Game::COMMA = ", ";
 
 //------------------------------------------------------------------------------
 Game::Game() : board_width_(0), board_height_(0), quit_(false), map_(),
-               wormNumber(), chest_Number_(), ghost_mode_(false)
+               wormNumber(), chest_Number_(), ghost_mode_(false),
+               ghost_steps_(0)
 {
   Game::map_.insert(pair<int, Field>(board_height_ * board_width_,
                                      Field(Field::AIR)));
@@ -600,6 +601,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
     if(gravity(current_worm, row, step_direction))
     {
       col = step_direction;
+      ghost_steps_++;
       return true;
     }
   }
@@ -614,6 +616,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
     if(gravity(current_worm, row, step_direction))
     {
       col = step_direction;
+      ghost_steps_++;
       return true;
     }
   }
@@ -631,6 +634,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
       wormNumber.at(current_worm).setPosition((row - 1), step_direction);
       row--;
       col = step_direction;
+      ghost_steps_++;
       return true;
     }
     else if((map_.at(aboveCurrentField(row, col)).getType() != Field::EARTH)
@@ -645,6 +649,7 @@ bool Game::makeMove(int &row, int &col, bool left_steps, int current_worm)
       row--;
       findChest(row, step_direction, current_worm);
       col = step_direction;
+      ghost_steps_++;
       return true;
     }
   }
@@ -1619,8 +1624,16 @@ int Game::playCommand(int current_worm, bool team)
       if(makeGhostActionCommand(current_worm, team, command, action,
               move_command, right_move))
       {
-          cout << move << "\n" << command << "\n" << action << endl;
-          return true;
+        if(ghost_steps_ != 0)
+        {
+          cout << move << ghost_steps_ << "\n";
+        }
+        if(!command.empty())
+        {
+          cout << command << "\n";
+        }
+        cout << action << endl;
+        return true;
       }
       else
       {
@@ -1629,6 +1642,7 @@ int Game::playCommand(int current_worm, bool team)
   }
   cout << command << "\n" << action << endl;
   setGhostMode(false); // ENDs Ghost Mode
+  ghost_steps_ = 0;
   return true;
 }
 
@@ -1688,6 +1702,7 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
     botInput(current_worm, "action l");
     return false;
   }
+  return false;
 }
 
 //------------------------------------------------------------------------------
@@ -1738,6 +1753,7 @@ bool Game::testGhostMelee(int current_worm, bool team)
   catch(std::out_of_range &)
   {
   }
+  return false;
 }
 
 //------------------------------------------------------------------------------
@@ -1748,6 +1764,7 @@ void Game::makeGhostMoveCommand(int current_worm, bool team, int &move_command,
   int difference;
   int steps_difference = board_width_;
   move_command++;
+  ghost_steps_ = 0;
   for(int index = 0; index < 6; index++)
   {
     if(wormNumber.at(index).getHp() > 0
@@ -1765,12 +1782,12 @@ void Game::makeGhostMoveCommand(int current_worm, bool team, int &move_command,
   {
     if(right_move)
     {
-      move = "command: move r 3";
+      move = "command: move r ";
       botInput(current_worm, "move r 3");
     }
     else
     {
-      move = "command: move l 3";
+      move = "command: move l ";
       botInput(current_worm, "move l 3");
     }
   }
@@ -1778,15 +1795,25 @@ void Game::makeGhostMoveCommand(int current_worm, bool team, int &move_command,
   {
     if(right_move)
     {
-      move = "command: move r 1";
+      move = "command: move r ";
       botInput(current_worm, "move r 1");
     }
     else
     {
-      move = "command: move l 1";
+      move = "command: move l ";
       botInput(current_worm, "move l 1");
     }
   }
+}
+
+int Game::getGhostSteps() const
+{
+  return ghost_steps_;
+}
+
+bool Game::getGhostMode() const
+{
+  return ghost_mode_;
 }
 
 //------------------------------------------------------------------------------
