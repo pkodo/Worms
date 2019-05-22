@@ -1318,7 +1318,8 @@ void Game::makeDamage(int row, int col, int damage)
 }
 
 //------------------------------------------------------------------------------
-bool Game::findTarget(int &row, int &col, int direction)
+bool Game::findTarget(int &row, int &col, int direction, int current_worm,
+                        int current_weapon)
 {
   try
   {
@@ -1410,6 +1411,8 @@ bool Game::findTarget(int &row, int &col, int direction)
   }
   catch(std::out_of_range &)
   {
+    wormNumber.at(current_worm).getWeapons()
+              .at(current_weapon).decreaseAmmo();
     cout << SHOT_MISSED << endl;
     return false;
   }
@@ -1433,7 +1436,7 @@ void Game::actionDirectionCommand(int current_worm, int current_weapon,
   int row = wormNumber.at(current_worm).getRow();
   int col = wormNumber.at(current_worm).getCol();
 
-  if(findTarget(row, col, direction))
+  if(findTarget(row, col, direction, current_worm, current_weapon))
   {
     if(current_weapon == GUN_INT) // Gun
     {
@@ -1601,44 +1604,51 @@ int Game::playCommand(int current_worm, bool team)
   //{
   //  botInput(current_worm, "action l");
   //}
-
-  if(makeGhostActionCommand(current_worm, team))
+  string command;
+  string action;
+  if(makeGhostActionCommand(current_worm, team, command, action))
   {
+   cout << command << "\n" << action << endl;
    // makeGhostMoveCommand(current_worm, team);
   }
   return true;
 }
 
 //------------------------------------------------------------------------------
-bool Game::makeGhostActionCommand(int current_worm, bool team)
+bool Game::makeGhostActionCommand(int current_worm, bool team,
+                std::string &command, std::string &action)
 {
-  string command;
   if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
       && testGhostMelee(current_worm, team))
   {
+    command = "command: choose melee";
+    action = "command: action";
     botInput(current_worm, "choose melee");
     botInput(current_worm, "action");
     return true;
   }
-  else
+  else if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0)
   {
-    if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0)
-    {
-      botInput(current_worm, "choose bazooka");
-      command = "command: choose bazooka";
-    }
-    else if(wormNumber.at(current_worm).getWeapons().at(BLOWTORCH_INT).getAmmo()
-    > 0)
-    {
-      botInput(current_worm, "choose blowtorch");
-      command = "command: choose blowtorch";
-    }
+    command = "command: choose bazooka";
+    action = "command: action l";
+    botInput(current_worm, "choose bazooka");
     botInput(current_worm, "action l");
-    cout << command << endl;
-    cout << "command: action l" << endl;
     return true;
   }
-
+  else if(wormNumber.at(current_worm).getWeapons().at(BLOWTORCH_INT).getAmmo()
+            > 0)
+  {
+    command = "command: choose blowtorch";
+    action = "command: action l";
+    botInput(current_worm, "choose blowtorch");
+    botInput(current_worm, "action l");
+    return true;
+  }
+  else
+  {
+    cout << "command: action idle" << endl;
+    return false;
+  }
 }
 
 //------------------------------------------------------------------------------

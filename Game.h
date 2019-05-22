@@ -464,7 +464,8 @@ namespace Sep
       // @param col defines the position of the chest.
       // @param direction defines the direction of the shot.
       //
-      bool findTarget(int& row, int& col, int direction);
+      bool findTarget(int& row, int& col, int direction, int current_worm,
+                        int current_weapon);
 
       //------------------------------------------------------------------------
       // Find the current field
@@ -506,7 +507,8 @@ namespace Sep
       //
       int aboveTargetField(int row, int step_direction);
 
-      bool makeGhostActionCommand(int current_worm, bool team);
+      bool makeGhostActionCommand(int current_worm, bool team,
+                    std::string &command, std::string &action);
 
       bool testGhostMelee(int current_worm, bool team);
 
