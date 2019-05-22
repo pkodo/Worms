@@ -831,9 +831,7 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
     else if(command_params.at(0) == COMMAND_PLAY)
     {
       Play play(COMMAND_PLAY, current_worm);
-      return play.execute(*this, command_params) ==
-             0; //return wert muss auf true geandert werden, wenn befehl
-      // ausgefuehrt
+      return play.execute(*this, command_params) == 0;
     }
     else if(command_params.at(0) == COMMAND_WHOAMI)
     {
@@ -1419,8 +1417,11 @@ bool Game::findTarget(int &row, int &col, int direction, int current_worm,
   }
   catch(std::out_of_range &)
   {
-    wormNumber.at(current_worm).getWeapons()
-      .at(current_weapon).decreaseAmmo();
+    if(current_weapon != 0)
+    {
+      wormNumber.at(current_worm).getWeapons()
+                .at(current_weapon).decreaseAmmo();
+    }
     cout << SHOT_MISSED << endl;
     return false;
   }
@@ -1822,11 +1823,13 @@ void Game::makeGhostMoveCommand(int current_worm, bool team, int &move_command,
   }
 }
 
+//------------------------------------------------------------------------------
 int Game::getGhostSteps() const
 {
   return ghost_steps_;
 }
 
+//------------------------------------------------------------------------------
 bool Game::getGhostMode() const
 {
   return ghost_mode_;

@@ -47,15 +47,11 @@ namespace Sep
       static const int CHECK_RIGHT_DOWN = 1;
 
       static const int GUN_INT = 0;
-      static const int GUN_DAMAGE = 25;
       static const int BAZOOKA_INT = 1;
-      static const int BAZOOKA_DAMAGE = 40;
       static const int BLOWTORCH_INT = 3;
       static const int BLOWTORCH_DAMAGE = 35;
       static const int MELEE_INT = 4;
-      static const int MELEE_DAMAGE = 50;
       static const int AIRSTRIKE_INT = 5;
-      static const int AIRSTRIKE_DAMAGE = 20;
 
       static const string MAGIC_VALUE;
       static const string CHECK_FOR_SIZE;
@@ -165,7 +161,8 @@ namespace Sep
       // function for MELEE
       // @param current_worm  describes the number of the current worms
       // @param current_weapon describes the number of the current weapon_number
-      // @param damage is used for damage calulations
+      // @param damage is used for damage calculations
+      //
       void actionCommand(int current_worm,  int current_weapon, int damage);
 
       //------------------------------------------------------------------------
@@ -175,6 +172,7 @@ namespace Sep
       // @param current_weapon describes the number of the current weapon_number
       // @param damage is used for damage calulations
       // @param direction is the number of the direction
+      //
       void actionDirectionCommand(int current_worm, int current_weapon,
                                   int damage, int direction);
 
@@ -184,6 +182,7 @@ namespace Sep
       // @param current_weapon describes the number of the current weapon_number
       // @param damage is used for damage calulations
       // @param col   is the number of the column
+      //
       void actionColCommand(int current_worm, int current_weapon,
                             int damage, int col);
 
@@ -193,15 +192,32 @@ namespace Sep
       // @param current_weapon describes the number of the current weapon_number
       // @param damage is used for damage calulations
       // @param col   is the number of the column
+      //
       bool actionRowColCommand(int current_worm, int current_weapon,
                                int row, int col);
 
+      //------------------------------------------------------------------------
+      // playCommand Method
+      // If the play command is executed, an AI takes over
+      // @param current_worm  describes the number of the current worms
+      // @param team is a boolean value and describes in which team a worm is
+      // @return integer
+      //
       int playCommand(int current_worm, bool team);
 
+      //------------------------------------------------------------------------
+      // Getter Method
+      //
       int getGhostSteps() const;
 
+      //------------------------------------------------------------------------
+      // Getter Method
+      //
       bool getGhostMode() const;
 
+      //------------------------------------------------------------------------
+      // Setter Method
+      //
       void setGhostMode(bool on);
 
       //------------------------------------------------------------------------
@@ -516,18 +532,57 @@ namespace Sep
       //
       int aboveTargetField(int row, int step_direction);
 
+      //------------------------------------------------------------------------
+      // Action Command in play mode
+      // calculates a possible action command
+      // @param current_worm defines the currently played worm.
+      // @param team is a boolean value and describes in which team a worm is
+      // @param step_direction defines the direction of the shot.
+      // @param command string to define the command for the output.
+      // @param action string to define the action command for the output.
+      // @param move_command string to define the move command for the output.
+      // @param right_move is a boolean value and describes the step direction
+      //
       bool makeGhostActionCommand(int current_worm, bool team,
                     std::string &command, std::string &action,
                     int &move_command, bool right_move);
 
+      //------------------------------------------------------------------------
+      // Searches for a melee target
+      // if an enemy is found it calls the action command
+      // @param current_worm defines the currently played worm.
+      // @param team is a boolean value and describes in which team a worm is
+      //
       bool testGhostMelee(int current_worm, bool team);
 
+      //------------------------------------------------------------------------
+      // Move command
+      // calculates possible move commands
+      // @param current_worm defines the currently played worm.
+      // @param team is a boolean value and describes in which team a worm is
+      // @param move string to define the action command for the output.
+      // @param move_command string to define the move command for the output.
+      // @param right_move is a boolean value and describes the step direction
+      //
       void makeGhostMoveCommand(int current_worm, bool team, int &move_command,
               string &move, bool &right_move);
 
+      //------------------------------------------------------------------------
+      // Reads input and executes commands
+      //
+      // @param current_worm defines the currently played worm.
+      // @param input_line string to define the command.
+      //
       bool botInput(int current_worm, string input_line);
 
-    bool testGhostAirstrike(int current_worm, bool team, int &airstrike_col);
+      //------------------------------------------------------------------------
+      // Find above target field
+      // calculates the field above the target
+      // @param current_worm defines the currently played worm.
+      // @param team is a boolean value and describes in which team a worm is
+      // @param airstrike_col defines the col position of a target
+      //
+      bool testGhostAirstrike(int current_worm, bool team, int &airstrike_col);
   };
 }
 #endif //SEP_GAME_H
