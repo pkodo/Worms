@@ -1606,16 +1606,6 @@ void Game::setGhostMode(bool on)
 //------------------------------------------------------------------------------
 int Game::playCommand(int current_worm, bool team)
 {
-  //if(wormNumber.at(current_worm).getWeapons().at(AIRSTRIKE_INT).getAmmo() > 0)
-  //{
-  //  botInput(current_worm, "choose airstrike");
-  //  botInput(current_worm, "action");
-  //}
-  //else
-  //{
-  //  botInput(current_worm, "action l");
-  //}
-
   string command;
   string action;
   string move;
@@ -1630,11 +1620,11 @@ int Game::playCommand(int current_worm, bool team)
     {
       if(ghost_steps_ != 0)
       {
-        cout << move << ghost_steps_ << "\n";
+        cout << move << ghost_steps_ << endl;
       }
       if(!command.empty())
       {
-        cout << command << "\n";
+        cout << command << endl;
       }
       if(!action.empty())
       {
@@ -1647,7 +1637,7 @@ int Game::playCommand(int current_worm, bool team)
       return true;
     }
   }
-  cout << command << "\n" << action << endl;
+  cout << command << endl << action << endl;
   setGhostMode(false); // ENDs Ghost Mode
   ghost_steps_ = 0;
   return true;
