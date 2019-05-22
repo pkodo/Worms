@@ -33,7 +33,7 @@ namespace Sep
     {
       team = true; // Team 1
     }
-    game.setGhostMode();
+    game.setGhostMode(true);
     game.playCommand(current_worm_, team);
   }
 }

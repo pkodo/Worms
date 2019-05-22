@@ -198,7 +198,7 @@ namespace Sep
 
       int playCommand(int current_worm, bool team);
 
-      void setGhostMode();
+      void setGhostMode(bool on);
 
       //------------------------------------------------------------------------
       // Getter Method
@@ -508,13 +508,15 @@ namespace Sep
       int aboveTargetField(int row, int step_direction);
 
       bool makeGhostActionCommand(int current_worm, bool team,
-                    std::string &command, std::string &action);
+                    std::string &command, std::string &action,
+                    int &move_command, bool right_move);
 
       bool testGhostMelee(int current_worm, bool team);
 
-     // void makeGhostMoveCommand(int current_worm, bool team);
+      void makeGhostMoveCommand(int current_worm, bool team, int &move_command,
+              string &move, bool &right_move);
 
-    bool botInput(int current_worm, string input_line);
+      bool botInput(int current_worm, string input_line);
   };
 }
 #endif //SEP_GAME_H

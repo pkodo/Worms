@@ -101,7 +101,10 @@ Game::ErrorType Game::printErrorMessage(ErrorType type)
       cout << "[ERROR] invalid target!" << endl;
       break;
     case WRONG_MOVE:
-      cout << "[WARNING] can't move further" << endl;
+      if(!ghost_mode_)
+      {
+        cout << "[WARNING] can't move further" << endl;
+      }
       break;
     case UNKNOWN_COMMAND:
       cout << "[ERROR] unknown command!" << endl;
@@ -1587,9 +1590,9 @@ int Sep::Game::aboveTargetField(int row, int step_direction)
 }
 
 //------------------------------------------------------------------------------
-void Game::setGhostMode()
+void Game::setGhostMode(bool on)
 {
-  ghost_mode_ = true;
+  ghost_mode_ = on;
 }
 
 //------------------------------------------------------------------------------
@@ -1606,17 +1609,33 @@ int Game::playCommand(int current_worm, bool team)
   //}
   string command;
   string action;
-  if(makeGhostActionCommand(current_worm, team, command, action))
+  string move;
+  bool right_move = false;
+  int move_command = 0;
+  if(!makeGhostActionCommand(current_worm, team, command, action,
+          move_command, right_move))
   {
-   cout << command << "\n" << action << endl;
-   // makeGhostMoveCommand(current_worm, team);
+      makeGhostMoveCommand(current_worm, team, move_command, move, right_move);
+      if(makeGhostActionCommand(current_worm, team, command, action,
+              move_command, right_move))
+      {
+          cout << move << "\n" << command << "\n" << action << endl;
+          return true;
+      }
+      else
+      {
+          return true;
+      }
   }
+  cout << command << "\n" << action << endl;
+  setGhostMode(false); // ENDs Ghost Mode
   return true;
 }
 
 //------------------------------------------------------------------------------
 bool Game::makeGhostActionCommand(int current_worm, bool team,
-                std::string &command, std::string &action)
+                std::string &command, std::string &action, int &move_command,
+                bool right_move)
 {
   if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
       && testGhostMelee(current_worm, team))
@@ -1627,26 +1646,46 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
     botInput(current_worm, "action");
     return true;
   }
-  else if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0)
+  else if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0
+            && move_command)
   {
     command = "command: choose bazooka";
-    action = "command: action l";
     botInput(current_worm, "choose bazooka");
+    if(right_move) // shoots in right direction
+    {
+      action = "command: action r";
+      botInput(current_worm, "action r");
+      return true;
+    }
+    action = "command: action l";
     botInput(current_worm, "action l");
     return true;
   }
   else if(wormNumber.at(current_worm).getWeapons().at(BLOWTORCH_INT).getAmmo()
-            > 0)
+            > 0 && move_command)
   {
     command = "command: choose blowtorch";
-    action = "command: action l";
     botInput(current_worm, "choose blowtorch");
+    if(right_move) // shoots in right direction
+    {
+      action = "command: action r";
+      botInput(current_worm, "action r");
+      return true;
+    }
+    action = "command: action l";
     botInput(current_worm, "action l");
     return true;
   }
-  else
+  else if(move_command) // move is done
   {
-    cout << "command: action idle" << endl;
+    if(right_move) // shoots in right direction
+    {
+      action = "command: action r";
+      botInput(current_worm, "action r");
+      return true;
+    }
+    action = "command: action l";
+    botInput(current_worm, "action l");
     return false;
   }
 }
@@ -1702,10 +1741,53 @@ bool Game::testGhostMelee(int current_worm, bool team)
 }
 
 //------------------------------------------------------------------------------
-//void Game::makeGhostMoveCommand(int current_worm, bool team)
-//{
-
-//}
+void Game::makeGhostMoveCommand(int current_worm, bool team, int &move_command,
+                                string &move, bool &right_move)
+{
+  int col = wormNumber.at(current_worm).getCol();
+  int difference;
+  int steps_difference = board_width_;
+  move_command++;
+  for(int index = 0; index < 6; index++)
+  {
+    if(wormNumber.at(index).getHp() > 0
+       && ((team && index > 2) || (!team && index < 3)))
+    {
+      difference = (col - wormNumber.at(index).getCol());
+      if(steps_difference > std::abs(difference))
+      {
+        steps_difference = std::abs(difference);
+      }
+      right_move = difference < 0 ? true : false;
+    }
+  }
+  if(steps_difference > 3)
+  {
+    if(right_move)
+    {
+      move = "command: move r 3";
+      botInput(current_worm, "move r 3");
+    }
+    else
+    {
+      move = "command: move l 3";
+      botInput(current_worm, "move l 3");
+    }
+  }
+  else
+  {
+    if(right_move)
+    {
+      move = "command: move r 1";
+      botInput(current_worm, "move r 1");
+    }
+    else
+    {
+      move = "command: move l 1";
+      botInput(current_worm, "move l 1");
+    }
+  }
+}
 
 //------------------------------------------------------------------------------
 bool Game::botInput(int current_worm, string command)
