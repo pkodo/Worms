@@ -517,6 +517,8 @@ namespace Sep
               string &move, bool &right_move);
 
       bool botInput(int current_worm, string input_line);
+
+    bool testGhostAirstrike(int current_worm, bool team, int &airstrike_col);
   };
 }
 #endif //SEP_GAME_H

@@ -82,8 +82,9 @@ const string Game::BRACKET_2 = ")";
 const string Game::COMMA = ", ";
 
 //------------------------------------------------------------------------------
-Game::Game() : board_width_(0), board_height_(0), quit_(false), map_(),
-               wormNumber(), chest_Number_(), ghost_mode_(false)
+Game::Game() : board_width_(0), board_height_(0), quit_(false),
+               ghost_mode_(false), map_(),
+               wormNumber(), chest_Number_()
 {
   Game::map_.insert(pair<int, Field>(board_height_ * board_width_,
                                      Field(Field::AIR)));
@@ -828,7 +829,7 @@ bool Game::checkOneParameterCommand(std::vector<std::string> command_params,
       Play play(COMMAND_PLAY, current_worm);
       return play.execute(*this, command_params) ==
              0; //return wert muss auf true geandert werden, wenn befehl
-                // ausgefuehrt
+      // ausgefuehrt
     }
     else if(command_params.at(0) == COMMAND_WHOAMI)
     {
@@ -1322,7 +1323,7 @@ void Game::makeDamage(int row, int col, int damage)
 
 //------------------------------------------------------------------------------
 bool Game::findTarget(int &row, int &col, int direction, int current_worm,
-                        int current_weapon)
+                      int current_weapon)
 {
   try
   {
@@ -1415,7 +1416,7 @@ bool Game::findTarget(int &row, int &col, int direction, int current_worm,
   catch(std::out_of_range &)
   {
     wormNumber.at(current_worm).getWeapons()
-              .at(current_weapon).decreaseAmmo();
+      .at(current_weapon).decreaseAmmo();
     cout << SHOT_MISSED << endl;
     return false;
   }
@@ -1598,34 +1599,35 @@ void Game::setGhostMode(bool on)
 //------------------------------------------------------------------------------
 int Game::playCommand(int current_worm, bool team)
 {
-  //if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0)
+  //if(wormNumber.at(current_worm).getWeapons().at(AIRSTRIKE_INT).getAmmo() > 0)
   //{
-  //  botInput(current_worm, "choose melee");
+  //  botInput(current_worm, "choose airstrike");
   //  botInput(current_worm, "action");
   //}
   //else
   //{
   //  botInput(current_worm, "action l");
   //}
+
   string command;
   string action;
   string move;
   bool right_move = false;
   int move_command = 0;
   if(!makeGhostActionCommand(current_worm, team, command, action,
-          move_command, right_move))
+                             move_command, right_move))
   {
-      makeGhostMoveCommand(current_worm, team, move_command, move, right_move);
-      if(makeGhostActionCommand(current_worm, team, command, action,
-              move_command, right_move))
-      {
-          cout << move << "\n" << command << "\n" << action << endl;
-          return true;
-      }
-      else
-      {
-          return true;
-      }
+    makeGhostMoveCommand(current_worm, team, move_command, move, right_move);
+    if(makeGhostActionCommand(current_worm, team, command, action,
+                              move_command, right_move))
+    {
+      cout << move << "\n" << command << "\n" << action << endl;
+      return true;
+    }
+    else
+    {
+      return true;
+    }
   }
   cout << command << "\n" << action << endl;
   setGhostMode(false); // ENDs Ghost Mode
@@ -1634,11 +1636,14 @@ int Game::playCommand(int current_worm, bool team)
 
 //------------------------------------------------------------------------------
 bool Game::makeGhostActionCommand(int current_worm, bool team,
-                std::string &command, std::string &action, int &move_command,
-                bool right_move)
+                                  std::string &command, std::string &action,
+                                  int &move_command,
+                                  bool right_move)
 {
+  int airstrike_col;
+
   if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
-      && testGhostMelee(current_worm, team))
+     && testGhostMelee(current_worm, team))
   {
     command = "command: choose melee";
     action = "command: action";
@@ -1646,8 +1651,20 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
     botInput(current_worm, "action");
     return true;
   }
+  else if(wormNumber.at(current_worm).getWeapons().at(AIRSTRIKE_INT).getAmmo
+  () > 0 && testGhostAirstrike(current_worm, team, airstrike_col))
+  {
+    command = "command: choose airstrike";
+    action = "command: action ";
+    action.append(std::to_string(airstrike_col));
+    botInput(current_worm, "choose airstrike");
+    string action_input = "action ";
+    action_input.append(std::to_string(airstrike_col));
+    botInput(current_worm, action_input);
+    return true;
+  }
   else if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0
-            && move_command)
+          && move_command)
   {
     command = "command: choose bazooka";
     botInput(current_worm, "choose bazooka");
@@ -1662,7 +1679,7 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
     return true;
   }
   else if(wormNumber.at(current_worm).getWeapons().at(BLOWTORCH_INT).getAmmo()
-            > 0 && move_command)
+          > 0 && move_command)
   {
     command = "command: choose blowtorch";
     botInput(current_worm, "choose blowtorch");
@@ -1811,4 +1828,26 @@ bool Game::botInput(int current_worm, string command)
     return false;
   }
   return !checkOneParameterCommand(command_params, current_worm, move_command);
+}
+
+//------------------------------------------------------------------------------
+bool Game::testGhostAirstrike(int current_worm, bool team, int &airstrike_col)
+{
+  try
+  {
+    for(unsigned int index = 0; index <= wormNumber.size(); index++)
+    {
+      if(wormNumber.at(index).getCharacter() != wormNumber.at(current_worm)
+        .getCharacter() && wormNumber.at(index).getHp() > 0)
+      {
+        airstrike_col = wormNumber.at(index).getCol();
+        return true;
+      }
+    }
+  }
+  catch(std::exception &)
+  {
+    return false;
+  }
+  return false;
 }
