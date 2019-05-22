@@ -15,7 +15,7 @@
 namespace Sep
 {
   //----------------------------------------------------------------------------
-  Play::Play(const std::string &name, int current_worm) : Command(name),
+  Play::Play(const std::string& name, int current_worm) : Command(name),
             current_worm_(current_worm)
   {
   }
@@ -26,7 +26,7 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  int Play::execute(Game &game, std::vector<std::string> &params)
+  int Play::execute(Game& game, std::vector<std::string>& params)
   {
     bool team = false;
     if(current_worm_ < 3)

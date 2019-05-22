@@ -1326,7 +1326,7 @@ void Game::makeDamage(int row, int col, int damage)
 }
 
 //------------------------------------------------------------------------------
-bool Game::findTarget(int &row, int &col, int direction, int current_worm,
+bool Game::findTarget(int& row, int& col, int direction, int current_worm,
                       int current_weapon)
 {
   try
@@ -1389,8 +1389,8 @@ bool Game::findTarget(int &row, int &col, int direction, int current_worm,
         break;
       case 6:
         while(map_.at(
-          currentField(row, col) - (board_width_ + CHECK_LEFT_UP)).getType() ==
-              Field::AIR) // left-up
+          currentField(row, col) - (board_width_ + CHECK_LEFT_UP))
+          .getType() == Field::AIR) // left-up
         {
           row--;
           col--;
@@ -1400,8 +1400,8 @@ bool Game::findTarget(int &row, int &col, int direction, int current_worm,
         break;
       case 7:
         while(map_.at(
-          currentField(row, col) - (board_width_ + CHECK_RIGHT_UP)).getType() ==
-              Field::AIR) // right-up
+          currentField(row, col) - (board_width_
+          + CHECK_RIGHT_UP)).getType() == Field::AIR) // right-up
         {
           row--;
           col++;
@@ -1434,7 +1434,8 @@ bool Game::findTarget(int &row, int &col, int direction, int current_worm,
 void Game::actionDirectionCommand(int current_worm, int current_weapon,
                                   int damage, int direction)
 {
-  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
+  if(wormNumber.at(current_worm).getWeapons()
+     .at(current_weapon).getAmmo() <= 0)
   {
     printErrorMessage(NO_AMMUNITION);
     return;
@@ -1516,7 +1517,8 @@ void Game::blowtorchCommand(int current_worm, int damage, int direction,
 void Game::actionColCommand(int current_worm, int current_weapon, int damage,
                             int col)
 {
-  if(wormNumber.at(current_worm).getWeapons().at(current_weapon).getAmmo() <= 0)
+  if(wormNumber.at(current_worm).getWeapons()
+     .at(current_weapon).getAmmo() <= 0)
   {
     printErrorMessage(NO_AMMUNITION);
     return;
@@ -1645,8 +1647,8 @@ int Game::playCommand(int current_worm, bool team)
 
 //------------------------------------------------------------------------------
 bool Game::makeGhostActionCommand(int current_worm, bool team,
-                                  std::string &command, std::string &action,
-                                  int &move_command,
+                                  std::string& command, std::string& action,
+                                  int& move_command,
                                   bool right_move)
 {
   int airstrike_col;
@@ -1675,8 +1677,8 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
     botInput(current_worm, action_input);
     return true;
   }
-  else if(wormNumber.at(current_worm).getWeapons().at(BAZOOKA_INT).getAmmo() > 0
-          && move_command)
+  else if(wormNumber.at(current_worm).getWeapons()
+          .at(BAZOOKA_INT).getAmmo() > 0 && move_command)
   {
     command = "command: choose bazooka";
     botInput(current_worm, "choose bazooka");
@@ -1772,8 +1774,8 @@ bool Game::testGhostMelee(int current_worm, bool team)
 }
 
 //------------------------------------------------------------------------------
-void Game::makeGhostMoveCommand(int current_worm, bool team, int &move_command,
-                                string &move, bool &right_move)
+void Game::makeGhostMoveCommand(int current_worm, bool team, int& move_command,
+                                string& move, bool& right_move)
 {
   int col = wormNumber.at(current_worm).getCol();
   int difference;
@@ -1858,7 +1860,7 @@ bool Game::botInput(int current_worm, string command)
 }
 
 //------------------------------------------------------------------------------
-bool Game::testGhostAirstrike(int current_worm, int &airstrike_col)
+bool Game::testGhostAirstrike(int current_worm, int& airstrike_col)
 {
   try
   {

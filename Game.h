@@ -544,8 +544,8 @@ namespace Sep
       // @param right_move is a boolean value and describes the step direction
       //
       bool makeGhostActionCommand(int current_worm, bool team,
-                    std::string &command, std::string &action,
-                    int &move_command, bool right_move);
+                    std::string& command, std::string& action,
+                    int& move_command, bool right_move);
 
       //------------------------------------------------------------------------
       // Searches for a melee target
@@ -564,8 +564,8 @@ namespace Sep
       // @param move_command string to define the move command for the output.
       // @param right_move is a boolean value and describes the step direction
       //
-      void makeGhostMoveCommand(int current_worm, bool team, int &move_command,
-              string &move, bool &right_move);
+      void makeGhostMoveCommand(int current_worm, bool team, int& move_command,
+              string& move, bool& right_move);
 
       //------------------------------------------------------------------------
       // Reads input and executes commands
@@ -582,7 +582,7 @@ namespace Sep
       // @param team is a boolean value and describes in which team a worm is
       // @param airstrike_col defines the col position of a target
       //
-      bool testGhostAirstrike(int current_worm, int &airstrike_col);
+      bool testGhostAirstrike(int current_worm, int& airstrike_col);
   };
 }
 #endif //SEP_GAME_H

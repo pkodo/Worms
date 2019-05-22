@@ -25,7 +25,7 @@ namespace Sep
 
     public:
       // Constructor
-      Whoami(const std::string &name);
+      Whoami(const std::string& name);
 
       //------------------------------------------------------------------------
       // Copy Constructor
@@ -49,7 +49,7 @@ namespace Sep
       //@param game   is the actual board
       //@param params  is the input stored in a vector
       //
-      int execute(Game &game, std::vector<std::string> &params) override;
+      int execute(Game& game, std::vector<std::string>& params) override;
   };
 }
 

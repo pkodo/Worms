@@ -16,7 +16,7 @@
 namespace Sep
 {
   //----------------------------------------------------------------------------
-  Sep::Whoami::Whoami(const std::string &name) : Command(name)
+  Sep::Whoami::Whoami(const std::string& name) : Command(name)
   {
   }
 
@@ -26,7 +26,7 @@ namespace Sep
   }
 
   //----------------------------------------------------------------------------
-  int Whoami::execute(Game &game, std::vector<std::string> &params)
+  int Whoami::execute(Game& game, std::vector<std::string>& params)
   {
     std::cout << "Team: Turboslany" << std::endl;
     return 0;
