@@ -1007,6 +1007,7 @@ bool Game::gravity(int current_worm, int &row, int col)
       wormNumber.at(current_worm).setHp(0);
       map_.at(currentField(row, col)).setType(Field::AIR);
       printDeathCases(DROWNED, current_worm);
+      ghost_steps_++;
       return false;
     }
     return true;
@@ -1018,6 +1019,7 @@ bool Game::gravity(int current_worm, int &row, int col)
       printDeathCases(OUT_OF_MAP, current_worm);
     }
     wormNumber.at(current_worm).setHp(0);
+    ghost_steps_++;
     return false;
   }
 }
@@ -1622,25 +1624,28 @@ int Game::playCommand(int current_worm, bool team)
   if(!makeGhostActionCommand(current_worm, team, command, action,
                              move_command, right_move))
   {
-      makeGhostMoveCommand(current_worm, team, move_command, move, right_move);
-      if(makeGhostActionCommand(current_worm, team, command, action,
-              move_command, right_move))
+    makeGhostMoveCommand(current_worm, team, move_command, move, right_move);
+    if(makeGhostActionCommand(current_worm, team, command, action,
+            move_command, right_move))
+    {
+      if(ghost_steps_ != 0)
       {
-        if(ghost_steps_ != 0)
-        {
-          cout << move << ghost_steps_ << "\n";
-        }
-        if(!command.empty())
-        {
-          cout << command << "\n";
-        }
+        cout << move << ghost_steps_ << "\n";
+      }
+      if(!command.empty())
+      {
+        cout << command << "\n";
+      }
+      if(!action.empty())
+      {
         cout << action << endl;
-        return true;
       }
-      else
-      {
-          return true;
-      }
+      return true;
+    }
+    else
+    {
+      return true;
+    }
   }
   cout << command << "\n" << action << endl;
   setGhostMode(false); // ENDs Ghost Mode
@@ -1655,7 +1660,10 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
                                   bool right_move)
 {
   int airstrike_col;
-
+  if(wormNumber.at(current_worm).getHp() <= 0)
+  {
+      return true;
+  }
   if(wormNumber.at(current_worm).getWeapons().at(MELEE_INT).getAmmo() > 0
      && testGhostMelee(current_worm, team))
   {
