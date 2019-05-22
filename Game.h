@@ -576,13 +576,13 @@ namespace Sep
       bool botInput(int current_worm, string input_line);
 
       //------------------------------------------------------------------------
-      // Find above target field
-      // calculates the field above the target
+      // Airstrike command
+      // calculates possible airstrike commands
       // @param current_worm defines the currently played worm.
       // @param team is a boolean value and describes in which team a worm is
       // @param airstrike_col defines the col position of a target
       //
-      bool testGhostAirstrike(int current_worm, bool team, int &airstrike_col);
+      bool testGhostAirstrike(int current_worm, int &airstrike_col);
   };
 }
 #endif //SEP_GAME_H

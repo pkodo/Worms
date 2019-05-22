@@ -1674,7 +1674,7 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
     return true;
   }
   else if(wormNumber.at(current_worm).getWeapons().at(AIRSTRIKE_INT).getAmmo
-  () > 0 && testGhostAirstrike(current_worm, team, airstrike_col))
+  () > 0 && testGhostAirstrike(current_worm, airstrike_col))
   {
     command = "command: choose airstrike";
     action = "command: action ";
@@ -1868,7 +1868,7 @@ bool Game::botInput(int current_worm, string command)
 }
 
 //------------------------------------------------------------------------------
-bool Game::testGhostAirstrike(int current_worm, bool team, int &airstrike_col)
+bool Game::testGhostAirstrike(int current_worm, int &airstrike_col)
 {
   try
   {
@@ -1878,7 +1878,11 @@ bool Game::testGhostAirstrike(int current_worm, bool team, int &airstrike_col)
         .getCharacter() && wormNumber.at(index).getHp() > 0)
       {
         airstrike_col = wormNumber.at(index).getCol();
-        return true;
+        if(map_.at(aboveCurrentField(wormNumber.at(index).getRow(),
+          airstrike_col)).getType() != Field::WORM)
+        {
+          return true;
+        }
       }
     }
   }
