@@ -23,7 +23,12 @@ namespace Sep
   class Play : public Command
   {
     public:
+
+      static const int EVERYTHING_OK = 1;
+
+      //------------------------------------------------------------------------
       // Constructor
+      //
       Play(const std::string& name, int current_worm);
 
       //------------------------------------------------------------------------
@@ -40,9 +45,12 @@ namespace Sep
       //
       Play& operator = (Play& play) = delete;
 
+      //------------------------------------------------------------------------
       //Destructor
+      //
       virtual ~Play();
 
+      //------------------------------------------------------------------------
       //execute Method
       //executes the best possible turn for a worm
       //@param game   is the actual board
@@ -51,7 +59,6 @@ namespace Sep
       int execute(Game& game, std::vector<std::string>& params) override;
 
   private:
-
       int current_worm_;
   };
 }

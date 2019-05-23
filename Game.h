@@ -250,16 +250,6 @@ namespace Sep
       bool quit_;
 
       //------------------------------------------------------------------------
-      // Variable for acting in ghost mode
-      //
-      bool ghost_mode_;
-
-      //------------------------------------------------------------------------
-      // Variable for steps in ghost mode
-      //
-      int ghost_steps_;
-
-      //------------------------------------------------------------------------
       // Datastructure for objects on the gameboard
       //
       map<int, Field> map_;
@@ -273,6 +263,16 @@ namespace Sep
       // Datastructure for chest objects
       //
       vector<shared_ptr<Chest>> chest_Number_;
+
+      //------------------------------------------------------------------------
+      // Variable for acting in ghost mode
+      //
+      bool ghost_mode_;
+
+      //------------------------------------------------------------------------
+      // Variable for steps in ghost mode
+      //
+      int ghost_steps_;
 
       //------------------------------------------------------------------------
       // Enums for the various error types

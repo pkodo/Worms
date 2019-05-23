@@ -35,5 +35,6 @@ namespace Sep
     }
     game.setGhostMode(true);
     game.playCommand(current_worm_, team);
+    return EVERYTHING_OK;
   }
 }
