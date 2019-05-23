@@ -942,7 +942,8 @@ bool Game::gravity(int current_worm, int &row, int col)
   int count = 0;
   try
   {
-    if(map_.at(belowCurrentField(row, col)).getType() == Field::AIR)
+    if(map_.at(belowCurrentField(row, col)).getType() == Field::AIR
+      && wormNumber.at(current_worm).getHp() > 0)
     {
       map_.at(currentField(row, col)).setType(Field::AIR);
       while(map_.at(belowCurrentField(row, col)).getType() ==
@@ -1717,7 +1718,7 @@ bool Game::makeGhostActionCommand(int current_worm, bool team,
     }
     action = "command: action l";
     botInput(current_worm, "action l");
-    return false;
+    return true;
   }
   return false;
 }
