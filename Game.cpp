@@ -1778,6 +1778,7 @@ void Game::makeGhostMoveCommand(int current_worm, bool team, int& move_command,
                                 string& move, bool& right_move)
 {
   int col = wormNumber.at(current_worm).getCol();
+  int row = wormNumber.at(current_worm).getRow();
   int difference;
   int steps_difference = board_width_;
   move_command++;
@@ -1795,31 +1796,23 @@ void Game::makeGhostMoveCommand(int current_worm, bool team, int& move_command,
       right_move = difference < 0 ? true : false;
     }
   }
-  if(steps_difference > 3)
+  if(right_move && steps_difference > 1 &&
+        (map_.at(belowCurrentField(row, col + CHECK_RIGHT)).getType()
+        == Field::EARTH ||
+        map_.at(currentField(row, col + CHECK_RIGHT)).getType()
+        == Field::EARTH))
   {
-    if(right_move)
-    {
-      move = "command: move r ";
-      botInput(current_worm, "move r 3");
-    }
-    else
-    {
-      move = "command: move l ";
-      botInput(current_worm, "move l 3");
-    }
+    move = "command: move r ";
+    botInput(current_worm, "move r 1");
   }
-  else
+  else if(!right_move && steps_difference > 1 &&
+        (map_.at(belowCurrentField(row, col + CHECK_LEFT)).getType()
+        == Field::EARTH ||
+        map_.at(currentField(row, col + CHECK_LEFT)).getType()
+        == Field::EARTH))
   {
-    if(right_move)
-    {
-      move = "command: move r ";
-      botInput(current_worm, "move r 1");
-    }
-    else
-    {
-      move = "command: move l ";
-      botInput(current_worm, "move l 1");
-    }
+    move = "command: move l ";
+    botInput(current_worm, "move l 1");
   }
 }
 
